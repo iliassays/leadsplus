@@ -71,7 +71,7 @@ export class AgentService {
 
         let data = {
             AggregateId: agent.id,
-            AgentEmail: integrationEmail
+            MailboxName: integrationEmail
         };
         debugger;
         return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {

@@ -41,8 +41,8 @@ export class AgnetAddComponent implements OnInit {
             'country': [this.agent.country, Validators.required],
             'company': [this.agent.company, Validators.required],
             'phone': [this.agent.phone, Validators.required],
-            'address': [this.agent.company, Validators.required],
-            'email': [this.agent.phone, Validators.required]
+            'address': [this.agent.address, Validators.required],
+            'email': [this.agent.email, Validators.required]
         });
     }
 
@@ -52,12 +52,12 @@ export class AgnetAddComponent implements OnInit {
 
     submitForm(value: any) {
 
-        this.agent.firstname = this.newAgentForm.controls['street'].value;
-        this.agent.lastname = this.newAgentForm.controls['city'].value;
-        this.agent.city = this.newAgentForm.controls['state'].value;
+        this.agent.firstname = this.newAgentForm.controls['firstname'].value;
+        this.agent.lastname = this.newAgentForm.controls['lastname'].value;
+        this.agent.city = this.newAgentForm.controls['city'].value;
         this.agent.country = this.newAgentForm.controls['country'].value;
-        this.agent.company = this.newAgentForm.controls['cardnumber'].value;
-        this.agent.phone = this.newAgentForm.controls['cardnumber'].value;
+        this.agent.company = this.newAgentForm.controls['company'].value;
+        this.agent.phone = this.newAgentForm.controls['phone'].value;
         this.agent.address = this.newAgentForm.controls['address'].value;
         this.agent.email = this.newAgentForm.controls['email'].value;
 

@@ -18,9 +18,9 @@
     {
         private readonly IRepository<Agent> contactRepository;
 
-        public GetAllAgentQueryHandler(IRepository<Agent> contactQueries)
+        public GetAllAgentQueryHandler(IRepository<Agent> contactRepository)
         {
-            this.contactRepository = contactQueries;
+            this.contactRepository = contactRepository;
         }
 
         public async Task<List<Agent>> Handle(GetAllAgentQuery query)

@@ -27,7 +27,6 @@ export class ConfigurationService {
         this.http.get<IConfiguration>(url).subscribe(
             response => {
                 console.log('server settings loaded');
-                debugger;
                 this.serverSettings = response;
                 console.log(this.serverSettings);
                 this.storageService.store('identityUrl', this.serverSettings.identityUrl);

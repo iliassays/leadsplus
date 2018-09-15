@@ -10,6 +10,9 @@
     using LeadsPlus.Core.Repositories;
     using LeadsPlus.Core;
     using System;
+    using System.Linq;
+    using System.Collections.Generic;
+    using LeadsPlus.GoogleApis;
 
     public class ApplicationModule : Autofac.Module
     {
@@ -25,27 +28,25 @@
             builder.RegisterAssemblyTypes(typeof(AgentCommandHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
 
-            builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
+            //builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
+           
+            builder.RegisterAssemblyTypes(new Assembly[] { typeof(GetAgentQueryHandler).GetTypeInfo().Assembly })
+                .AsClosedTypesOf(typeof(IQueryHandler<,>)).AsImplementedInterfaces();
 
-            builder.RegisterAssemblyTypes(typeof(GetAgentQueryHandler).GetTypeInfo().Assembly)
-                .AsClosedTypesOf(typeof(IQueryHandler<,>));
-
-            //builder.Register(c =>
-            //{
-            //    var context = c.Resolve<IComponentContext>();
-
-            //    Func<IQueryExecutor> factory = () =>
-            //    {
-            //        return new QueryExecutor(context);
-            //    };
-            //    return factory;
-            //}).As<Func<IQueryExecutor>>().SingleInstance();
+            //builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+            //.AsClosedTypesOf(typeof(IQueryHandler<,>)).AsImplementedInterfaces().InstancePerLifetimeScope();
 
             builder.RegisterType<QueryExecutor>()
                 .As<IQueryExecutor>()
                 .InstancePerLifetimeScope();
 
-            builder.Register(c => { return ViewModelStoreFactory.Create<Domain.Agent>(setting["DatabaseConnectionString"], setting["DatabaseName"]); }).SingleInstance();
+            builder.RegisterType<GoogleApiConnector>()
+                .As<IGoogleApiConnector>()
+                .InstancePerLifetimeScope();
+
+            builder.Register(c => {
+                return ViewModelStoreFactory.Create<Domain.Agent>(setting["DatabaseConnectionString"], setting["DatabaseName"]);
+            }).AsSelf().SingleInstance();
             
         }
     }

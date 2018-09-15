@@ -23,7 +23,7 @@
             return mongoDatabase;
         }
 
-        public static Repository<T> Create<T>(string connectionString, string storeId) where T : IViewModel
+        public static IRepository<T> Create<T>(string connectionString, string storeId) where T : IViewModel
         {
             //var eventStoreConfig = AppConfig.AppSettings.ViewModelStoreConfigs.SingleOrDefault(es => es.StoreId.Equals(storeId));
 

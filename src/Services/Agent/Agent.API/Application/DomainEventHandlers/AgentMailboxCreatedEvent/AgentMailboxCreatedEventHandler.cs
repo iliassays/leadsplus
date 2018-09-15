@@ -21,15 +21,18 @@
         private readonly ILoggerFactory logger;
         private readonly IIdentityService identityService;
         private readonly IEventBus eventBus;
+        private readonly IRepository<Agent> agentRepository;
 
         public AgentMailboxCreatedEventHandler(
             ILoggerFactory logger,
             IIdentityService identityService,
-            IEventBus eventBus)
+            IEventBus eventBus,
+            IRepository<Agent> agentRepository)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.agentRepository = agentRepository ?? throw new ArgumentNullException(nameof(agentRepository));
         }
 
         public async Task Handle(AgentCreatedDomainEvent agentCreatedDomainEvent, CancellationToken cancellationToken)
@@ -56,6 +59,9 @@
             var update = Builders<Agent>.Update
                 .Set("IntegrationEmail", integrationEmail)
                 .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
         }
 
         public async Task<string> CreateIntigrationEmail(string mailboxName)

@@ -52,12 +52,12 @@ export class AgentDetailViewComponent implements OnInit {
     submitForm(value: any) {
         var currentAgent = this.agnetEvents.getCurrentAgent();
 
-        currentAgent.firstname = this.newAgentForm.controls['street'].value;
-        currentAgent.lastname = this.newAgentForm.controls['city'].value;
-        currentAgent.city = this.newAgentForm.controls['state'].value;
+        currentAgent.firstname = this.newAgentForm.controls['firstname'].value;
+        currentAgent.lastname = this.newAgentForm.controls['lastname'].value;
+        currentAgent.city = this.newAgentForm.controls['city'].value;
         currentAgent.country = this.newAgentForm.controls['country'].value;
-        currentAgent.company = this.newAgentForm.controls['cardnumber'].value;
-        currentAgent.phone = this.newAgentForm.controls['cardnumber'].value;
+        currentAgent.company = this.newAgentForm.controls['company'].value;
+        currentAgent.phone = this.newAgentForm.controls['phone'].value;
         currentAgent.address = this.newAgentForm.controls['address'].value;
         currentAgent.email = this.newAgentForm.controls['email'].value;
         currentAgent.aggregateId = currentAgent.id;

@@ -1,218 +1,234 @@
-﻿//using Google.Apis.Auth.OAuth2;
-//using Google.Apis.Services;
-//using Google.Apis.Sheets.v4;
-//using Google.Apis.Sheets.v4.Data;
-//using Google.Apis.Util.Store;
-//using System;
-//using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
-//using System.Text;
-//using System.Threading;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Drive.v3;
+using Google.Apis.Drive.v3.Data;
+using Google.Apis.Services;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
+using Google.Apis.Util.Store;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
 
-//namespace TypeFormIntegration
-//{
+namespace Agent.SpreadSheetIntegration
+{
 
-//    public class SpreadSheetCreator
-//    {
-//        static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
-//        static string ApplicationName = "agnt sheet";
-       
-//        private ConsoleLogger _logger;
-//        private UserCredential _credential;
-//        private SheetsService sheetsService;
-//        private string _spreadSheetId;
-//        private string _range;
+    public class SpreadSheetCreator
+    {
+        static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets, SheetsService.Scope.Drive };
+        static string ApplicationName = "agent sheet";
 
-//        private readonly string _spreadSheetName;
-//        private readonly string _workSheetName;
-//        private readonly IList<object> _headerValues;
-//        private readonly IList<object> _initialValues;
+        private UserCredential _credential;
+        private SheetsService sheetsService;
+        private DriveService driveService;
+        private string _spreadSheetId;
+        private string _range;
 
-//        public SpreadSheetCreator(SpreadSheetCreateOptions options)
-//        {
-//            _logger = new ConsoleLogger();
+        private readonly string _spreadSheetName;
+        private readonly string _workSheetName;
+        private readonly IList<object> _headerValues;
+        private readonly IList<object> _initialValues;
 
-//            _spreadSheetName = options.SpreadSheetName;
-//            _workSheetName = options.WorkSheetName;
-//            _headerValues = options.headerValues;
-//            _initialValues = options.InitialValues;          
-//        }
+        public SpreadSheetCreator(SpreadSheetCreateOptions options)
+        {
+            _spreadSheetName = options.SpreadSheetName;
+            _workSheetName = options.WorkSheetName;
+            _headerValues = options.HeaderValues;
+            _initialValues = options.InitialValues;
+        }
 
-//        public void Create()
-//        {
-//            //Load creds
-//            LoadCredentials();            
+        public Spreadsheet Create()
+        {
+            //Load creds
+            LoadCredentials();
 
-//            //Create service
-//            CreateSheetsService();
+            //Create service
+            CreateSheetsService();
+            CreateDriveService();
 
-//            // TODO : Check if spreadsheet exists
-//            //Create spreadshit and work sheet
-//            CreateSpreadSheet(_spreadSheetName, _workSheetName);
+            // TODO : Check if spreadsheet exists
+            //Create spreadshit and work sheet
+            Spreadsheet spreadsheet = CreateSpreadSheet(_spreadSheetName, _workSheetName);
 
-//            // TODO : Handle errors
-//            //InsertHeader
-//            InsertHeader();
+            // TODO : Handle errors
+            //InsertHeader
+            InsertHeader();
 
-//            //TODO : Validate values
-//            //Inser first row
-//            InsertFirstRow();
-//        }
-//        private void CreateSheetsService() => sheetsService = new SheetsService(new BaseClientService.Initializer()
-//        {
-//            HttpClientInitializer = _credential,
-//            ApplicationName = ApplicationName,
-//        });
-//        private void LoadCredentials()
-//        {
+            //TODO : Validate values
+            //Inser first row
+            InsertFirstRow();
 
-//            using (var stream =
-//                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
-//            {
-//                string credPath = "token.json";
-//                _credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-//                    GoogleClientSecrets.Load(stream).Secrets,
-//                    Scopes,
-//                    "user",
-//                    CancellationToken.None,
-//                    new FileDataStore(credPath, true)).Result;
-//                Console.WriteLine("Credential file saved to: " + credPath);
-//            }
+            return spreadsheet;
+        }
 
-//        }
-//        private void CreateSpreadSheet(string spreadSheetName, string worksheetName)
-//        {
+        private void CreateSheetsService() => sheetsService = new SheetsService(new BaseClientService.Initializer()
+        {
+            HttpClientInitializer = _credential,
+            ApplicationName = ApplicationName,
+        });
 
-//            Spreadsheet createRequest = new Spreadsheet
-//            {
-//                Properties = new SpreadsheetProperties
-//                {
-//                    //NOTE : Name using agent's identity 
-//                    Title = spreadSheetName
-//                }
-//            };
+        private void CreateDriveService() => driveService = new DriveService(new BaseClientService.Initializer()
+        {
+            HttpClientInitializer = _credential,
+            ApplicationName = ApplicationName,
+        });
 
+        private void LoadCredentials()
+        {
+            using (var stream =
+                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = "token.json";
+                _credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+            }
+        }
 
-//            var sheet = new Sheet
-//            {
-//                Properties = new SheetProperties
-//                {
-//                    //NOTE : This will follow type form name
-//                    Title = worksheetName
-//                }
-//            };
+        private Spreadsheet CreateSpreadSheet(string spreadSheetName, string worksheetName)
+        {
+            Spreadsheet createRequest = new Spreadsheet
+            {
+                Properties = new SpreadsheetProperties
+                {
+                    //NOTE : Name using agent's identity 
+                    Title = spreadSheetName
+                }
+            };
 
-//            createRequest.Sheets = new List<Sheet>
-//            {
-//                sheet
-//            };
+            var sheet = new Sheet
+            {
+                Properties = new SheetProperties
+                {
+                    //NOTE : This will follow type form name
+                    Title = worksheetName
+                }
+            };
 
+            createRequest.Sheets = new List<Sheet>
+            {
+                sheet
+            };
 
-//            _logger.Log(Type.Info, $"Sending request for {spreadSheetName} -> {_workSheetName} to google docs");
-//            var request = sheetsService.Spreadsheets.Create(createRequest);
-//            var response = request.Execute();
-//            _logger.Log(Type.Info, $"Action completed ! {response.SpreadsheetId} is created");
+            var request = sheetsService.Spreadsheets.Create(createRequest);
+            var response = request.Execute();
+            
+            _spreadSheetId = response.SpreadsheetId;
 
-//            _spreadSheetId = response.SpreadsheetId;
+            return response;
+        }
 
-//        }
-//        private void InsertHeader()
-//        {
-//            string sheet = _workSheetName;
+        public void CreateSpreadSheetPermission(string spreadSheetId, string emailAddress)
+        {
+            Permission userPermission = new Permission()
+            {
+                Type = "user",
+                Role = "writer",
+                EmailAddress = emailAddress
+            };
 
-//            CreateRange(sheet);
+            driveService.Permissions.Create(userPermission, spreadSheetId).Execute();
+        }
 
-//            var valueRange = new ValueRange
-//            {
-//                Values = new List<IList<object>> { _headerValues }
-//            };
+        private void InsertHeader()
+        {
+            string sheet = _workSheetName;
 
-//            _logger.Log(Type.Info, "Trying to insert header.");
-//            var appendRequest = sheetsService.Spreadsheets.Values.Append(valueRange, _spreadSheetId, _range);
-//            appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
+            CreateRange(sheet);
 
-//            var appendReponse = appendRequest.Execute();
-//            _logger.Log(Type.Info, "Completed inserting header.");
+            var valueRange = new ValueRange
+            {
+                Values = new List<IList<object>> { _headerValues }
+            };
 
+            var appendRequest = sheetsService.Spreadsheets.Values.Append(valueRange, _spreadSheetId, _range);
+            appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
 
-//            HighLightHeader();
+            var appendReponse = appendRequest.Execute();            
 
-//        }
-//        private void CreateRange(string sheet)
-//        {
-//            char rangeStart = 'A';
-//            char rangeEnd = 'A';
-//            int totValues = _headerValues.Count;
-//            for (int i = 0; i < totValues; i++)
-//            {
-//                rangeEnd = rangeStart++;
-//            }
+            HighLightHeader();
+        }
 
-//            _range = $"{sheet}!{rangeStart}:{rangeEnd}";
-//        }
-//        private void HighLightHeader()
-//        {
-//            Spreadsheet spr = sheetsService.Spreadsheets.Get(_spreadSheetId).Execute();
-//            Sheet sh = spr.Sheets.Where(s => s.Properties.Title == _workSheetName).FirstOrDefault();
-//            int sheetId = (int)sh.Properties.SheetId;
+        private void CreateRange(string sheet)
+        {
+            char rangeStart = 'A';
+            char rangeEnd = 'A';
+            int totValues = _headerValues.Count;
 
-//            //define cell color
-//            var userEnteredFormat = new CellFormat()
-//            {
+            for (int i = 0; i < totValues; i++)
+            {
+                rangeEnd = rangeStart++;
+            }
 
-//                TextFormat = new TextFormat()
-//                {
-//                    Bold = true
-//                }
-//            };
-//            BatchUpdateSpreadsheetRequest bussr = new BatchUpdateSpreadsheetRequest();
+            _range = $"{sheet}!{rangeStart}:{rangeEnd}";
+        }
 
-//            //create the update request for cells from the first row
-//            var updateCellsRequest = new Request()
-//            {
-//                RepeatCell = new RepeatCellRequest()
-//                {
-//                    Range = new GridRange()
-//                    {
-//                        SheetId = sheetId,
-//                        StartColumnIndex = 0,
-//                        StartRowIndex = 0,
-//                        EndColumnIndex = 28,
-//                        EndRowIndex = 1
-//                    },
-//                    Cell = new CellData()
-//                    {
-//                        UserEnteredFormat = userEnteredFormat
-//                    },
-//                    Fields = "UserEnteredFormat(TextFormat)"
-//                }
-//            };
-//            bussr.Requests = new List<Request>
-//            {
-//                updateCellsRequest
-//            };
+        private void HighLightHeader()
+        {
+            Spreadsheet spr = sheetsService.Spreadsheets.Get(_spreadSheetId).Execute();
+            Sheet sh = spr.Sheets.Where(s => s.Properties.Title == _workSheetName).FirstOrDefault();
+            int sheetId = (int)sh.Properties.SheetId;
 
-//            var bur = sheetsService.Spreadsheets.BatchUpdate(bussr, _spreadSheetId);
-//            bur.Execute();
+            //define cell color
+            var userEnteredFormat = new CellFormat()
+            {
 
-//        }
-//        private void InsertFirstRow()
-//        {
-//            string sheet = _workSheetName;
-//            var valueRange = new ValueRange
-//            {
-//                Values = new List<IList<object>> { _initialValues }
-//            };
+                TextFormat = new TextFormat()
+                {
+                    Bold = true
+                }
+            };
 
-//            _logger.Log(Type.Info, "Trying to insert first row.");
+            BatchUpdateSpreadsheetRequest bussr = new BatchUpdateSpreadsheetRequest();
 
-//            var appendRequest = sheetsService.Spreadsheets.Values.Append(valueRange, _spreadSheetId, _range);
-//            appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
-//            var appendReponse = appendRequest.Execute();
+            //create the update request for cells from the first row
+            var updateCellsRequest = new Request()
+            {
+                RepeatCell = new RepeatCellRequest()
+                {
+                    Range = new GridRange()
+                    {
+                        SheetId = sheetId,
+                        StartColumnIndex = 0,
+                        StartRowIndex = 0,
+                        EndColumnIndex = 28,
+                        EndRowIndex = 1
+                    },
+                    Cell = new CellData()
+                    {
+                        UserEnteredFormat = userEnteredFormat
+                    },
+                    Fields = "UserEnteredFormat(TextFormat)"
+                }
+            };
 
-//            _logger.Log(Type.Info, "Completed inserting first row.");
+            bussr.Requests = new List<Request>
+            {
+                updateCellsRequest
+            };
 
-//        }
-//    }
-//}
+            var bur = sheetsService.Spreadsheets.BatchUpdate(bussr, _spreadSheetId);
+            bur.Execute();
+
+        }
+
+        private void InsertFirstRow()
+        {
+            string sheet = _workSheetName;
+
+            var valueRange = new ValueRange
+            {
+                Values = new List<IList<object>> { _initialValues }
+            };
+
+            var appendRequest = sheetsService.Spreadsheets.Values.Append(valueRange, _spreadSheetId, _range);
+            appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
+            var appendReponse = appendRequest.Execute();
+        }
+    }
+}

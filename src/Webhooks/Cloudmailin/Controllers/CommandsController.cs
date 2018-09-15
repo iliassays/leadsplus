@@ -8,6 +8,7 @@
     using Cloudmailin.Webhook.Command;
     using Cloudmailin.Webhook.IntegrationEvents;
     using LeadsPlus.BuildingBlocks.EventBus.Abstractions;
+    using System.Net.Http.Formatting;
 
     [Route("api/v1/[controller]")]
     //[Authorize]
@@ -29,15 +30,15 @@
 
         [Route("parse")]
         [HttpPost]
-        public async Task<IActionResult> Parse([FromBody] CreateInboundEmailCommand createInboundEmailCommand)
+        public async Task<IActionResult> Parse(FormDataCollection formCollection)
         {
             var @event = new AgentInboundEmailTrackedIntegrationEvent()
             {
-                Body = createInboundEmailCommand.Text,
-                PlainText = createInboundEmailCommand.Plain,
-                CustomerEmail = createInboundEmailCommand.From,
-                AgentEmail = createInboundEmailCommand.To,
-                Subject = createInboundEmailCommand.Subject
+                Body = formCollection["Text"],
+                PlainText = formCollection["Plain"],
+                CustomerEmail = formCollection["From"],
+                AgentEmail = formCollection["To"],
+                Subject = formCollection["Subject"],
             };
 
             //This  will trigger event in Agent Api to send a autorespondar

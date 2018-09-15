@@ -8,19 +8,35 @@
 
   <ItemGroup>
     <Compile Remove="Infrastructure\Repositories\**" />
+    <Compile Remove="Infrastructure\SpreadSheetCreator\**" />
     <Content Remove="Infrastructure\Repositories\**" />
+    <Content Remove="Infrastructure\SpreadSheetCreator\**" />
     <EmbeddedResource Remove="Infrastructure\Repositories\**" />
+    <EmbeddedResource Remove="Infrastructure\SpreadSheetCreator\**" />
     <None Remove="Infrastructure\Repositories\**" />
+    <None Remove="Infrastructure\SpreadSheetCreator\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Infrastructure\AgentContext.cs" />
     <Compile Remove="Infrastructure\AgentContextSeed.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="LeadsPlus-7d818303309c.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="LeadsPlus-7d818303309c.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />
     <PackageReference Include="FluentValidation" Version="8.0.100" />
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.35.2.1337" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.35.2.1348" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
@@ -37,12 +53,18 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Core\LeadsPlus.Core\LeadsPlus.Core.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Core\LeadsPlus.GoogleApi\LeadsPlus.GoogleApis.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.AspNetCore.HealthChecks\Microsoft.AspNetCore.HealthChecks.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
     <ProjectReference Include="..\Agent.Domain\Agent.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="credentials.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -51,10 +51,10 @@
                 createAgentCommand.OwnerId,
                 createAgentCommand.Firstname,
                 createAgentCommand.Lastname,
-                createAgentCommand.City,
                 createAgentCommand.Email,
-                createAgentCommand.Phone,
                 createAgentCommand.Country,
+                createAgentCommand.City,
+                createAgentCommand.Phone,
                 createAgentCommand.Address,
                 createAgentCommand.Company);
 

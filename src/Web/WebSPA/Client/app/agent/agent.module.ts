@@ -10,7 +10,7 @@ import { AgnetAddComponent } from './add/addagent.component';
 import { AgentListViewComponent } from './listview/list.component';
 import { AgentDetailViewComponent } from './detailview/detail.component';
 import { AgnetIntegrationSetupComponent } from './detailview/integrationsetup.component';
-import { AgnetEmailTemplateSetupComponent } from './detailview/emailtemplatesetup.component';
+import { AgnetZapSetupComponent } from './detailview/zapsetup.component';
 import { AgnetGoogleDataStudioSetupComponent } from './detailview/googledatastudiosetup.component';
 import { AgnetTypeformSetupComponent } from './detailview/typeformsetup.component';
 
@@ -98,7 +98,7 @@ import {
     AgentComponent,
     AgentDetailViewComponent,
     AgnetIntegrationSetupComponent,
-    AgnetEmailTemplateSetupComponent,
+    AgnetZapSetupComponent,
     AgnetGoogleDataStudioSetupComponent,
     AgnetTypeformSetupComponent,
     AgnetAddComponent,

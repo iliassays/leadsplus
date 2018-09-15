@@ -21,7 +21,8 @@
         public Task<Result> Execute<Query, Result>(Query query)
         {
             var s = container.Resolve<IMediator>();
-            var queryHandler = container.Resolve(typeof(IQueryHandler<Query, Result>)) as IQueryHandler<Query, Result>;
+
+            var queryHandler = container.Resolve<IQueryHandler<Query, Result>>();// as IQueryHandler<Query, Result>;
 
             var response = queryHandler.Handle(query);
 

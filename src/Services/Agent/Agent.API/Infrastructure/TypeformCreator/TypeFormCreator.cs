@@ -7,6 +7,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Agent.TypeFormIntegration
@@ -14,13 +15,13 @@ namespace Agent.TypeFormIntegration
     public static class EndPoints
     {
         public const string Root = "https://api.typeform.com/";
-        public const string TemplateUri = "https://api.typeform.com/forms/kQwhMw";
+        public const string TemplateUri = "https://api.typeform.com/forms/KUB34m";
         public const string Account = "me";
         public const string Images = "images";
         public const string Themes = "themes";
         public const string Create = "forms";
         public const string WrokSpace = "workspaces";
-        public const string Token = "303e461631a76ebfb62b94c61b315d20e45e6011";
+        public const string Token = "91KESJeJGFNbxVrJaSh9F3nxpg4nNKr9qACKMyXGei69";
     }
 
     public class TypeFormCreator
@@ -30,7 +31,7 @@ namespace Agent.TypeFormIntegration
            
         }
 
-        public static async Task<dynamic> GetTemplateFormAsync()
+        public static async Task<string> GetTemplateFormAsync()
         {
             using (var handler = new HttpClientHandler())
             {
@@ -41,12 +42,12 @@ namespace Agent.TypeFormIntegration
                     var req = CreateRequest();
                     var response = await httpClient.GetAsync(new Uri(EndPoints.TemplateUri));
 
-                    return JObject.Parse(response.Content.ReadAsStringAsync().Result);
+                    return response.Content.ReadAsStringAsync().Result;
                 }
             }
         }
 
-        public static async Task<string> CreateTypeFormAsync(dynamic typeForm)
+        public static async Task<string> CreateTypeFormAsync(string typeForm)
         {
             var uri = $"{EndPoints.Root}{EndPoints.Create}";
 
@@ -56,7 +57,7 @@ namespace Agent.TypeFormIntegration
                 {
                     AttatchAuthHeader(httpClient);
                     var req = CreateRequest();
-
+                    
                     req.Content = CreateContent(typeForm);
 
                     var response = await SendRequestAsync(uri, httpClient, req);
@@ -83,7 +84,7 @@ namespace Agent.TypeFormIntegration
             return request;
         }
 
-        private static StringContent CreateContent(dynamic typeForm)
+        private static StringContent CreateContent(string typeFormContent)
         {
             var contractResolver = new DefaultContractResolver
             {
@@ -97,9 +98,15 @@ namespace Agent.TypeFormIntegration
 
             };
 
-            var contentJson = JsonConvert.SerializeObject(typeForm, serializerSettings);
+            //string contentJson = JsonConvert.SerializeObject(typeForm, serializerSettings);
+            // @"id=(\d+)"
+            Regex reg = new Regex(@"\""(id\"":[ ]?\""[\d\s\w]*\"",)");
 
-            var content = new StringContent(contentJson, Encoding.UTF8, "application/json");
+            typeFormContent = reg.Replace(typeFormContent, delegate (Match m) {
+                return string.Empty;
+            });
+
+            var content = new StringContent(typeFormContent, Encoding.UTF8, "application/json");
             return content;
         }
 

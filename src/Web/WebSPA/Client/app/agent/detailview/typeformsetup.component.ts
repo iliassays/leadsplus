@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
 import {MatPaginator, MatSort} from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -17,16 +17,18 @@ import { AgentWrapperService } from '../agent.wrapper.service';
   styleUrls: [],
     templateUrl: 'typeformsetup.component.html',
 })
-export class AgnetTypeformSetupComponent implements OnInit {
+export class AgnetTypeformSetupComponent implements OnInit, AfterViewInit {
 
     currentAgent = <IAgent>{};
     integrationEmail;
     isAgentProcessing: boolean;
     errorReceived: boolean;
+    zapierScript;
 
     constructor(private agentService: AgentService,
         private agnetEvents: AgentWrapperService,
-        private formBuilder: FormBuilder) {
+        private formBuilder: FormBuilder,
+        private el: ElementRef) {
 
     }
 
@@ -48,5 +50,16 @@ export class AgnetTypeformSetupComponent implements OnInit {
             agent => {
                 this.currentAgent = agent;
             });
-    } 
+    }
+
+    ngAfterViewInit() {
+        debugger;
+        this.zapierScript = document.createElement('script');
+        this.zapierScript.type = 'text/javascript';
+        this.zapierScript.asyc = true;
+        this.zapierScript.src =
+            'https://zapier.com/apps/embed/widget.js?services=typeform&html_id=zap_integration'
+        $(this.el.nativeElement).find('#zap_integration').append(this.zapierScript);
+    }
 }
+

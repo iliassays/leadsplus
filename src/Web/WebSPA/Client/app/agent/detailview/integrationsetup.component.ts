@@ -46,7 +46,17 @@ export class AgnetIntegrationSetupComponent implements OnInit {
                 return Observable.throw(errMessage);
             })
             .subscribe(response => {
-                this.currentAgent.integrationEmail = response;
+
+                this.agentService.getAgent(this.currentAgent.id)
+                    .catch((errMessage) => {
+                        this.errorReceived = true;
+                        this.isAgentProcessing = false;
+                        return Observable.throw(errMessage);
+                    })
+                    .subscribe(agent => {
+                        this.currentAgent.integrationEmail = agent.integrationEmail;
+                        this.initAgentForm();
+                    });
             });
 
         this.errorReceived = false;
