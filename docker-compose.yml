@@ -12,7 +12,7 @@ services:
     image: rabbitmq:3-management
 
   identity.api:
-    image: leadsplus/identity.api:${TAG:-latest}
+    image: leadsplus/identity-api:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Identity/Identity.API/Dockerfile    
@@ -20,7 +20,7 @@ services:
       - sql.data
 
   agent.api:
-    image: leadsplus/agent.api:${TAG:-latest}
+    image: leadsplus/agent-api:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Agent/Agent.API/Dockerfile
@@ -29,7 +29,7 @@ services:
       - rabbitmq
 
   contact.api:
-    image: leadsplus/contact.api:${TAG:-latest}
+    image: leadsplus/contact-api:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Contact/Contact.API/Dockerfile
@@ -37,21 +37,29 @@ services:
       - rabbitmq
 
   cloudmailin.webhook:
-    image: leadsplus/cloudmailin.webhook:${TAG:-latest}
+    image: leadsplus/cloudmailin-webhook:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Webhooks/Cloudmailin/Dockerfile
     depends_on:
       - rabbitmq
 
-  webstatus:
-    image: leadsplus/webstatus:${TAG:-latest}
+  emailsender.backgroundtask:
+    image: leadsplus/emailsender-backgroundtask:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Email/SmtpService/Dockerfile
+    depends_on:
+      - rabbitmq
+
+  webstatus.portal:
+    image: leadsplus/webstatus-portal:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Web/WebStatus/Dockerfile
 
-  webspa:
-    image: leadsplus/webspa:${TAG:-latest}
+  admin.portal:
+    image: leadsplus/admin-portal:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Web/WebSPA/Dockerfile    

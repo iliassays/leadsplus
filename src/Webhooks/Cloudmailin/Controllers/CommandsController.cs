@@ -30,21 +30,21 @@
 
         [Route("parse")]
         [HttpPost]
-        public async Task<IActionResult> Parse(FormDataCollection formCollection)
+        public async Task<IActionResult> Parse([FromBody] CreateInboundEmailCommand createInboundEmailCommand)
         {
             var @event = new AgentInboundEmailTrackedIntegrationEvent()
             {
-                Body = formCollection["Text"],
-                PlainText = formCollection["Plain"],
-                CustomerEmail = formCollection["From"],
-                AgentEmail = formCollection["To"],
-                Subject = formCollection["Subject"],
+                Body = createInboundEmailCommand.Text,
+                PlainText = createInboundEmailCommand.Plain,
+                CustomerEmail = createInboundEmailCommand.From,
+                AgentEmail = createInboundEmailCommand.To,
+                Subject = createInboundEmailCommand.Subject
             };
 
             //This  will trigger event in Agent Api to send a autorespondar
             _eventBus.Publish(@event);
 
-            return (IActionResult) Ok();
+            return (IActionResult)Ok(@event);
         }
     }
 }

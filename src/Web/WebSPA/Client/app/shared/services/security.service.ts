@@ -28,7 +28,7 @@ export class SecurityService {
             
             this.authorityUrl = this._configurationService.serverSettings.identityUrl
             this.storage.store('IdentityUrl', this.authorityUrl);
-
+            debugger;
             
             if (this.storage.retrieve('IsAuthorized') && this.storage.retrieve('IsAuthorized') !== '') {
                 this.IsAuthorized = this.storage.retrieve('IsAuthorized');

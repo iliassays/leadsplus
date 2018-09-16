@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
         });
     
       this.configurationService.load();
-      debugger;
+
       if (window.location.href.indexOf("id_token") > -1) {
             this.identityService.AuthorizedCallback();
       }

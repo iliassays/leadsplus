@@ -130,10 +130,10 @@
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
             // Add framework services.
-            //services.AddMvc(options =>
-            //{
-            //    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            //}).AddControllersAsServices();  //Injecting Controllers themselves thru DI
+            services.AddMvc(options =>
+            {
+                //options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            }).AddControllersAsServices();  //Injecting Controllers themselves thru DI
                                             //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.AddCors(options =>

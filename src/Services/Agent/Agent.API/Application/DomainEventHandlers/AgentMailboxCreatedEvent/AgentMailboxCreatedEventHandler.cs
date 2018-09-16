@@ -70,7 +70,7 @@
             {
                 Domain = "adfenixleads.com",//should come from config
                 UserName = mailboxName,
-                Password = "chngeme",
+                Password = "changeme",
                 Quota = 400
             };
 

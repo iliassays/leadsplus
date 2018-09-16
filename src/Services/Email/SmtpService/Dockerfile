@@ -5,7 +5,7 @@ EXPOSE 80
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
 COPY . .
-WORKDIR /src/src/Services/Agent/Agent.API
+WORKDIR /src/src/Services/Email/SmtpService
 RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c Release -o /app
 
@@ -15,4 +15,4 @@ RUN dotnet publish --no-restore -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Agent.API.dll"]
+ENTRYPOINT ["dotnet", "SmtpService.dll"]
