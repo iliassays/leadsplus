@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 namespace Contact.API.Controllers
 {
     [Route("api/v1/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class CommandsController : ControllerBase
     {
-        private readonly IIdentityService _identityService;
-        private readonly IMediator _mediator;
+        private readonly IIdentityService identityService;
+        private readonly IMediator mediator;
 
         public CommandsController(IMediator mediator, 
             IIdentityService identityService)
         {
-            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
          
         //POST api/v1/[controller]/create
@@ -30,8 +30,8 @@ namespace Contact.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateContact(CreateContactCommand createContactCommand)
         {
-            createContactCommand.OwnerId = _identityService.GetUserIdentity();
-            var result = await _mediator.Send(createContactCommand);
+            createContactCommand.OwnerId = identityService.GetUserIdentity();
+            var result = await mediator.Send(createContactCommand);
 
             return result ? 
                 (IActionResult)Ok() : 
@@ -45,8 +45,8 @@ namespace Contact.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateContact(UpdateContactCommand updateContactCommand)
         {
-            updateContactCommand.OwnerId = _identityService.GetUserIdentity();
-            var result = await _mediator.Send(updateContactCommand);
+            updateContactCommand.OwnerId = identityService.GetUserIdentity();
+            var result = await mediator.Send(updateContactCommand);
 
             return result ?
                 (IActionResult) Ok() :

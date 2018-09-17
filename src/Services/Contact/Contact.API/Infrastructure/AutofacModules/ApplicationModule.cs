@@ -3,15 +3,12 @@
     using Autofac;
     using Contact.Commands;
     using Contact.Domain;
-    using Repositories;
-    using LeadsPlus.BuildingBlocks.EventBus.Abstractions;
-    using System.Reflection;
     using Contact.Projection.Query;
-    using Microsoft.Extensions.Options;
-    using Contact.Config;
+    using LeadsPlus.BuildingBlocks.EventBus.Abstractions;
+    using LeadsPlus.Core.Query;
+    using LeadsPlus.Core.Repositories;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.Extensions.DependencyInjection;
+    using System.Reflection;
 
     public class ApplicationModule : Autofac.Module
     {
@@ -30,9 +27,11 @@
             builder.RegisterType<QueryExecutor>().As<IQueryExecutor>().SingleInstance();
 
             builder.RegisterAssemblyTypes(typeof(GetContactQueryHandler).GetTypeInfo().Assembly)
-                .AsClosedTypesOf(typeof(IQueryHandler<,>));
+                .AsClosedTypesOf(typeof(IQueryHandler<,>)).AsImplementedInterfaces(); ;
 
-            builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
+            builder.RegisterType<QueryExecutor>()
+                .As<IQueryExecutor>()
+                .InstancePerLifetimeScope();
 
             builder.Register(c => { return ViewModelStoreFactory.Create<Contact>(setting["DatabaseConnectionString"], setting["DatabaseName"]); }).SingleInstance();
 

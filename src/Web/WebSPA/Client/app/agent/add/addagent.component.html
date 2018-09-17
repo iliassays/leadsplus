@@ -1,7 +1,7 @@
 <section class="page-agent-add container-fluid with-maxwidth">
 
     <div class="callout callout-danger" [hidden]="!errorReceived">
-        <p>Not possible to create a new order, please try later on.</p>
+        <p>Not possible to create a new agent, please try later on.</p>
     </div>
     <form [formGroup]="newAgentForm" (ngSubmit)="submitForm(newAgentForm.value)">
         <div class="row">

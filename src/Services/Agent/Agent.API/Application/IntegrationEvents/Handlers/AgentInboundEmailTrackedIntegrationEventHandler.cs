@@ -45,8 +45,10 @@
             var createContactIntegrationEvent = new CreateContactIntegrationEvent()
             {
                 AggregateId = @event.AggregateId,
-                Source = "InnoundEmail",
-                Email = @event.CustomerEmail
+                Source = "CloudMailin",
+                Email = @event.CustomerEmail,
+                OwnerId = agent.Id,
+                Ownername = $"{agent.Firstname} {agent.Lastname}"
             };
 
             eventBus.Publish(createContactIntegrationEvent);

@@ -36,13 +36,7 @@ export class AppHeaderComponent implements OnInit {
       }
   }
 
-    logoutClicked(event: any) {
-        event.preventDefault();
-        console.log('Logout clicked');
-        this.logout();
-    }
-
-    logout() {
-        this.auth.Logoff();
-    }
+  logout() {
+     this.auth.Logoff();
+  }
 }

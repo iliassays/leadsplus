@@ -14,16 +14,16 @@
         </div>
 
         <div class="top-nav-right">
-            <ul class="list-unstyled float-right">                
+            <ul class="list-unstyled float-right">
                 <li class="list-inline-item" *ngIf="auth.IsAuthorized">
                     <button mat-button class="md-button header-btn" routerLinkActive="active" [routerLink]="['agent/detail']">
                         Agent
                     </button>
                 </li>
                 <li class="list-inline-item" *ngIf="auth.IsAuthorized">
-                    <button mat-button class="md-button header-btn" routerLinkActive="active" (click)="logout()">
+                    <a mat-button class="md-button header-btn" href="javascript:;" (click)="logout()">
                         Log Off
-                    </button>
+                    </a>
                 </li>
                 <li><button mat-button class="md-button header-btn d-lg-none d-xl-none" myOpenSearchOverlay><i class="material-icons">search</i></button></li>
                 <!-- <li><button mat-button class="md-button header-btn"><i class="material-icons">more_vert</i></button></li> -->

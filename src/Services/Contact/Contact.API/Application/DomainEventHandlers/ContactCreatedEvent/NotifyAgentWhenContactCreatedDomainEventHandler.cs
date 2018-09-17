@@ -2,9 +2,9 @@
 {
     using Contact.Domain;
     using Contact.Domain.Events;
-    using Contact.Repositories;
     using Contact.Services;
     using LeadsPlus.BuildingBlocks.EventBus.Abstractions;
+    using LeadsPlus.Core;
     using MediatR;
     using Microsoft.Extensions.Logging;
     using System;

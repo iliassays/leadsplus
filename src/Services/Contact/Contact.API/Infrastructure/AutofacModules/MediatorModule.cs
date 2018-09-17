@@ -3,7 +3,6 @@ using Contact.Commands;
 using Contact.Commands.Validations;
 using Contact.DomainEventHandlers.ContactCreatedEvent;
 using Contact.Infrastructure.Behaviors;
-using Contact.Repositories;
 using FluentValidation;
 using MediatR;
 using System.Linq;
@@ -25,6 +24,9 @@ namespace Contact.Infrastructure.AutofacModules
             // Register the DomainEventHandler classes (they implement INotificationHandler<>) in assembly holding the Domain Events
             builder.RegisterAssemblyTypes(typeof(NotifyAgentWhenContactCreatedDomainEventHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(INotificationHandler<>));
+
+            builder.RegisterAssemblyTypes(typeof(CreateContactCommand).GetTypeInfo().Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
             // Register the Command's Validators (Validators based on FluentValidation library)
             builder

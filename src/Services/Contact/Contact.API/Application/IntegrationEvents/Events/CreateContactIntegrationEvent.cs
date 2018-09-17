@@ -17,5 +17,6 @@
         public string Source { get; set; }
         public string GroupId { get; set; }
         public string OwnerId { get; set; }
+        public string Ownername { get; set; }
     }
 }

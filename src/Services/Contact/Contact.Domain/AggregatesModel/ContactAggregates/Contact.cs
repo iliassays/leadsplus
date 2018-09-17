@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Events;
+    using LeadsPlus.Core;
 
     public class Contact : AggregateRoot, IViewModel
     {
@@ -13,6 +14,8 @@
         public string Phone { get; set; }
 
         public string CreatedBy { get; set; }
+        public string Source { get; set; }
+        public string CreatedByName { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
 
@@ -31,13 +34,15 @@
             _isDraft = false;
         }
 
-        public Contact(string ownerId, string firstname, string lastname, string email) : this()
+        public Contact(string ownerId, string ownerName, string source, string firstname, string lastname, string email) : this()
         {
             Firstname = firstname;
             Lastname = lastname;
             Email = email;
 
             CreatedBy = ownerId;
+            CreatedByName = ownerName;
+
             CreatedDate = DateTime.UtcNow;
             UpdatedDate = DateTime.UtcNow;
 

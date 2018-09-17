@@ -1,10 +1,11 @@
 ﻿namespace Contact.Projection.Query
 {
     using Contact.Domain;
+    using LeadsPlus.Core;
+    using LeadsPlus.Core.Query;
     using MongoDB.Driver;
     using MongoDB.Driver.Linq;
     using System.Threading.Tasks;
-    using Contact.Repositories;
 
     public class GetContactQuery
     {

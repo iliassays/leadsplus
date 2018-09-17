@@ -1,7 +1,7 @@
 ﻿namespace Contact.Commands
 {
     using Contact.Domain;
-    using Contact.Repositories;
+    using LeadsPlus.Core;
     using MediatR;
     using Services;
     using System;
@@ -28,7 +28,7 @@
 
         public async Task<bool> Handle(CreateContactCommand message, CancellationToken cancellationToken)
         {
-            var contact = new Contact(message.OwnerId, message.Firstname, message.Lastname, message.Email);
+            var contact = new Contact(message.OwnerId, message.OwnerName, message.Source, message.Firstname, message.Lastname, message.Email);
 
             await _contactRepository.AddAsync(contact);
 
@@ -37,9 +37,9 @@
 
         public async Task<bool> Handle(UpdateContactCommand message, CancellationToken cancellationToken)
         {
-            var contact = new Contact(message.OwnerId, message.Firstname, message.Lastname, message.Email);
+            //var contact = new Contact(message.OwnerId, message.Firstname, message.Lastname, message.Email);
 
-            await _contactRepository.AddAsync(contact);
+            //await _contactRepository.AddAsync(contact);
 
             return true;
         }

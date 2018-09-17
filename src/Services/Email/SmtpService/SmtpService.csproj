@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Application\**" />
+    <Compile Remove="EmailSender\**" />
     <Content Remove="Application\**" />
+    <Content Remove="EmailSender\**" />
     <EmbeddedResource Remove="Application\**" />
+    <EmbeddedResource Remove="EmailSender\**" />
     <None Remove="Application\**" />
+    <None Remove="EmailSender\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />

@@ -157,6 +157,7 @@ export class SecurityService {
     }
 
     public Logoff() {
+        debugger;
         let authorizationUrl = this.authorityUrl + '/connect/endsession';
         let id_token_hint = this.storage.retrieve('authorizationDataIdToken');
         let post_logout_redirect_uri = location.origin + '/';

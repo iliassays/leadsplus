@@ -28,8 +28,9 @@
             builder.RegisterAssemblyTypes(typeof(AgentCommandHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
 
+            builder.RegisterType<QueryExecutor>().As<IQueryExecutor>().SingleInstance();
             //builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
-           
+
             builder.RegisterAssemblyTypes(new Assembly[] { typeof(GetAgentQueryHandler).GetTypeInfo().Assembly })
                 .AsClosedTypesOf(typeof(IQueryHandler<,>)).AsImplementedInterfaces();
 

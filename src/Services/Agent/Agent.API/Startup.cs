@@ -22,6 +22,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.HealthChecks;
     using Microsoft.Extensions.Logging;
+    using Microsoft.IdentityModel.Tokens;
     using RabbitMQ.Client;
     using Swashbuckle.AspNetCore.Swagger;
     using System;
@@ -349,6 +350,7 @@
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
                 options.Audience = "agent";
+                options.TokenValidationParameters.ClockSkew = TimeSpan.FromDays(7);
             });
 
             return services;
