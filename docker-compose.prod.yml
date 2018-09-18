@@ -29,9 +29,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - SpaClient=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5104      
+      - SpaClient=http://${LEADSPLUS_PROD_EXTERNAL_DNS_NAME_OR_IP}:5104      
       - ConnectionString=${LEADSPLUS_AZURE_IDENTITY_DB:-Server=sql.data;Database=LeadsPlus.IdentityDb;User Id=sa;Password=Pass@word}       
-      - AgentApiClient=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5109      
+      - AgentApiClient=http://${LEADSPLUS_PROD_EXTERNAL_DNS_NAME_OR_IP}:5109      
       - UseCustomizationData=False  
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
@@ -45,7 +45,7 @@ services:
       - ConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://nosql.data}
       - Database=AgentStore
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
-      - IdentityUrlExternal=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - IdentityUrlExternal=http://${LEADSPLUS_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105
       - EventBusConnection=${LEADSPLUS_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${LEADSPLUS_SERVICE_BUS_USERNAME}
       - EventBusPassword=${LEADSPLUS_SERVICE_BUS_PASSWORD}          
@@ -98,16 +98,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - IdentityUrl=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
-      - AgentUrl=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5109   
-      - ContactUrl=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5109
+      - IdentityUrl=http://${LEADSPLUS_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
+      - AgentUrl=http://${LEADSPLUS_PROD_EXTERNAL_DNS_NAME_OR_IP}:5109   
+      - ContactUrl=http://${LEADSPLUS_PROD_EXTERNAL_DNS_NAME_OR_IP}:5109
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${LEADSPLUS_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
       - AgentUrlHC=http://agent.api/hc
       - ContactUrlHC=http://contact.api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
-      - SignalrHubUrl=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5202
+      - SignalrHubUrl=http://${LEADSPLUS_PROD_EXTERNAL_DNS_NAME_OR_IP}:5202
     ports:
       - "5104:80"
 
