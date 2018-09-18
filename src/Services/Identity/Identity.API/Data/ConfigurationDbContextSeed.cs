@@ -20,16 +20,10 @@ namespace LeadsPlus.Services.Identity.API.Data
             var clientUrls = new Dictionary<string, string>();
 
             clientUrls.Add("SmtpService", configuration.GetValue<string>("SmtpServiceClient"));
-            clientUrls.Add("Spa", configuration.GetValue<string>("SpaClient"));
-            //clientUrls.Add("Xamarin", configuration.GetValue<string>("XamarinCallback"));
+            clientUrls.Add("AdminPortal", configuration.GetValue<string>("AdminPortalClient"));
             clientUrls.Add("CloudmailinWebhook", configuration.GetValue<string>("CloudmailinWebhookApiClient"));
             clientUrls.Add("ContactApi", configuration.GetValue<string>("ContactApiClient"));
             clientUrls.Add("AgentApi", configuration.GetValue<string>("AgentApiClient"));
-            clientUrls.Add("AutoresponderApi", configuration.GetValue<string>("AutoresponderApiClient"));
-            //clientUrls.Add("BasketApi", configuration.GetValue<string>("BasketApiClient"));
-            //clientUrls.Add("OrderingApi", configuration.GetValue<string>("OrderingApiClient"));
-            //clientUrls.Add("MobileShoppingAgg", configuration.GetValue<string>("MobileShoppingAggClient"));
-            //clientUrls.Add("WebShoppingAgg", configuration.GetValue<string>("WebShoppingAggClient"));
 
             if (!context.Clients.Any())
             {

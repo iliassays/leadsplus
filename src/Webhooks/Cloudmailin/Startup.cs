@@ -205,7 +205,7 @@
             .AddJwtBearer(options =>
             {
                 options.Authority = Configuration.GetValue<string>("IdentityUrl");
-                options.Audience = "cloudmailinwebhook";
+                options.Audience = "CloudmailinWebhook";
                 options.RequireHttpsMetadata = false;
             });
         }

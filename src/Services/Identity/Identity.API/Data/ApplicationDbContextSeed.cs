@@ -40,7 +40,7 @@ namespace LeadsPlus.Services.Identity.API.Data
 
                 if (useCustomizationData)
                 {
-                    GetPreconfiguredImages(contentRootPath, webroot, logger);
+                    //GetPreconfiguredImages(contentRootPath, webroot, logger);
                 }
             }
             catch (Exception ex)
@@ -64,10 +64,10 @@ namespace LeadsPlus.Services.Identity.API.Data
                     CardHolderName = "adfenix",
                     CardNumber = "4012888888881881",
                     CardType = 1,
-                    City = "Redmond",
-                    Country = "U.S.",
+                    City = "Gothenburg",
+                    Country = "Sweden",
                     Email = "admin@adfenixleads.com",
-                    Expiration = "12/20",
+                    Expiration = "12/30",
                     Id = Guid.NewGuid().ToString(),
                     LastName = "Adfenix",
                     Name = "AdfenixAdmin",
@@ -82,7 +82,7 @@ namespace LeadsPlus.Services.Identity.API.Data
                     SecurityStamp = Guid.NewGuid().ToString("D"),
                 };
 
-            user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");
+            user.PasswordHash = _passwordHasher.HashPassword(user, "adfenix@123");
 
             return new List<ApplicationUser>()
             {

@@ -23,7 +23,7 @@
                 operation.Security = new List<IDictionary<string, IEnumerable<string>>>();
                 operation.Security.Add(new Dictionary<string, IEnumerable<string>>
                 {
-                    { "oauth2", new [] { "contactapi" } }
+                    { "oauth2", new [] { "ContactApi" } }
                 });
             }
         }

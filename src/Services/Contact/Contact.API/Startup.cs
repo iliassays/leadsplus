@@ -364,7 +364,7 @@
             {
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
-                options.Audience = "contacts";
+                options.Audience = "contact";
             });
 
             return services;

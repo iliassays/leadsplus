@@ -11,11 +11,11 @@ namespace LeadsPlus.Services.Identity.API.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource("cloudmailinwebhook", "Cloudmailin Webhook"),
+                //new ApiResource("cloudmailinwebhook", "Cloudmailin Webhook"),
                 new ApiResource("contact", "Contact Service"),
                 new ApiResource("agent", "Agent Service"),
-                new ApiResource("autorespondar", "Autorespondar Service"),
-                new ApiResource("smtpservice", "Smtp Service"),
+                //new ApiResource("autorespondar", "Autorespondar Service"),
+                //new ApiResource("smtpservice", "Smtp Service"),
             };
         }
 
@@ -38,7 +38,7 @@ namespace LeadsPlus.Services.Identity.API.Configuration
                 // JavaScript Client
                 new Client
                 {
-                    ClientId = "leadsplusweb",
+                    ClientId = "AdminPortal",
                     ClientName = "leadsplus SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
@@ -51,9 +51,7 @@ namespace LeadsPlus.Services.Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "agent",
-                        "autorespondar",
                         "contact",
-                        "smtpservice"
                     }
                 },
                 new Client
@@ -73,17 +71,17 @@ namespace LeadsPlus.Services.Identity.API.Configuration
                 },
                 new Client
                 {
-                    ClientId = "marketingswaggerui",
-                    ClientName = "Leads Plus Autoresponder Swagger UI",
+                    ClientId = "contactswaggerui",
+                    ClientName = "Leads Plus Contact Swagger UI",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["AutoresponderApi"]}/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["AutoresponderApi"]}/swagger/" },
+                    RedirectUris = { $"{clientsUrl["ContactApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["ContactApi"]}/swagger/" },
 
                     AllowedScopes =
                     {
-                        "autorespondar"
+                        "contact"
                     }
                 }
             };

@@ -29,11 +29,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - SpaClient=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5104      
+      - AdminPortalClient=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5104      
       - ConnectionString=${LEADSPLUS_AZURE_IDENTITY_DB:-Server=sql.data;Database=LeadsPlus.IdentityDb;User Id=sa;Password=Pass@word}       
       - AgentApiClient=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5109
       - ContactApiClient=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5102
-      - CloudmailinWebhookApiClient=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5108
+      - CloudMailinApiClient=http://${LEADSPLUS_EXTERNAL_DNS_NAME_OR_IP}:5108
       - UseCustomizationData=False  
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
