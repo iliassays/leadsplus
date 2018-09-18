@@ -11,22 +11,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Client\app\agent\filter\**" />
     <Compile Remove="Client\app\basket\**" />
     <Compile Remove="Client\app\campaigns\**" />
     <Compile Remove="Client\app\catalog\**" />
     <Compile Remove="Client\app\orders\**" />
     <Compile Remove="Client\app\shared\components\page-not-found\**" />
     <Compile Remove="node_modules\**\*;Client\**\*" />
+    <Content Remove="Client\app\agent\filter\**" />
     <Content Remove="Client\app\basket\**" />
     <Content Remove="Client\app\campaigns\**" />
     <Content Remove="Client\app\catalog\**" />
     <Content Remove="Client\app\orders\**" />
     <Content Remove="Client\app\shared\components\page-not-found\**" />
+    <EmbeddedResource Remove="Client\app\agent\filter\**" />
     <EmbeddedResource Remove="Client\app\basket\**" />
     <EmbeddedResource Remove="Client\app\campaigns\**" />
     <EmbeddedResource Remove="Client\app\catalog\**" />
     <EmbeddedResource Remove="Client\app\orders\**" />
     <EmbeddedResource Remove="Client\app\shared\components\page-not-found\**" />
+    <None Remove="Client\app\agent\filter\**" />
     <None Remove="Client\app\basket\**" />
     <None Remove="Client\app\campaigns\**" />
     <None Remove="Client\app\catalog\**" />
