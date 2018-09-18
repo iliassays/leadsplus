@@ -131,7 +131,9 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - EventBusConnection=${LEADSPLUS_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${LEADSPLUS_SERVICE_BUS_USERNAME}
-      - EventBusPassword=${LEADSPLUS_SERVICE_BUS_PASSWORD}          
+      - EventBusPassword=${LEADSPLUS_SERVICE_BUS_PASSWORD}     
+      - SendgridApiKey= ${LEADSPLUS_SENDGRID_APP_KEY}
+      - SendgridMailingApi = ${LEADSPLUS_SENDGRID_MAILING_URL}
       - AzureServiceBusEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}

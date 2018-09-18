@@ -3,6 +3,7 @@
     using Agent.Domain;
     using Agent.Infrastructure.AutofacModules;
     using Agent.Infrastructure.Filters;
+    using Agent.IntegrationEvents;
     using Agent.Services;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
@@ -101,8 +102,7 @@
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-            //eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
-
+            eventBus.Subscribe<AgentInboundEmailTrackedIntegrationEvent, AgentInboundEmailTrackedIntegrationEventHandler>();
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)

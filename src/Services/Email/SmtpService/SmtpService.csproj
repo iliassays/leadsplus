@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Compile Remove="Application\**" />
-    <Compile Remove="EmailSender\**" />
     <Content Remove="Application\**" />
-    <Content Remove="EmailSender\**" />
     <EmbeddedResource Remove="Application\**" />
-    <EmbeddedResource Remove="EmailSender\**" />
     <None Remove="Application\**" />
-    <None Remove="EmailSender\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
@@ -30,6 +26,9 @@
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
     <PackageReference Include="mongocsharpdriver" Version="2.7.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="RestSharp" Version="106.3.1" />
+    <PackageReference Include="Sendgrid" Version="9.10.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="2.4.0" />
   </ItemGroup>

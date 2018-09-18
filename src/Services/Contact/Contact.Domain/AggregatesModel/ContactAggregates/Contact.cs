@@ -34,8 +34,9 @@
             _isDraft = false;
         }
 
-        public Contact(string ownerId, string ownerName, string source, string firstname, string lastname, string email) : this()
+        public Contact(string id, string ownerId, string ownerName, string source, string firstname, string lastname, string email) : this()
         {
+            Id = id;
             Firstname = firstname;
             Lastname = lastname;
             Email = email;
@@ -43,6 +44,7 @@
             CreatedBy = ownerId;
             CreatedByName = ownerName;
 
+            Source = source;
             CreatedDate = DateTime.UtcNow;
             UpdatedDate = DateTime.UtcNow;
 

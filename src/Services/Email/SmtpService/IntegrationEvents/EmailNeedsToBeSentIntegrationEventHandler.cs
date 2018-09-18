@@ -8,51 +8,41 @@
     using System.Linq;
     using Microsoft.Extensions.Options;
     using Email.SmtpService;
+    using Email.SmtpService.EmailSender;
 
     public class EmailNeedsToBeSentIntegrationEventHandler
         : IIntegrationEventHandler<EmailNeedsToBeSentIntegrationEvent>
     {
-        private IOptions<Settings> settings;
+        private IEmailMessageSender emailMessageSender;
 
-        public EmailNeedsToBeSentIntegrationEventHandler(IOptions<Settings> settings)
+        public EmailNeedsToBeSentIntegrationEventHandler(IEmailMessageSender emailMessageSender)
         {
-            this.settings = settings;
+            this.emailMessageSender = emailMessageSender;
         }
 
         public async Task Handle(EmailNeedsToBeSentIntegrationEvent @event)
         {
-            using (var client = new SmtpClient
+            EmailSendingRequest emailSendingRequest = new EmailSendingRequest()
             {
-                Port = settings.Value.Port,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                EnableSsl = settings.Value.EnableSsl,
-                Host = settings.Value.Host,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(settings.Value.MailSenderUserName, settings.Value.MailAccountPassword)
-            })
-            {
-                using (MailMessage mail = new MailMessage
+                EmailMessage = new EmailMessage()
                 {
-                    IsBodyHtml = @event.IsBodyHtml,
                     Subject = @event.Subject,
                     Body = @event.Body
-                })
+                },
+                Recipient = new Recipient()
                 {
-                    mail.From = new MailAddress(settings.Value.MailSenderAddress, settings.Value.MailSenderName);
+                    Email = @event.To.First()
+                },
+                Sender = new Sender
+                {
+                    Email = @event.FromEmail,
+                    FromName = @event.FromName,
+                },
+                MergeFields = @event.MergeFields,
+                TemplateId = @event.TemplateId
+            };
 
-                    mail.To.Add(new MailAddress(@event.To.First()));
-
-                    if (string.IsNullOrWhiteSpace(@event.ReplyTo) == false)
-                    {
-                        mail.ReplyToList.Add(@event.ReplyTo);
-                    }
-
-                    Console.WriteLine("Sending email to: {0} using {1}", @event.To.First(), settings.Value.MailSenderAddress);
-                    Console.WriteLine(@event.Body);
-
-                    await client.SendMailAsync(mail);
-                }
-            }
+            await emailMessageSender.SendEmail(emailSendingRequest);
         }
     }
 }

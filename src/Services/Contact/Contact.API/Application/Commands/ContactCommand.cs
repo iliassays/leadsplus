@@ -17,7 +17,7 @@
 
         public string GroupId { get; set; }
         public string OwnerId { get; set; }
-        public string OwnerName { get; set; }
+        public string Ownername { get; set; }
     }
 
     public class UpdateContactCommand : Command, IRequest<bool>

@@ -30,7 +30,7 @@
 
         [Route("parse")]
         [HttpPost]
-        public async Task<IActionResult> Parse([FromBody] CreateInboundEmailCommand createInboundEmailCommand)
+        public async Task<IActionResult> Parse(CreateInboundEmailCommand createInboundEmailCommand)
         {
             var @event = new AgentInboundEmailTrackedIntegrationEvent()
             {
@@ -38,7 +38,8 @@
                 PlainText = createInboundEmailCommand.Plain,
                 CustomerEmail = createInboundEmailCommand.From,
                 AgentEmail = createInboundEmailCommand.To,
-                Subject = createInboundEmailCommand.Subject
+                Subject = createInboundEmailCommand.Subject,
+                AggregateId = Guid.NewGuid().ToString()
             };
 
             //This  will trigger event in Agent Api to send a autorespondar

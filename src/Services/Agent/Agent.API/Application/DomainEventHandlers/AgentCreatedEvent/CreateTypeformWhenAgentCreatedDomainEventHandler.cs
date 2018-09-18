@@ -3,6 +3,7 @@
     using Agent.Command;
     using Agent.Domain;
     using Agent.Domain.Events;
+    using Agent.IntegrationEvents;
     using Agent.Services;
     using Agent.TypeFormIntegration;
     using Google.Apis.Sheets.v4.Data;
@@ -116,6 +117,17 @@
             };
 
             var result = madiator.Send(assigSpreadsheetPermissionCommand).Result;
+
+            //var createContactIntegrationEvent = new CreateContactIntegrationEvent()
+            //{
+            //    AggregateId = agent.Id,
+            //    Source = "AdfenixLeads",
+            //    Email = agent.Email,
+            //    OwnerId = agent.Id,
+            //    Ownername = $"{agent.Firstname} {agent.Lastname}"
+            //};
+
+            //eventBus.Publish(createContactIntegrationEvent);
 
             return spreadsheet;
         }

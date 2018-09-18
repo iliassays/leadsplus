@@ -1,7 +1,9 @@
 ﻿namespace Email.SmtpService
 {
     using Autofac;
-    using Autofac.Extensions.DependencyInjection;    
+    using Autofac.Extensions.DependencyInjection;
+    using Email.SmtpService.EmailSender;
+    using Email.SmtpService.IntegrationEvents;
     using LeadsPlus.BuildingBlocks.EventBus;
     using LeadsPlus.BuildingBlocks.EventBus.Abstractions;
     using LeadsPlus.BuildingBlocks.EventBusRabbitMQ;
@@ -53,6 +55,17 @@
             var container = new ContainerBuilder();
             container.Populate(services);
 
+            container.RegisterType<SendGridSettings>()
+                .As<ISendGridSettings>()
+                .InstancePerLifetimeScope();
+
+            container.RegisterType<SendGridEmailMessageSender>()
+                .As<IEmailMessageSender>()
+                .InstancePerLifetimeScope();
+
+            container.RegisterAssemblyTypes(typeof(EmailNeedsToBeSentIntegrationEventHandler).GetTypeInfo().Assembly)
+                .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
+
             return new AutofacServiceProvider(container.Build());
         }
 
@@ -94,9 +107,10 @@
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<EmailNeedsToBeSentIntegrationEvent, EmailNeedsToBeSentIntegrationEventHandler>();
 
             //eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
-            
+
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)

@@ -48,6 +48,7 @@
     <PackageReference Include="mongocsharpdriver" Version="2.7.0" />
     <PackageReference Include="MongoDB.Bson" Version="2.7.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="2.4.0" />
   </ItemGroup>

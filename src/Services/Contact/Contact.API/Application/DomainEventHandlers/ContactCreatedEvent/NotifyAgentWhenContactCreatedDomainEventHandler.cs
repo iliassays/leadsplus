@@ -14,10 +14,10 @@
     public class NotifyAgentWhenContactCreatedDomainEventHandler
                         : INotificationHandler<ContactCreatedDomainEvent>
     {
-        private readonly ILoggerFactory _logger;
-        private readonly IRepository<Contact> _contactRepository;
-        private readonly IIdentityService _identityService;
-        private readonly IEventBus _eventBus;
+        private readonly ILoggerFactory logger;
+        private readonly IRepository<Contact> contactRepository;
+        private readonly IIdentityService identityService;
+        private readonly IEventBus eventBus;
 
         public NotifyAgentWhenContactCreatedDomainEventHandler(
             ILoggerFactory logger,
@@ -25,14 +25,15 @@
             IIdentityService identityService,
             IEventBus eventBus)
         {
-            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.contactRepository = contactRepository ?? throw new ArgumentNullException(nameof(contactRepository));
         }
 
         public async Task Handle(ContactCreatedDomainEvent contactCreatedDomainEvent, CancellationToken cancellationToken)
         {
-           _logger.CreateLogger(nameof(NotifyAgentWhenContactCreatedDomainEventHandler)).LogTrace($"Agent xxx {contactCreatedDomainEvent.Email}.");
+           logger.CreateLogger(nameof(NotifyAgentWhenContactCreatedDomainEventHandler)).LogTrace($"Agent xxx {contactCreatedDomainEvent.Email}.");
         }
     }
 }

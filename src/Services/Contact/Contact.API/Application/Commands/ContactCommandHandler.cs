@@ -1,7 +1,9 @@
 ﻿namespace Contact.Commands
 {
     using Contact.Domain;
+    using Contact.Projection.Query;
     using LeadsPlus.Core;
+    using LeadsPlus.Core.Query;
     using MediatR;
     using Services;
     using System;
@@ -14,23 +16,37 @@
         IRequestHandler<UpdateContactCommand, bool>,
         IRequestHandler<RemoveContactCommand, bool>
     {
-        private readonly IRepository<Contact> _contactRepository;
-        private readonly IIdentityService _identityService;
-        private readonly IMediator _mediator;
+        private readonly IQueryExecutor queryExecutor;
+        private readonly IIdentityService identityService;
+        private readonly IMediator mediator;
+        private readonly IRepository<Contact> contactRepository;
 
         // Using DI to inject infrastructure persistence Repositories
-        public ContactCommandHandler(IMediator mediator, IRepository<Contact> contactRepository, IIdentityService identityService)
+        public ContactCommandHandler(IMediator mediator, 
+            IQueryExecutor queryExecutor, 
+            IIdentityService identityService,
+            IRepository<Contact> contactRepository)
         {
-            _contactRepository = contactRepository ?? throw new ArgumentNullException(nameof(contactRepository));
-            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            this.queryExecutor = queryExecutor ?? throw new ArgumentNullException(nameof(queryExecutor));
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            this.contactRepository = contactRepository ?? throw new ArgumentNullException(nameof(contactRepository));
         }
 
         public async Task<bool> Handle(CreateContactCommand message, CancellationToken cancellationToken)
         {
-            var contact = new Contact(message.OwnerId, message.OwnerName, message.Source, message.Firstname, message.Lastname, message.Email);
+            //check if cntact for this agent already exist.
 
-            await _contactRepository.AddAsync(contact);
+            var contact = await queryExecutor.Execute<GetContactByEmailAndOwnerQuery, Contact>(
+                new GetContactByEmailAndOwnerQuery { OwnerId = message.OwnerId, Email = message.Email });
+
+            if(contact == null)
+            {
+                contact = new Contact(message.AggregateId, message.OwnerId, message.Ownername, message.Source, message.Firstname, message.Lastname, message.Email);
+
+                await contactRepository.AddAsync(contact);
+            }
+            
 
             return true;
         }

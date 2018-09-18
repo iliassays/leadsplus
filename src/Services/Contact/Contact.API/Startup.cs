@@ -4,6 +4,7 @@
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
     using Contact.Domain;
+    using Contact.IntegrationEvents;
     using Contact.Services;
     using Infrastructure.AutofacModules;
     using LeadsPlus.BuildingBlocks.EventBus;
@@ -102,8 +103,9 @@
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
+            eventBus.Subscribe<CreateContactIntegrationEvent, CreateContactIntegrationEventHandler>();
             //eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
-            
+
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)

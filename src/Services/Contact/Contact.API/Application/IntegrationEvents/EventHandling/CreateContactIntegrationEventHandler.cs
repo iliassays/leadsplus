@@ -7,12 +7,12 @@
     using System;
     using System.Threading.Tasks;
 
-    public class AgentInboundEmailTrackedIntegrationEventHandler
+    public class CreateContactIntegrationEventHandler
         : IIntegrationEventHandler<CreateContactIntegrationEvent>
     {
         private readonly IMediator mediator;
 
-        public AgentInboundEmailTrackedIntegrationEventHandler(IMediator mediator)
+        public CreateContactIntegrationEventHandler(IMediator mediator)
         {
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
