@@ -10,7 +10,7 @@ FROM ${NODE_IMAGE} as node-build
 WORKDIR /web
 COPY src/Web/WebSPA .
 RUN npm install
-RUN npm run build:prod
+RUN npm run build:dev
 
 FROM dotnet-build as publish
 WORKDIR /src/src/Web/WebSPA/wwwroot
