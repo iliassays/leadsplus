@@ -21,6 +21,11 @@
                     </button>
                 </li>
                 <li class="list-inline-item" *ngIf="auth.IsAuthorized">
+                    <button mat-button class="md-button header-btn" routerLinkActive="active" [routerLink]="['contact/detail']">
+                        Contact
+                    </button>
+                </li>
+                <li class="list-inline-item" *ngIf="auth.IsAuthorized">
                     <a mat-button class="md-button header-btn" href="javascript:;" (click)="logout()">
                         Log Off
                     </a>

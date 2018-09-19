@@ -14,7 +14,7 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild {
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-        debugger;
+      
         if (this.identityService.IsAuthorized) {
             return true;
         }

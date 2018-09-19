@@ -50,13 +50,13 @@ export class AgnetTypeformSetupComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.agnetEvents.currentAgentChanged$.subscribe(
             agent => {
-                debugger;
+              
                 this.currentAgent = agent;
             });
     }
 
     ngAfterViewInit() {
-        debugger;
+      
         this.zapierScript = document.createElement('script');
         this.zapierScript.type = 'text/javascript';
         this.zapierScript.asyc = true;

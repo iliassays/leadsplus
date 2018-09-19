@@ -113,8 +113,8 @@
         </div>
     </div>
     <div *ngIf="isAgentProcessingComplete">
-        <div class="callout callout-info" *ngIf="!isAgentProcessingCompleteWithError">Congratulation! Your agent has successfully created. <a [routerLink]="['detail']">Go to List</a></div>
-        <div *ngIf="isAgentProcessingCompleteWithError" class="callout callout-warning">Congratulation! Your agent has successfully created. There is some error which you can manually fix it form agent list <a [routerLink]="['detail']">Go to List</a></div>
+        <div class="callout callout-info" *ngIf="!isAgentProcessingCompleteWithError">Congratulation! Your agent has successfully created. <a [routerLink]="['../detail']">Go to List</a></div>
+        <div *ngIf="isAgentProcessingCompleteWithError" class="callout callout-warning">Congratulation! Your agent has successfully created. There is some error which you can manually fix it form agent list <a [routerLink]="['../detail']">Go to List</a></div>
     </div>
     
 </section>

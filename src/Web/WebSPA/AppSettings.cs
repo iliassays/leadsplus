@@ -9,6 +9,7 @@ namespace LeadsPlus.WebSPA
     {
         public string IdentityUrl { get; set; }
         public string AgentUrl { get; set; }
+        public string ContactUrl { get; set; }
 
         public string ActivateCampaignDetailFunction { get; set; }
         public bool UseCustomizationData { get; set; }

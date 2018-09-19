@@ -28,7 +28,7 @@ export class SecurityService {
             
             this.authorityUrl = this._configurationService.serverSettings.identityUrl
             this.storage.store('IdentityUrl', this.authorityUrl);
-            debugger;
+           
             
             if (this.storage.retrieve('IsAuthorized') && this.storage.retrieve('IsAuthorized') !== '') {
                 this.IsAuthorized = this.storage.retrieve('IsAuthorized');
@@ -157,7 +157,7 @@ export class SecurityService {
     }
 
     public Logoff() {
-        debugger;
+        
         let authorizationUrl = this.authorityUrl + '/connect/endsession';
         let id_token_hint = this.storage.retrieve('authorizationDataIdToken');
         let post_logout_redirect_uri = location.origin + '/';

@@ -14,7 +14,7 @@ export class TokenHttpInterceptor implements HttpInterceptor {
   constructor(private cookieService: CookieService ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    debugger;
+  
     request = request.clone({
       withCredentials: true,
     });

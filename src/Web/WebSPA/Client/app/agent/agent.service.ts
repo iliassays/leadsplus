@@ -73,7 +73,7 @@ export class AgentService {
             AggregateId: agent.id,
             MailboxName: integrationEmail
         };
-        debugger;
+      
         return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
             this.agnetEvents.agentUpdated();
             return response.body.toString();
@@ -87,7 +87,7 @@ export class AgentService {
         let data = {
             AggregateId: agentId
         };
-        debugger;
+        
         return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
             this.agnetEvents.agentUpdated();
             return response.body.toString();
@@ -97,7 +97,7 @@ export class AgentService {
     createTypeformAccount(agentId: string): Observable<string> {
         const requestUrl =
             `${this.agentUrl}/api/v1/commands/createagenttypeformaccount`;
-        debugger;
+        
         let data = {
             aggregateId: agentId
         };
@@ -111,7 +111,7 @@ export class AgentService {
     createSpreadsheet(agentId: string): Observable<string> {
         const requestUrl =
             `${this.agentUrl}/api/v1/commands/createagentapreadsheetaccount`;
-        debugger;
+        
         let data = {
             aggregateId: agentId
         };

@@ -30,7 +30,7 @@ export class AgnetZapSetupComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        debugger;
+       
         this.zapierScript = document.createElement('script');
         this.zapierScript.type = 'text/javascript';
         this.zapierScript.asyc = true;

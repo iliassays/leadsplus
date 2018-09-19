@@ -1,0 +1,40 @@
+<section class="page-agent-detail-view container-fluid with-maxwidth">
+    <form [formGroup]="newAgentForm" (ngSubmit)="submitForm(newAgentForm.value)">
+        <div class="row">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="First name" formControlName="firstname">
+                </mat-form-field>
+            </div>
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width"> <input matInput placeholder="Last name" formControlName="lastname" /> </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <mat-form-field class="full-width"> <input matInput placeholder="Email" formControlName="email" /></mat-form-field>
+            </div>
+            <div class="col-lg-6 form-group">
+                <mat-form-field class="full-width"> <input matInput placeholder="Phone" formControlName="phone" /></mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <mat-form-field class="full-width" dividerColor="primary"> <input matInput placeholder="City" formControlName="city" /> </mat-form-field>
+            </div>
+            <div class="col-lg-6 form-group">
+                <mat-form-field class="full-width" dividerColor="primary"> <input matInput placeholder="Country" formControlName="country" /> </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <mat-form-field class="full-width"> <input matInput placeholder="Company" formControlName="company" /></mat-form-field>
+            </div>
+            <div class="col-lg-6 form-group">
+                <mat-form-field class="full-width"> <input matInput placeholder="Address" formControlName="address" /></mat-form-field>
+            </div>
+        </div>
+
+
+    </form>
+</section>

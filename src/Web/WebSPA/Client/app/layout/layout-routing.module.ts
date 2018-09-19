@@ -11,6 +11,7 @@ const routes: Routes = [
         { path: '', redirectTo: '/app/dashboard', pathMatch: 'full' },
         { path: 'dashboard', component: DashboardComponent },
         { path: 'agent', loadChildren: '../agent/agent.module#AgentModule' },
+        { path: 'contact', loadChildren: '../contact/contact.module#ContactModule' },
     ]
   }
 ];
