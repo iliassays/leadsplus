@@ -4,27 +4,27 @@
         <div class="box box-default">
             <div class="box-body padding-xl">
 
-                <form role="form">
-                    <div class="form-group row">
-                        <label for="inputEmail3" class="col-md-2 control-label">Typeform Url</label>
-                        <div class="col-md-10">
-                            <span>{{currentAgent.agentTypeForm.typeFormUrl}}</span>
-                        </div>
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-md-2 control-label">Typeform Url</label>
+                    <div class="col-md-10">
+                        <span *ngIf="currentAgent != null">{{currentAgent.agentTypeForm.typeFormUrl}}</span>
+                        <span *ngIf="currentAgent === null">[Not Set]</span>
                     </div>
-                    <div class="form-group row">
-                        <label for="inputPassword3" class="col-md-2 control-label">Spreadsheet Url</label>
-                        <div class="col-md-10">
-                            <span>{{currentAgent.agentTypeForm.spreadsheetUrl}}</span>
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword3" class="col-md-2 control-label">Spreadsheet Url</label>
+                    <div class="col-md-10">
+                        <span *ngIf="currentAgent != null">{{currentAgent.agentTypeForm.spreadsheetUrl}}</span>
+                        <span *ngIf="currentAgent === null">[Not Set]</span>
                     </div>
-                    <!--<div class="form-group row">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-10">
-                            <button mat-raised-button type="button" class="btn-w-md" (click)="generateTypeformClicked()">Generera</button>
+                </div>
+                <!--<div class="form-group row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <button mat-raised-button type="button" class="btn-w-md" (click)="generateTypeformClicked()">Generera</button>
 
-                        </div>
-                    </div>-->
-                </form>
+        </div>
+    </div>-->
 
             </div>
         </div>

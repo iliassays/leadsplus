@@ -21,7 +21,9 @@
         IRequestHandler<UpdateAgentCommand, bool>,
         IRequestHandler<DeleteAgentCommand, bool>,
         IRequestHandler<CreateAgentIntigrationEmailAccountCommand, bool>,
-        IRequestHandler<CreateAgentTypeFormAccountCommand, bool>
+        IRequestHandler<UpdateAgentIntigrationEmailAccountCommand, bool>,
+        IRequestHandler<CreateAgentTypeFormAccountCommand, bool>,
+        IRequestHandler<CreateAgentSpreadsheetAccountCommand, bool>
     {
         private readonly IEventBus eventBus;
         private readonly IMediator mediator;
@@ -102,7 +104,17 @@
         {
             var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = createAgentIntigrationEmailAccountCommand.AggregateId });
 
-            agent.UpdateMailbox(createAgentIntigrationEmailAccountCommand.MailboxName);
+            agent.CreateMailbox();
+            await mediator.DispatchDomainEventsAsync(agent);
+
+            return true;
+        }
+
+        public async Task<bool> Handle(UpdateAgentIntigrationEmailAccountCommand updateAgentIntigrationEmailAccountCommand, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = updateAgentIntigrationEmailAccountCommand.AggregateId });
+
+            agent.UpdateMailbox(updateAgentIntigrationEmailAccountCommand.MailboxName);
             await mediator.DispatchDomainEventsAsync(agent);
 
             return true;
@@ -110,15 +122,20 @@
 
         public async Task<bool> Handle(CreateAgentTypeFormAccountCommand createAgentTypeFormAccount, CancellationToken cancellationToken)
         {
-            //var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = createAgentTypeFormAccount.AggregateId });
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = createAgentTypeFormAccount.AggregateId });
 
-            //request to type form for a url
-            //create a spreadsheet
-            //map typeform and spreadsheet through zap
+            agent.CreateTypeform();
+            await mediator.DispatchDomainEventsAsync(agent);
 
-            //agent.AgentTypeForm = new AgentTypeForm { SpreadsheetUrl = "asdxawd", Type = 1, TypeFormUrl = await CreateTypeformUrl(agent) };
+            return true;
+        }
 
-            //await agentRepository.UpdateTypeFormAsync(agent);
+        public async Task<bool> Handle(CreateAgentSpreadsheetAccountCommand areateAgentSpreadsheetAccountCommand, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = areateAgentSpreadsheetAccountCommand.AggregateId });
+
+            agent.CreateSpreadsheet();
+            await mediator.DispatchDomainEventsAsync(agent);
 
             return true;
         }

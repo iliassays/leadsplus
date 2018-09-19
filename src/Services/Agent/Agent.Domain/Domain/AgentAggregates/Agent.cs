@@ -53,24 +53,45 @@
             this.AddDomainEvent(contactCreatedDomainEvent);
         }
 
-        public void UpdateMailbox(string newMailbox)
+        public void CreateMailbox()
+        {
+            var agentMailboxCreatedEvent = new AgentMailboxCreatedEvent()
+            {
+                Agent = this
+            };
+
+            this.AddDomainEvent(agentMailboxCreatedEvent);
+        }
+
+        public void UpdateMailbox(string newMailboxName)
         {
             var agentMailboxUpdatedEvent = new AgentMailboxUpdatedEvent()
             {
-                Agent = this
+                Agent = this,
+                NewMailbox = newMailboxName
             };
 
             this.AddDomainEvent(agentMailboxUpdatedEvent);
         }
 
-        public void UpdateTypeform()
+        public void CreateTypeform()
         {
-            var agentTypeformUpdatedEvent = new AgentTypeformUpdatedEvent()
+            var agentTypeformUpdatedEvent = new AgentTypeformCreatedEvent()
             {
                 Agent = this
             };
 
             this.AddDomainEvent(agentTypeformUpdatedEvent);
         }
+        public void CreateSpreadsheet()
+        {
+            var agentSpreadsheetCreatedEvent = new AgentSpreadsheetCreatedEvent()
+            {
+                Agent = this
+            };
+
+            this.AddDomainEvent(agentSpreadsheetCreatedEvent);
+        }
+
     }
 }

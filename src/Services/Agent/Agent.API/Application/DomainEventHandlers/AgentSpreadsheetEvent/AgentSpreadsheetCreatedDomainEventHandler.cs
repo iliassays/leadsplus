@@ -18,8 +18,8 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class CreateTypeformWhenAgentCreatedDomainEventHandler
-                        : INotificationHandler<AgentCreatedDomainEvent>
+    public class AgentSpreadsheetCreatedDomainEventHandler
+                        : INotificationHandler<AgentSpreadsheetCreatedEvent>
     {
         private readonly ILoggerFactory logger;
         private readonly IIdentityService identityService;
@@ -27,7 +27,7 @@
         private readonly IRepository<Agent> agentRepository;
         private readonly IMediator madiator;
 
-        public CreateTypeformWhenAgentCreatedDomainEventHandler(
+        public AgentSpreadsheetCreatedDomainEventHandler(
             ILoggerFactory logger,
             IIdentityService identityService,
             IEventBus eventBus,
@@ -41,51 +41,25 @@
             this.madiator = madiator ?? throw new ArgumentNullException(nameof(madiator));
         }
 
-        public async Task Handle(AgentCreatedDomainEvent agentCreatedDomainEvent, CancellationToken cancellationToken)
+        public async Task Handle(AgentSpreadsheetCreatedEvent agentSpreadsheetCreatedEvent, CancellationToken cancellationToken)
         {
             string typeFormTemplateJson = await TypeFormCreator.GetTemplateFormAsync();
-            var typeFormUrl = await CreateTypeformUrl(agentCreatedDomainEvent.Agent, typeFormTemplateJson);
 
-            var spreadsheet = CreateSpreadsheetForTypeform(agentCreatedDomainEvent.Agent, typeFormTemplateJson);
+            var spreadsheet = CreateSpreadsheetForTypeform(agentSpreadsheetCreatedEvent.Agent, typeFormTemplateJson);
 
-            if (agentCreatedDomainEvent.Agent.AgentTypeForm == null)
-            {
-                agentCreatedDomainEvent.Agent.AgentTypeForm = new AgentTypeForm();
-            }
+            agentSpreadsheetCreatedEvent.Agent.AgentTypeForm.SpreadsheetUrl = spreadsheet.SpreadsheetUrl;
+            agentSpreadsheetCreatedEvent.Agent.AgentTypeForm.SpreadsheetId = spreadsheet.SpreadsheetId;
 
-            agentCreatedDomainEvent.Agent.AgentTypeForm.TypeFormUrl = typeFormUrl;
-            agentCreatedDomainEvent.Agent.AgentTypeForm.SpreadsheetUrl = spreadsheet.SpreadsheetUrl;
-            agentCreatedDomainEvent.Agent.AgentTypeForm.SpreadsheetId = spreadsheet.SpreadsheetId;
-
-            var filter = Builders<Agent>.Filter.Eq("Id", agentCreatedDomainEvent.Agent.Id);
+            var filter = Builders<Agent>.Filter.Eq("Id", agentSpreadsheetCreatedEvent.Agent.Id);
             var update = Builders<Agent>.Update
-                .Set("AgentTypeForm", agentCreatedDomainEvent.Agent.AgentTypeForm)
+                .Set("AgentTypeForm", agentSpreadsheetCreatedEvent.Agent.AgentTypeForm)
                 .CurrentDate("UpdatedDate");
 
             await agentRepository.Collection
                 .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
             //Do create typeform
-            logger.CreateLogger(nameof(agentCreatedDomainEvent)).LogTrace($"Agent typefor created {agentCreatedDomainEvent.Agent.Id}.");
+            logger.CreateLogger(nameof(agentSpreadsheetCreatedEvent)).LogTrace($"Agent typefor created {agentSpreadsheetCreatedEvent.Agent.Id}.");
         }
-
-        private async Task<string> CreateTypeformUrl(Agent agent, string typeFormTemplateJson)
-        {
-            //Regex reg = new Regex(@"\""(id\"":[ ]?\""[\d\s\w]*\"",)");
-            //Regex reg = new Regex(@"id\"":[ ]?\""([\d\s\w]*)\"",");
-            //typeformJson = reg.Replace(typeformJson, delegate (Match m)
-            //{
-            //    return string.Empty;
-            //});
-            //typeform.title = $"{agent.Firstname}_{agent.Lastname}_{agent.Email}_{agent.Id}";
-            //typeform.id = "";
-
-            var cretedTypeFormJson = await TypeFormCreator.CreateTypeFormAsync(typeFormTemplateJson);
-            dynamic cretedTypeForm = JObject.Parse(cretedTypeFormJson);
-
-            return cretedTypeForm._links.display;
-        }
-
-
 
         private Spreadsheet CreateSpreadsheetForTypeform(Agent agent, string typeFormTemplateJson)
         {

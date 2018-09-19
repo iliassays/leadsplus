@@ -19,7 +19,9 @@ import { AgentWrapperService } from '../agent.wrapper.service';
 })
 export class AgnetTypeformSetupComponent implements OnInit, AfterViewInit {
 
-    currentAgent = <IAgent>{};
+    currentAgent = <IAgent>{
+        agentTypeForm: {}
+    };
     integrationEmail;
     isAgentProcessing: boolean;
     errorReceived: boolean;
@@ -33,21 +35,22 @@ export class AgnetTypeformSetupComponent implements OnInit, AfterViewInit {
     }
 
     generateTypeformClicked() {
-        this.agentService.generateTypeformAccount(this.currentAgent.id)
-            .catch((errMessage) => {
-                this.errorReceived = true;
-                this.isAgentProcessing = false;
-                return Observable.throw(errMessage);
-            })
-            .subscribe(response => {
-                debugger;
-                this.currentAgent.agentTypeForm = response;
-            });
+        //this.agentService.generateTypeformAccount(this.currentAgent.id)
+        //    .catch((errMessage) => {
+        //        this.errorReceived = true;
+        //        this.isAgentProcessing = false;
+        //        return Observable.throw(errMessage);
+        //    })
+        //    .subscribe(response => {
+        //        debugger;
+        //        this.currentAgent.agentTypeForm = response;
+        //    });
     }
 
     ngOnInit() {
         this.agnetEvents.currentAgentChanged$.subscribe(
             agent => {
+                debugger;
                 this.currentAgent = agent;
             });
     }

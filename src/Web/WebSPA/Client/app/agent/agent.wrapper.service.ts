@@ -14,6 +14,7 @@ export class AgentWrapperService {
     }
 
     private currentAgent = <IAgent>{};
+    private agents: IAgent[];
 
     totalAgent = 0;
     currentAgentIndex = 0;
@@ -36,6 +37,20 @@ export class AgentWrapperService {
     private currentAgentChangedSource = new Subject<IAgent>();
     currentAgentChanged$ = this.currentAgentChangedSource.asObservable();
 
+    private agentLoadedSource = new Subject<IAgent[]>();
+    agentLoaded$ = this.agentLoadedSource.asObservable();
+
+    setAgents(agents) {
+        this.agents = agents;
+        this.totalAgent = agents.length;
+
+        this.agentLoadedSource.next();
+    }
+
+    getAgents() {
+        return this.agents;
+    }
+
     setCurrentAgent(agent) {
         this.currentAgent = agent;
         this.currentAgentChangedSource.next(agent);
@@ -54,8 +69,10 @@ export class AgentWrapperService {
     }
 
     nextAgentClicked() {
-        if (this.currentAgentIndex < this.totalAgent) {
+        if (this.currentAgentIndex < this.totalAgent - 1) {
             this.currentAgentIndex++;
+
+            this.setCurrentAgent(this.agents[this.currentAgentIndex]);
             this.nextAgentClickedSource.next(this.currentAgentIndex);
         }
         
@@ -64,6 +81,7 @@ export class AgentWrapperService {
     previousAgentClicked() {
         if (this.currentAgentIndex != 0) {
             this.currentAgentIndex--;
+            this.setCurrentAgent(this.agents[this.currentAgentIndex]);
             this.previousAgentClickedSource.next(this.currentAgentIndex);
         }
     }

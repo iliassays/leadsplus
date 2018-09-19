@@ -25,6 +25,15 @@ export class AgnetAddComponent implements OnInit {
     isAgentProcessing: boolean;
     errorReceived: boolean;
     agent: IAgent;
+    isAgentProcessingCompleteWithError: boolean;
+    isAgentProcessingComplete: boolean;
+    agentProcessingStatus = {
+        agent: 0,
+        mailbox: 0,
+        typeform: 0,
+        spreadsheet: 0,
+    };
+
     private aggregateId: string = Guid.newGuid();
 
     constructor(private agentService: AgentService,
@@ -63,24 +72,84 @@ export class AgnetAddComponent implements OnInit {
 
         this.agent.aggregateId = this.aggregateId;
 
+        this.agentProcessingStatus.agent = 1;
+
         this.agentService.createAgent(this.agent)
             .catch((errMessage) => {
+                this.agentProcessingStatus.agent = 3;
                 this.errorReceived = true;
                 this.isAgentProcessing = false;
                 return Observable.throw(errMessage);
             })
             .subscribe(res => {
-                this.returnToDetail();
+                //this.returnToDetail();
+                this.agentProcessingStatus.agent = 2;
+
+                this.createMailbox();
+                this.createTypeform();
             });
 
         this.errorReceived = false;
         this.isAgentProcessing = true;
     }
 
+    createMailbox() {
+        this.agentProcessingStatus.mailbox = 1;
+
+        this.agentService.createAgentIntegrationEmail(this.aggregateId)
+            .catch((errMessage) => {
+                this.agentProcessingStatus.mailbox = 3;
+                //this.errorReceived = true;
+                //this.isAgentProcessing = false;
+                this.isAgentProcessingCompleteWithError = true;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+                this.agentProcessingStatus.mailbox = 2;
+            });
+    }
+
+    createTypeform() {
+        this.agentProcessingStatus.typeform = 1;
+
+        this.agentService.createTypeformAccount(this.aggregateId)
+            .catch((errMessage) => {
+                this.agentProcessingStatus.typeform = 3;
+                
+                //this.errorReceived = true;
+                //this.isAgentProcessing = false;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+                this.agentProcessingStatus.typeform = 2;
+                this.createSpreadsheet();
+            });
+    }
+
+    createSpreadsheet() {
+        this.agentProcessingStatus.spreadsheet = 1;
+
+        this.agentService.createSpreadsheet(this.aggregateId)
+            .catch((errMessage) => {
+                this.agentProcessingStatus.spreadsheet = 3;
+                //this.errorReceived = true;
+                //this.isAgentProcessing = false;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+                this.agentProcessingStatus.spreadsheet = 2;
+                this.isAgentProcessing = false;
+                //this.returnToDetail();
+                this.isAgentProcessingComplete = true;
+            });
+
+        
+    }
+
     returnToDetail() {
         this.newAgentForm.reset();
         this.isAgentProcessing = false;
         this.agnetEvents.toggleHeaderMenu(true);
-        this.router.navigate(['detail']);
+        this.router.navigate(['../list/view']);
     }
 }

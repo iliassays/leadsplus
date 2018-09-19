@@ -2,10 +2,13 @@
     <div class="box box-default">
         <div class="box-heading">
             <div class="row" *ngIf="showHeaderMenu">
-                <div class="col-lg-6 text-left">
+                <div class="col-lg-2 text-left">
                     <button mat-raised-button type="button" class="btn-w-xs" (click)="previousAgentClicked()"><i class="fa fa-angle-left"></i></button>
                     <button mat-raised-button type="button" class="btn-w-xs" (click)="nextAgentClicked()"><i class="fa fa-angle-right"></i></button>
-
+                    
+                </div>
+                <div class="col-lg-4 text-left">
+                    <p style="font-weight:700; font-size:20px">Viewing {{currentIndex}} of {{totalCount}}</p>
                 </div>
                 <div class="col-lg-6 text-right">
                     <a class="btn-icon btn-icon-md btn-primary" href="javascript:;" [routerLink]="['addnew']"><i class="fa fa-plus"></i></a>

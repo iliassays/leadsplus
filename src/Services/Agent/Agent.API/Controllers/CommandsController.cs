@@ -48,6 +48,19 @@ namespace Agent.API.Controllers
         }
 
         //POST api/v1/[controller]/CreateAgentIntigrationEmail
+        [Route("updateagentintigrationemail")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdategentIntigrationEmail([FromBody] UpdateAgentIntigrationEmailAccountCommand updateAgentIntigrationEmailAccountCommand)
+        {
+            var result = await mediator.Send(updateAgentIntigrationEmailAccountCommand);
+            
+            return result ?
+                (IActionResult) Ok(result) :
+                (IActionResult) BadRequest();
+        }
+
         [Route("createagentintigrationemail")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -55,10 +68,10 @@ namespace Agent.API.Controllers
         public async Task<IActionResult> CreateAgentIntigrationEmail([FromBody] CreateAgentIntigrationEmailAccountCommand createAgentIntigrationEmailAccountCommand)
         {
             var result = await mediator.Send(createAgentIntigrationEmailAccountCommand);
-            
+
             return result ?
-                (IActionResult) Ok(result) :
-                (IActionResult) BadRequest();
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
         }
 
         //POST api/v1/[controller]/CreateAgentCloudMallinAccount
@@ -69,6 +82,19 @@ namespace Agent.API.Controllers
         public async Task<IActionResult> CreateAgentTypeFormAccount([FromBody] CreateAgentTypeFormAccountCommand createAgentTypeFormAccount)
         {
             var result = await mediator.Send(createAgentTypeFormAccount);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("createagentapreadsheetaccount")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> CreateAgentSpreadsheetAccount([FromBody] CreateAgentSpreadsheetAccountCommand createAgentSpreadsheetAccountCommand)
+        {
+            var result = await mediator.Send(createAgentSpreadsheetAccountCommand);
 
             return result ?
                 (IActionResult)Ok(result) :

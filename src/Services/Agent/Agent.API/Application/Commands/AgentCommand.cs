@@ -35,11 +35,26 @@ namespace Agent.Command
 
     public class CreateAgentIntigrationEmailAccountCommand : Command, IRequest<bool>
     {
+        
+    }
+
+    public class UpdateAgentIntigrationEmailAccountCommand : Command, IRequest<bool>
+    {
         public string MailboxName { get; set; }
     }
 
     public class CreateAgentTypeFormAccountCommand : Command, IRequest<bool>
     {
         
+    }
+
+    public class CreateAgentSpreadsheetAccountCommand : Command, IRequest<bool>
+    {
+
+    }
+
+    public class CreateAgentTypeformWithSpreadsheetAccountCommand : Command, IRequest<bool>
+    {
+
     }
 }

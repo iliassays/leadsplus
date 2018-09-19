@@ -34,6 +34,16 @@
                 <mat-form-field class="full-width"> <input matInput placeholder="Address" formControlName="address" /></mat-form-field>
             </div>
         </div>
+
+        <div class="row" *ngIf="newAgentForm.dirty">
+            <div class="col-lg-6">
+
+            </div>
+            <div class="col-lg-6 text-right">
+                <button mat-raised-button class="btn-w-md" color="primary" type="submit" [disabled]="!newAgentForm.valid || isAgentProcessing">Update</button>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-lg-12">
                 <mat-tab-group [(selectedIndex)]="selectedTab">
@@ -50,6 +60,11 @@
                             <agent-google-datastudio-setup></agent-google-datastudio-setup>
                         </section>
                     </mat-tab>
+                    <mat-tab label="Sendgrid Integration">
+                        <section class="tab-content container-fluid">
+                            <agent-zap-setup></agent-zap-setup>
+                        </section>
+                    </mat-tab>
                     <mat-tab label="Zap">
                         <section class="tab-content container-fluid">
                             <agent-zap-setup></agent-zap-setup>
@@ -59,13 +74,6 @@
             </div>
         </div>
 
-        <div class="row" *ngIf="newAgentForm.dirty">
-            <div class="col-lg-6">
 
-            </div>
-            <div class="col-lg-6 text-right">
-                <button mat-raised-button class="btn-w-md" color="primary" type="submit" [disabled]="!newAgentForm.valid || isAgentProcessing">Update</button>
-            </div>
-        </div>
     </form>
 </section>

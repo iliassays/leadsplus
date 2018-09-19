@@ -11,18 +11,18 @@ import { AgentWrapperService } from './agent.wrapper.service';
 
 export class AgentComponent implements OnInit { 
     showHeaderMenu = false;
+    currentIndex = 1;
+    totalCount = 0;
 
     constructor(private agnetEvents: AgentWrapperService) {
 
     }
 
     previousAgentClicked() {
-        debugger;
         this.agnetEvents.previousAgentClicked();
     }
 
     nextAgentClicked() {
-        debugger;
         this.agnetEvents.nextAgentClicked();
     }
 
@@ -30,6 +30,17 @@ export class AgentComponent implements OnInit {
         this.agnetEvents.headerMenuToggler$.subscribe(
             param => {
                 this.showHeaderMenu = param;
+            });
+
+        this.agnetEvents.agentLoaded$.subscribe(
+            agent => {
+                this.totalCount = this.agnetEvents.totalAgent;
+                this.currentIndex = 0;
+            });
+
+        this.agnetEvents.currentAgentChanged$.subscribe(
+            agent => {
+                this.currentIndex = this.agnetEvents.currentAgentIndex + 1;
             });
     }
 }

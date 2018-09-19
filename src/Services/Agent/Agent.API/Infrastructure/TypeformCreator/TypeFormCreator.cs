@@ -106,6 +106,8 @@ namespace Agent.TypeFormIntegration
                 return string.Empty;
             });
 
+            //update title
+
             var content = new StringContent(typeFormContent, Encoding.UTF8, "application/json");
             return content;
         }

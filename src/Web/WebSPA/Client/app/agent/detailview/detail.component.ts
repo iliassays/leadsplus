@@ -41,10 +41,10 @@ export class AgentDetailViewComponent implements OnInit {
         this.agentService.getAgents(pageIndex, pageSize)
             .catch((err) => this.handleError(err))
             .subscribe(agents => {
+                this.agnetEvents.setAgents(agents);
                 this.agents = agents;
-                this.agnetEvents.totalAgent = agents.length;
                 this.agnetEvents.setCurrentAgent(this.agents[0]);
-                debugger;
+                
                 this.initAgentForm();
             });
     }
@@ -108,15 +108,8 @@ export class AgentDetailViewComponent implements OnInit {
           });
       }
 
-      this.agnetEvents.nextAgentClicked$.subscribe(
-          index => {
-              this.agnetEvents.setCurrentAgent(this.agents[index]);
-              this.initAgentForm();
-          });
-
-      this.agnetEvents.previousAgentClicked$.subscribe(
-          index => {
-              this.agnetEvents.setCurrentAgent(this.agents[index]); 
+      this.agnetEvents.currentAgentChanged$.subscribe(
+          agent => {
               this.initAgentForm();
           });
     }

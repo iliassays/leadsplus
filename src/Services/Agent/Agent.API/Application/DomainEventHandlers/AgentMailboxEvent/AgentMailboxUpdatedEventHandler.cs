@@ -15,15 +15,14 @@
     using MongoDB.Driver;
     using Agent.EmailCreator;
 
-    public class AgentMailboxCreatedEventHandler
-                        : INotificationHandler<AgentCreatedDomainEvent>, INotificationHandler<AgentMailboxUpdatedEvent>
+    public class AgentMailboxUpdatedEventHandler : INotificationHandler<AgentMailboxUpdatedEvent>
     {
         private readonly ILoggerFactory logger;
         private readonly IIdentityService identityService;
         private readonly IEventBus eventBus;
         private readonly IRepository<Agent> agentRepository;
 
-        public AgentMailboxCreatedEventHandler(
+        public AgentMailboxUpdatedEventHandler(
             ILoggerFactory logger,
             IIdentityService identityService,
             IEventBus eventBus,
@@ -35,33 +34,22 @@
             this.agentRepository = agentRepository ?? throw new ArgumentNullException(nameof(agentRepository));
         }
 
-        public async Task Handle(AgentCreatedDomainEvent agentCreatedDomainEvent, CancellationToken cancellationToken)
-        {
-            await Processor(agentCreatedDomainEvent.Agent);
-
-            logger.CreateLogger(nameof(agentCreatedDomainEvent)).LogTrace($"Agent mailbox created for {agentCreatedDomainEvent.Agent.Id}.");
-        }
-
         public async Task Handle(AgentMailboxUpdatedEvent agentMailboxUpdatedEvent, CancellationToken cancellationToken)
         {
-            await Processor(agentMailboxUpdatedEvent.Agent);
-
-            logger.CreateLogger(nameof(agentMailboxUpdatedEvent)).LogTrace($"Agent mailbox created for {agentMailboxUpdatedEvent.Agent.Id}.");
-        }
-
-        private async Task Processor(Agent agent)
-        {
-            string mailboxName = $"{agent.Email.Split("@")[0]}";
+            string mailboxName = agentMailboxUpdatedEvent.NewMailbox;
 
             var integrationEmail = await CreateIntigrationEmail(mailboxName);
+            agentMailboxUpdatedEvent.Agent.IntegrationEmail = integrationEmail;
 
-            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var filter = Builders<Agent>.Filter.Eq("Id", agentMailboxUpdatedEvent.Agent.Id);
             var update = Builders<Agent>.Update
                 .Set("IntegrationEmail", integrationEmail)
                 .CurrentDate("UpdatedDate");
 
             await agentRepository.Collection
                 .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            logger.CreateLogger(nameof(agentMailboxUpdatedEvent)).LogTrace($"Agent mailbox created for {agentMailboxUpdatedEvent.Agent.Id}.");
         }
 
         public async Task<string> CreateIntigrationEmail(string mailboxName)
@@ -74,7 +62,16 @@
                 Quota = 400
             };
 
-            return await new MailboxCreator(emailAccount).Create();
+            try
+            {
+                return await new MailboxCreator(emailAccount).Create();
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+            return string.Empty;
         }
     }
 }

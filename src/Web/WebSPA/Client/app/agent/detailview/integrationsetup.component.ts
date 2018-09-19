@@ -66,8 +66,7 @@ export class AgnetIntegrationSetupComponent implements OnInit {
     private initAgentForm() {
         var currentAgent = this.agnetEvents.getCurrentAgent();
 
-        this.integrationEmail = currentAgent && currentAgent.integrationEmail ? currentAgent.integrationEmail : '';
-        
+        this.integrationEmail = currentAgent && currentAgent.integrationEmail ? currentAgent.integrationEmail : '';        
 
         this.integrationForm = this.formBuilder.group({
             'integrationEmail': [this.integrationEmail.split('@')[0], Validators.required]

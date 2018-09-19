@@ -67,7 +67,7 @@ export class AgentService {
 
     updateIntegrationEmailAgent(agent: IAgent, integrationEmail): Observable<string> {
         const requestUrl =
-            `${this.agentUrl}/api/v1/commands/createagentintigrationemail`;
+            `${this.agentUrl}/api/v1/commands/updateagentintigrationemail`;
 
         let data = {
             AggregateId: agent.id,
@@ -80,7 +80,21 @@ export class AgentService {
         });
     }
 
-    generateTypeformAccount(agentId: string): Observable<IAgentTypeForm> {
+    createAgentIntegrationEmail(agentId: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/createagentintigrationemail`;
+
+        let data = {
+            AggregateId: agentId
+        };
+        debugger;
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
+    createTypeformAccount(agentId: string): Observable<string> {
         const requestUrl =
             `${this.agentUrl}/api/v1/commands/createagenttypeformaccount`;
         debugger;
@@ -88,9 +102,23 @@ export class AgentService {
             aggregateId: agentId
         };
 
-        return this.service.post<IAgentTypeForm>(requestUrl, data).map((response: HttpResponse<IAgentTypeForm>) => {
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
             this.agnetEvents.agentUpdated();
-            return response.body;
+            return response.body.toString();
+        });
+    }
+
+    createSpreadsheet(agentId: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/createagentapreadsheetaccount`;
+        debugger;
+        let data = {
+            aggregateId: agentId
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
         });
     }
 }
