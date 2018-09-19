@@ -42,10 +42,10 @@ namespace LeadsPlus.Services.Identity.API.Configuration
                     ClientName = "leadsplus SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { $"{clientsUrl["Spa"]}/" },
+                    RedirectUris =           { $"{clientsUrl["AdminPortal"]}/" },
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { $"{clientsUrl["Spa"]}/" },
-                    AllowedCorsOrigins =     { $"{clientsUrl["Spa"]}" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["AdminPortal"]}/" },
+                    AllowedCorsOrigins =     { $"{clientsUrl["AdminPortal"]}" },
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
