@@ -51,65 +51,41 @@
     </form>
 
     <div *ngIf="isAgentProcessing">
-        <div class="row" *ngIf="agentProcessingStatus.agent === 1">
-            <div class="col-lg-12">
-                <i class="fa fa-spinner fa-spin"></i> Creating agent....
-            </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.agent === 1">
+            <i class="fa fa-spinner fa-spin"></i> Creating agent....
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.agent === 2">
-            <div class="col-lg-12">
-                <i class="fa fa-check"></i>  Agent created.
-            </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.agent === 2">
+            <i class="fa fa-check"></i>  Agent created.
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.agent === 3">
-            <div class="col-lg-12">
-                <i class="fa fa-warning"></i>  Agent creation failed.
-            </div>
+        <div class="col-lg-12 callout callout-warning" *ngIf="agentProcessingStatus.agent === 3">
+            <i class="fa fa-warning"></i>  Agent creation failed.
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.mailbox === 1">
-            <div class="col-lg-12">
-                <i class="fa fa-spinner fa-spin"></i> Creating mailbox....
-            </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.mailbox === 1">
+            <i class="fa fa-spinner fa-spin"></i> Creating mailbox....
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.mailbox === 2">
-            <div class="col-lg-12">
-                <i class="fa fa-check"></i>  Mailbox created.
-            </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.mailbox === 2">
+            <i class="fa fa-check"></i>  Mailbox created.
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.mailbox === 3">
-            <div class="col-lg-12">
-                <i class="fa fa-warning"></i>  Mailbox creatation failed.
-            </div>
+        <div class="col-lg-12 callout callout-warning" *ngIf="agentProcessingStatus.mailbox === 3">
+            <i class="fa fa-warning"></i>  Mailbox creatation failed.
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.typeform === 1">
-            <div class="col-lg-12">
-                <i class="fa fa-spinner fa-spin"></i> Creating typeform....
-            </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.typeform === 1">
+            <i class="fa fa-spinner fa-spin"></i> Creating typeform....
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.typeform === 2">
-            <div class="col-lg-12">
-                <i class="fa fa-check"></i>  Typeform created.
-            </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.typeform === 2">
+            <i class="fa fa-check"></i>  Typeform created.
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.typeform === 3">
-            <div class="col-lg-12">
-                <i class="fa fa-warning"></i>  Typeform creation failed.
-            </div>
+        <div class="col-lg-12 callout callout-warning" *ngIf="agentProcessingStatus.typeform === 3">
+            <i class="fa fa-warning"></i>  Typeform creation failed.
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.spreadsheet === 1">
-            <div class="col-lg-12">
-                <i class="fa fa-spinner fa-spin"></i> Creating spreadsheet....
-            </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.spreadsheet === 1">
+            <i class="fa fa-spinner fa-spin"></i> Creating spreadsheet....
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.spreadsheet === 2">
-            <div class="col-lg-12">
-                <i class="fa fa-check"></i>  Spreadsheet created.
-            </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.spreadsheet === 2">
+            <i class="fa fa-check"></i>  Spreadsheet created.
         </div>
-        <div class="row" *ngIf="agentProcessingStatus.spreadsheet === 3">
-            <div class="col-lg-12">
-                <i class="fa fa-warning"></i>  Spreadsheet creatation failed.
-            </div>
+        <div class="col-lg-12 callout callout-warning" *ngIf="agentProcessingStatus.spreadsheet === 3">
+            <i class="fa fa-warning"></i>  Spreadsheet creatation failed.
         </div>
     </div>
     <div *ngIf="isAgentProcessingComplete">

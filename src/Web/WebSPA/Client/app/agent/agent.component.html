@@ -3,9 +3,8 @@
         <div class="box-heading">
             <div class="row" *ngIf="showHeaderMenu">
                 <div class="col-lg-2 text-left">
-                    <button mat-raised-button type="button" class="btn-w-xs" (click)="previousAgentClicked()"><i class="fa fa-angle-left"></i></button>
-                    <button mat-raised-button type="button" class="btn-w-xs" (click)="nextAgentClicked()"><i class="fa fa-angle-right"></i></button>
-                    
+                    <a class="btn-icon btn-icon-md btn-primary" href="javascript:;" (click)="previousAgentClicked()"><i class="fa fa-angle-left fa-2x"></i></a>
+                    <a class="btn-icon btn-icon-md btn-primary" style="margin-left: 5px" href="javascript:;" (click)="nextAgentClicked()"><i class="fa fa-angle-right fa-2x"></i></a>
                 </div>
                 <div class="col-lg-4 text-left">
                     <p style="font-weight:700; font-size:20px">Viewing {{currentIndex}} of {{totalCount}}</p>

@@ -8,6 +8,7 @@
 
     public class EmailAccount
     {
+        public string EmailDomain { get; set; }
         public string Domain { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -17,8 +18,8 @@
     public class MailboxCreator
     {
         public const string token = "4h5AaQ4hbPmaLhfdYiaZVdyjtkrT2279FoSFxbA735eN";
-        public readonly EmailAccount emailAccount;
 
+        public readonly EmailAccount emailAccount;
 
         public MailboxCreator(EmailAccount emailAccount)
         {
@@ -36,8 +37,8 @@
         {
             var cpRoot = $"https://{emailAccount.Domain}:2083/json-api/cpanel?cpanel_jsonapi_user=user&cpanel_jsonapi_apiversion=2";
             var emailmdule = "&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=addpop";
-            var emailaccountBody = $"&domain={emailAccount.Domain}&email={emailAccount.UserName}"
-                + $"&password={emailAccount.Password}&quota={emailAccount.Quota}";
+            var emailaccountBody = $"&domain={emailAccount.EmailDomain}&email={emailAccount.UserName}"
+                 + $"&password={emailAccount.Password}&quota={emailAccount.Quota}";
 
             return cpRoot + emailmdule + emailaccountBody;
         }

@@ -63,7 +63,8 @@
         {
             var emailAccount = new EmailAccount
             {
-                Domain = "adfenixleads.com",//should come from config
+                Domain = "gator4176.hostgator.com",
+                EmailDomain = "adfenixleads.com",
                 UserName = mailboxName,
                 Password = "changeme",
                 Quota = 400

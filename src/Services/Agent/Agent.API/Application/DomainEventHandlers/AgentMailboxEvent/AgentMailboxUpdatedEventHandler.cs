@@ -59,19 +59,10 @@
                 Domain = "adfenixleads.com",//should come from config
                 UserName = mailboxName,
                 Password = "changeme",
-                Quota = 400
+                Quota = 500
             };
 
-            try
-            {
-                return await new MailboxCreator(emailAccount).Create();
-            }
-            catch(Exception ex)
-            {
-
-            }
-
-            return string.Empty;
+            return await new MailboxCreator(emailAccount).Create();
         }
     }
 }
