@@ -98,8 +98,6 @@ namespace Agent.TypeFormIntegration
 
             };
 
-            //string contentJson = JsonConvert.SerializeObject(typeForm, serializerSettings);
-            // @"id=(\d+)"
             Regex reg = new Regex(@"\""(id\"":[ ]?\""[\d\s\w]*\"",)");
 
             typeFormContent = reg.Replace(typeFormContent, delegate (Match m) {

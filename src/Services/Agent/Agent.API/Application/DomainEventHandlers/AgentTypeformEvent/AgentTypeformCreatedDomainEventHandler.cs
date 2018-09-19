@@ -15,6 +15,7 @@
     using MongoDB.Driver;
     using Newtonsoft.Json.Linq;
     using System;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -74,6 +75,12 @@
             //});
             //typeform.title = $"{agent.Firstname}_{agent.Lastname}_{agent.Email}_{agent.Id}";
             //typeform.id = "";
+
+            Regex reg = new Regex(@"id\"":[ ]?\""([\d\s\w]*)\"",");
+
+            typeFormTemplateJson = reg.Replace(typeFormTemplateJson, delegate (Match m) {
+                return string.Empty;
+            });
 
             var cretedTypeFormJson = await TypeFormCreator.CreateTypeFormAsync(typeFormTemplateJson);
             dynamic cretedTypeForm = JObject.Parse(cretedTypeFormJson);

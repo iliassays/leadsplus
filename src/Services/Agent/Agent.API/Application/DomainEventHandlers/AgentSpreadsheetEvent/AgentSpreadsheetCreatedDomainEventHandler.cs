@@ -49,6 +49,7 @@
 
             agentSpreadsheetCreatedEvent.Agent.AgentTypeForm.SpreadsheetUrl = spreadsheet.SpreadsheetUrl;
             agentSpreadsheetCreatedEvent.Agent.AgentTypeForm.SpreadsheetId = spreadsheet.SpreadsheetId;
+            agentSpreadsheetCreatedEvent.Agent.AgentTypeForm.SpreadsheetName = GetSpreadsheetName(agentSpreadsheetCreatedEvent.Agent);
 
             var filter = Builders<Agent>.Filter.Eq("Id", agentSpreadsheetCreatedEvent.Agent.Id);
             var update = Builders<Agent>.Update
@@ -70,7 +71,7 @@
 
             CreateSpreadsheetCommand createSpreadsheetCommand = new CreateSpreadsheetCommand
             {
-                SpreadSheetName = $"{agent.Email}_{agent.Firstname}_{agent.Id}",
+                SpreadSheetName = GetSpreadsheetName(agent),
                 WorkSheetName = "Inquiries",
                 ApplicationName = "LeadsPlus"
             };
@@ -104,6 +105,11 @@
             //eventBus.Publish(createContactIntegrationEvent);
 
             return spreadsheet;
+        }
+
+        private string GetSpreadsheetName(Agent agent)
+        {
+            return $"{agent.Email}_{agent.Firstname}_{agent.Id}";
         }
     }
 }
