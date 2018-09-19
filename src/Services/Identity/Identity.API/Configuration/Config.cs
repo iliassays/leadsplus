@@ -38,7 +38,7 @@ namespace LeadsPlus.Services.Identity.API.Configuration
                 // JavaScript Client
                 new Client
                 {
-                    ClientId = "AdminPortal",
+                    ClientId = "adminportal",
                     ClientName = "leadsplus SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,

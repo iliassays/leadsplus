@@ -86,10 +86,10 @@ export class SecurityService {
         this.ResetAuthorizationData();
 
         let authorizationUrl = this.authorityUrl + '/connect/authorize';
-        let client_id = 'AdminPortal';
+        let client_id = 'adminportal';
         let redirect_uri = location.origin + '/';
         let response_type = 'id_token token';
-        let scope = 'openid profile agent autorespondar';
+        let scope = 'openid profile agent contact';
         let nonce = 'N' + Math.random() + '' + Date.now();
         let state = Date.now() + '' + Math.random();
 
