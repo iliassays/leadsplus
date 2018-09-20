@@ -30,7 +30,7 @@
         {
             await GetWithBasicAuthAsync(GetMailboxUrl(emailAccount));
 
-            return $"{emailAccount.UserName}@{emailAccount.Domain}" ;
+            return $"{emailAccount.UserName}@{emailAccount.EmailDomain}" ;
         }
 
         private string GetMailboxUrl(EmailAccount emailAccount)
