@@ -9,29 +9,46 @@
     using LeadsPlus.Core.Query;
     using System.Collections.Generic;
     using System.Collections;
+    using Microsoft.Extensions.Logging;
 
     public class AgentInboundEmailTrackedIntegrationEventHandler
         : IIntegrationEventHandler<AgentInboundEmailTrackedIntegrationEvent>
     {
         private readonly IEventBus eventBus;
         private readonly IQueryExecutor queryExecutor;
+        private readonly ILoggerFactory logger;
 
         public AgentInboundEmailTrackedIntegrationEventHandler(IEventBus eventBus,
-            IQueryExecutor queryExecutor)
+            IQueryExecutor queryExecutor,
+            ILoggerFactory logger)
         {
             this.eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
             this.queryExecutor = queryExecutor ?? throw new ArgumentNullException(nameof(queryExecutor));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task Handle(AgentInboundEmailTrackedIntegrationEvent @event)
         {
+            logger.CreateLogger(nameof(@event)).LogTrace($"customer email tracked {@event.CustomerEmail}.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"agent email {@event.AgentEmail}.");
+
             var agent = await queryExecutor.Execute<GetAgentByIntegrationEmailQuery, Agent>(
                 new GetAgentByIntegrationEmailQuery {AgentIntegrationEmail = @event.AgentEmail});
 
-            WelcomeCustomer(agent, @event);
-            NotifyAgent(agent, @event);
+            if(agent != null)
+            {
+                logger.CreateLogger(nameof(@event)).LogTrace($"agent email {agent.Id}.");
 
-            CreateCustomer(agent, @event);
+                WelcomeCustomer(agent, @event);
+                NotifyAgent(agent, @event);
+
+                CreateCustomer(agent, @event);
+
+            }
+            else
+            {
+                logger.CreateLogger(nameof(@event)).LogTrace($"agent not found {@event.AgentEmail}.");
+            }
         }
 
         private void CreateCustomer(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
@@ -46,6 +63,7 @@
             };
 
             eventBus.Publish(createContactIntegrationEvent);
+            logger.CreateLogger(nameof(@event)).LogTrace($"customer created published {@event.CustomerEmail}.");
         }
 
         private void WelcomeCustomer(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
@@ -65,6 +83,8 @@
             };
 
             eventBus.Publish(emailNeedsToBeSent);
+
+            logger.CreateLogger(nameof(@event)).LogTrace($"customer welcome event sent {@event.CustomerEmail}.");
         }
 
         private void NotifyAgent(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
@@ -84,6 +104,7 @@
             };
 
             eventBus.Publish(emailNeedsToBeSent);
+            logger.CreateLogger(nameof(@event)).LogTrace($"agent email sent {@event.AgentEmail}.");
         }
 
         private Dictionary<string, string> GetMergeField(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)

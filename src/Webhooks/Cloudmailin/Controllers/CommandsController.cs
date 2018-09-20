@@ -9,15 +9,19 @@
     using Cloudmailin.Webhook.IntegrationEvents;
     using LeadsPlus.BuildingBlocks.EventBus.Abstractions;
     using System.Net.Http.Formatting;
+    using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
 
     [Route("api/v1/[controller]")]
     //[Authorize]
     public class CommandsController : ControllerBase
     {
         private readonly IEventBus _eventBus;
+        private readonly ILoggerFactory logger;
 
-        public CommandsController(IEventBus eventBus)
+        public CommandsController(IEventBus eventBus, ILoggerFactory logger)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
         }
 
@@ -44,8 +48,9 @@
 
             //This  will trigger event in Agent Api to send a autorespondar
             _eventBus.Publish(@event);
+            logger.CreateLogger(nameof(createInboundEmailCommand)).LogTrace($"New customer email tracked.. agent-{@event.AgentEmail}, customer {@event.CustomerEmail}.");
 
-            return (IActionResult)Ok(@event);
+            return (IActionResult) Ok(@event);
         }
     }
 }
