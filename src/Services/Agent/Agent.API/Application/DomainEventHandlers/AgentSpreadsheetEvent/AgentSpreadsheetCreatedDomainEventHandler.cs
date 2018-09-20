@@ -91,7 +91,16 @@
                 ApplicationName = "LeadsPlus"
             };
 
-            var result = madiator.Send(assigSpreadsheetPermissionCommand).Result;
+            var assigSpreadsheetPermissionCommandResult = madiator.Send(assigSpreadsheetPermissionCommand).Result;
+
+            AssigSpreadsheetPermissionCommand assigSpreadsheetPermissionToOrganizationCommand = new AssigSpreadsheetPermissionCommand
+            {
+                Email = "shimulsays@gmail.com",
+                SpreadsheetId = spreadsheet.SpreadsheetId,
+                ApplicationName = "LeadsPlus"
+            };
+
+            var assigSpreadsheetPermissionToOrganizationCommandResult = madiator.Send(assigSpreadsheetPermissionCommand).Result;
 
             //var createContactIntegrationEvent = new CreateContactIntegrationEvent()
             //{
