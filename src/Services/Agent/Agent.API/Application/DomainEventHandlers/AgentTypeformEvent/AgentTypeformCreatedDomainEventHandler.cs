@@ -76,16 +76,22 @@
             //typeform.title = $"{agent.Firstname}_{agent.Lastname}_{agent.Email}_{agent.Id}";
             //typeform.id = "";
 
-            Regex reg = new Regex(@"id\"":[ ]?\""([\d\s\w]*)\"",");
+            Regex reg = new Regex(@"(\""title\"":[ ]?\"")([\d\s\w]*)");
 
-            typeFormTemplateJson = reg.Replace(typeFormTemplateJson, delegate (Match m) {
-                return string.Empty;
-            });
+            typeFormTemplateJson = reg.Replace(typeFormTemplateJson, delegate (Match m)
+            {
+                return m.Groups[1].Value + GetSpreadsheetName(agent);
+            }, 1);
 
             var cretedTypeFormJson = await TypeFormCreator.CreateTypeFormAsync(typeFormTemplateJson);
             dynamic cretedTypeForm = JObject.Parse(cretedTypeFormJson);
 
             return cretedTypeForm._links.display;
+        }
+
+        private string GetSpreadsheetName(Agent agent)
+        {
+            return $"{agent.Email}_{agent.Firstname}_{agent.Id}";
         }
     }
 }

@@ -63,10 +63,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - DomainDatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://nosql.data}
-      - DomainDatabaseName=ContactDomainStore
-      - ProjectionDatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://nosql.data}
-      - ProjectionDatabaseName=ContactProjectionStore
+      - DatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://nosql.data}
+      - DatabaseName=ContactStore
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
       - IdentityUrlExternal=http://${LEADSPLUS_PROD_IDENTITY_API_DOMAIN}:5105
       - EventBusConnection=${LEADSPLUS_AZURE_SERVICE_BUS:-rabbitmq}
