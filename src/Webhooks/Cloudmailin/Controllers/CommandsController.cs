@@ -34,7 +34,7 @@
 
         [Route("parse")]
         [HttpPost]
-        public async Task<IActionResult> Parse(CreateInboundEmailCommand createInboundEmailCommand)
+        public async Task<IActionResult> Parse([FromBody] CreateInboundEmailCommand createInboundEmailCommand)
         {
             var @event = new AgentInboundEmailTrackedIntegrationEvent()
             {
@@ -46,9 +46,11 @@
                 AggregateId = Guid.NewGuid().ToString()
             };
 
+            logger.CreateLogger(nameof(createInboundEmailCommand)).LogTrace($"New customer email tracked.. agent {createInboundEmailCommand.To}, customer {createInboundEmailCommand.From}.");
+
             //This  will trigger event in Agent Api to send a autorespondar
             _eventBus.Publish(@event);
-            logger.CreateLogger(nameof(createInboundEmailCommand)).LogTrace($"New customer email tracked.. agent-{@event.AgentEmail}, customer {@event.CustomerEmail}.");
+            
 
             return (IActionResult) Ok(@event);
         }
