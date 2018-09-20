@@ -36,12 +36,14 @@
         [HttpPost]
         public async Task<IActionResult> Parse([FromBody] CreateInboundEmailCommand createInboundEmailCommand)
         {
+            dynamic form = Request.Form["envelope"];
+
             var @event = new AgentInboundEmailTrackedIntegrationEvent()
             {
                 Body = createInboundEmailCommand.Text,
                 PlainText = createInboundEmailCommand.Plain,
-                CustomerEmail = createInboundEmailCommand.From,
-                AgentEmail = createInboundEmailCommand.To,
+                CustomerEmail = form.from,
+                AgentEmail = form.to,
                 Subject = createInboundEmailCommand.Subject,
                 AggregateId = Guid.NewGuid().ToString()
             };
@@ -50,9 +52,9 @@
 
             //This  will trigger event in Agent Api to send a autorespondar
             _eventBus.Publish(@event);
-            
 
-            return (IActionResult) Ok(@event);
+
+            return (IActionResult)Ok(@event);
         }
     }
 }
