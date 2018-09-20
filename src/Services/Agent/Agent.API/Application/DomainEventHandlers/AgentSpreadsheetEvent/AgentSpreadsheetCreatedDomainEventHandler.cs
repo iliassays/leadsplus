@@ -100,7 +100,7 @@
                 ApplicationName = "LeadsPlus"
             };
 
-            var assigSpreadsheetPermissionToOrganizationCommandResult = madiator.Send(assigSpreadsheetPermissionCommand).Result;
+            var assigSpreadsheetPermissionToOrganizationCommandResult = madiator.Send(assigSpreadsheetPermissionToOrganizationCommand).Result;
 
             //var createContactIntegrationEvent = new CreateContactIntegrationEvent()
             //{
