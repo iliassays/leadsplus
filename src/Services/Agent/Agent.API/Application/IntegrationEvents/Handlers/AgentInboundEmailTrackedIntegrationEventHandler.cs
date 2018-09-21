@@ -78,7 +78,7 @@
                 To = new[] { @event.CustomerEmail },
                 ReplyTo = agent.Email,
                 AggregateId = @event.AggregateId,
-                TemplateId = "5b74cb32-4964-4819-b702-4db122be5762", //keep it hardcoded for now
+                TemplateId = "ed324a45-f3a7-4232-a551-12abc8051798", //keep it hardcoded for now
                 MergeFields = GetMergeField(agent, @event)
             };
 
@@ -99,7 +99,7 @@
                 To = new[] { agent.Email },
                 ReplyTo = "admin@adfenixleads.com",
                 AggregateId = @event.AggregateId,
-                TemplateId = "7093a1bf-a252-4ff0-9465-7c1e9b0a7081", //keep it hardcoded for now
+                TemplateId = "954b9208-176d-44e8-af2a-8bed61e88631", //keep it hardcoded for now
                 MergeFields = GetMergeField(agent, @event)
             };
 
