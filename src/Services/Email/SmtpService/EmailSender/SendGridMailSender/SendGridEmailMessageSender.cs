@@ -58,7 +58,6 @@
 
             if (!string.IsNullOrEmpty(emailSendingRequest.TemplateId))
             {
-                //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
                 sendgridData.Content = null;
                 sendgridData.Personalizations[0].Subject = string.Empty;
 
