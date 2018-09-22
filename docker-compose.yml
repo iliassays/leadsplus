@@ -28,6 +28,15 @@ services:
       - nosql.data
       - rabbitmq
 
+  inqueryhistory.api:
+    image: leadsplus/agent-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/InqueryHistory/InqueryHistory.API/Dockerfile
+    depends_on:
+      - nosql.data
+      - rabbitmq
+
   contact.api:
     image: leadsplus/contact-api:${TAG:-latest}
     build:
@@ -49,6 +58,14 @@ services:
     build:
       context: .
       dockerfile: src/Services/Email/SmtpService/Dockerfile
+    depends_on:
+      - rabbitmq
+
+  emailparsar.backgroundtask:
+    image: leadsplus/emailparsar-backgroundtask:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Email/EmailParsar/Dockerfile
     depends_on:
       - rabbitmq
 

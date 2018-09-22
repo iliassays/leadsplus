@@ -1,4 +1,4 @@
-﻿namespace Agent.IntegrationEvents
+﻿namespace InvitationHistory.IntegrationEvents
 {
     using LeadsPlus.BuildingBlocks.EventBus.Events;
     using MediatR;

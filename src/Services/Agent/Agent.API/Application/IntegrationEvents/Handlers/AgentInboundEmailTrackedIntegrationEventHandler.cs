@@ -39,11 +39,38 @@
             {
                 logger.CreateLogger(nameof(@event)).LogTrace($"agent email {agent.Id}.");
 
-                WelcomeCustomer(agent, @event);
-                NotifyAgent(agent, @event);
+                NewInqueryRequestReceivedIntegrationEvent newInqueryRequestReceivedIntegrationEvent = new NewInqueryRequestReceivedIntegrationEvent()
+                {
+                    AgentEmail = @event.AgentEmail,
+                    AggregateId = @event.AggregateId,
+                    Body = @event.Body,
+                    Subject = @event.Subject,
+                    CustomerEmail = @event.CustomerEmail,
+                    AgentInfo = new AgentInfo()
+                    {
+                        Address = agent.Address,
+                        City = agent.City,
+                        State = agent.State,
+                        Zip = agent.Zip,
+                        Email = agent.Email,
+                        Firstname = agent.Firstname,
+                        Lastname = agent.Lastname,
+                        Company = agent.Company,
+                        Country = agent.Country,
+                        Phone = agent.Phone,
+                        Id = agent.Id,
+                        IntegrationEmail = agent.IntegrationEmail,
+                        AgentTypeFormInfo = new AgentTypeFormInfo
+                        {
+                            SpreadsheetId = agent.AgentTypeForm?.SpreadsheetId,
+                            SpreadsheetName = agent.AgentTypeForm?.SpreadsheetName,
+                            SpreadsheetUrl = agent.AgentTypeForm?.SpreadsheetUrl,
+                            TypeFormUrl = agent.AgentTypeForm?.TypeFormUrl
+                        }
+                    }
+                };
 
-                CreateCustomer(agent, @event);
-
+                eventBus.Publish(newInqueryRequestReceivedIntegrationEvent);
             }
             else
             {
@@ -51,76 +78,76 @@
             }
         }
 
-        private void CreateCustomer(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
-        {
-            var createContactIntegrationEvent = new CreateContactIntegrationEvent()
-            {
-                AggregateId = @event.AggregateId,
-                Source = "CloudMailin",
-                Email = @event.CustomerEmail,
-                OwnerId = agent.Id,
-                Ownername = $"{agent.Firstname} {agent.Lastname}"
-            };
+        //private void CreateCustomer(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
+        //{
+        //    var createContactIntegrationEvent = new CreateContactIntegrationEvent()
+        //    {
+        //        AggregateId = @event.AggregateId,
+        //        Source = "CloudMailin",
+        //        Email = @event.CustomerEmail,
+        //        OwnerId = agent.Id,
+        //        Ownername = $"{agent.Firstname} {agent.Lastname}"
+        //    };
 
-            eventBus.Publish(createContactIntegrationEvent);
-            logger.CreateLogger(nameof(@event)).LogTrace($"customer created published {@event.CustomerEmail}.");
-        }
+        //    eventBus.Publish(createContactIntegrationEvent);
+        //    logger.CreateLogger(nameof(@event)).LogTrace($"customer created published {@event.CustomerEmail}.");
+        //}
 
-        private void WelcomeCustomer(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
-        {
-            var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
-            {
-                //Body = mailBody,
-                IsBodyHtml = true,
-                //Subject = subject,
-                FromEmail = agent.Email,
-                FromName = $"{agent.Firstname} {agent.Lastname}",
-                To = new[] { @event.CustomerEmail },
-                ReplyTo = agent.Email,
-                AggregateId = @event.AggregateId,
-                TemplateId = "ed324a45-f3a7-4232-a551-12abc8051798", //keep it hardcoded for now
-                MergeFields = GetMergeField(agent, @event)
-            };
+        //private void WelcomeCustomer(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
+        //{
+        //    var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
+        //    {
+        //        //Body = mailBody,
+        //        IsBodyHtml = true,
+        //        //Subject = subject,
+        //        FromEmail = agent.Email,
+        //        FromName = $"{agent.Firstname} {agent.Lastname}",
+        //        To = new[] { @event.CustomerEmail },
+        //        ReplyTo = agent.Email,
+        //        AggregateId = @event.AggregateId,
+        //        TemplateId = "ed324a45-f3a7-4232-a551-12abc8051798", //keep it hardcoded for now
+        //        MergeFields = GetMergeField(agent, @event)
+        //    };
 
-            eventBus.Publish(emailNeedsToBeSent);
+        //    eventBus.Publish(emailNeedsToBeSent);
 
-            logger.CreateLogger(nameof(@event)).LogTrace($"customer welcome event sent {@event.CustomerEmail}.");
-        }
+        //    logger.CreateLogger(nameof(@event)).LogTrace($"customer welcome event sent {@event.CustomerEmail}.");
+        //}
 
-        private void NotifyAgent(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
-        {
-            var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
-            {
-                //Body = mailBody,
-                IsBodyHtml = true,
-                //Subject = subject,
-                FromEmail = "admin@adfenixleads.com",
-                FromName = "Admin",
-                To = new[] { agent.Email },
-                ReplyTo = "admin@adfenixleads.com",
-                AggregateId = @event.AggregateId,
-                TemplateId = "954b9208-176d-44e8-af2a-8bed61e88631", //keep it hardcoded for now
-                MergeFields = GetMergeField(agent, @event)
-            };
+        //private void NotifyAgent(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
+        //{
+        //    var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
+        //    {
+        //        //Body = mailBody,
+        //        IsBodyHtml = true,
+        //        //Subject = subject,
+        //        FromEmail = "admin@adfenixleads.com",
+        //        FromName = "Admin",
+        //        To = new[] { agent.Email },
+        //        ReplyTo = "admin@adfenixleads.com",
+        //        AggregateId = @event.AggregateId,
+        //        TemplateId = "954b9208-176d-44e8-af2a-8bed61e88631", //keep it hardcoded for now
+        //        MergeFields = GetMergeField(agent, @event)
+        //    };
 
-            eventBus.Publish(emailNeedsToBeSent);
-            logger.CreateLogger(nameof(@event)).LogTrace($"agent email sent {@event.AgentEmail}.");
-        }
+        //    eventBus.Publish(emailNeedsToBeSent);
+        //    logger.CreateLogger(nameof(@event)).LogTrace($"agent email sent {@event.AgentEmail}.");
+        //}
 
-        private Dictionary<string, string> GetMergeField(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
-        {
-            return new Dictionary<string, string>()
-                {
-                    { "[Sender_Name]", $"{agent.Firstname} {agent.Lastname}" },
-                    { "[Sender_Address]", agent.Address },
-                    { "[Sender_City]", agent.City },
-                    { "[Sender_State]", agent.State },
-                    { "[Sender_Zip]", agent.Zip },
-                    { "[Typeform_Link]", agent.AgentTypeForm.TypeFormUrl },
-                    { "[Lead_Link]", "http://contact.adfenixleads.com" },
-                    { "[Lead_Spreadsheet]", agent.AgentTypeForm.SpreadsheetUrl },
-                    { "[Customer_Email]", @event.CustomerEmail },
-                };
-        }
+        //private Dictionary<string, string> GetMergeField(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
+        //{
+        //    return new Dictionary<string, string>()
+        //        {
+        //            { "[Sender_Name]", $"{agent.Firstname} {agent.Lastname}" },
+        //            { "[Sender_Address]", agent.Address },
+        //            { "[Sender_City]", agent.City },
+        //            { "[Sender_State]", agent.State },
+        //            { "[Sender_Zip]", agent.Zip },
+        //            { "[Typeform_Link]", agent.AgentTypeForm.TypeFormUrl },
+        //            { "[Lead_Link]", "http://contact.adfenixleads.com" },
+        //            { "[Lead_Spreadsheet]", agent.AgentTypeForm.SpreadsheetUrl },
+        //            { "[Customer_Email]", @event.CustomerEmail },
+        //        };
+        //}
     }
 }

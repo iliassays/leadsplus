@@ -59,6 +59,26 @@ services:
     ports:
       - "5109:80"   # Important: In a production environment your should remove the external port (5109) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).
+
+  inqueryhistory.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - DatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://nosql.data}
+      - DatabaseName=AgentStore
+      - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
+      - IdentityUrlExternal=http://${LEADSPLUS_PROD_IDENTITY_API_DOMAIN}:5105
+      - EventBusConnection=${LEADSPLUS_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${LEADSPLUS_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${LEADSPLUS_SERVICE_BUS_PASSWORD}          
+      - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - UseLoadTest=${USE_LOADTEST:-False}
+    ports:
+      - "5106:80"   # Important: In a production environment your should remove the external port (5109) kept here for microservice debugging purposes. 
+                    # The API Gateway redirects and access through the internal port (80).
+
   contact.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -142,3 +162,19 @@ services:
       - UseLoadTest=${USE_LOADTEST:-False}
     ports:
       - "5110:80"
+
+  emailparsar.backgroundtask:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - EventBusConnection=${LEADSPLUS_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${LEADSPLUS_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${LEADSPLUS_SERVICE_BUS_PASSWORD}     
+      - SendgridApiKey= ${LEADSPLUS_SENDGRID_APP_KEY}
+      - SendgridMailingApi= ${LEADSPLUS_SENDGRID_MAILING_URL}
+      - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - UseLoadTest=${USE_LOADTEST:-False}
+    ports:
+      - "5111:80"
