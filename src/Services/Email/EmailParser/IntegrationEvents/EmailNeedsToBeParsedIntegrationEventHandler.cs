@@ -28,7 +28,7 @@
             {
                 Body = @event.Body,
                 IsBodyHtml = true,
-                Subject = $"{@event.Subject}_{@event.AggregateId}", //later we will push it to header
+                Subject = $"{@event.Subject} :[agg-{@event.AggregateId}]",
                 FromEmail = "adfenixemailparser@adfeixleads.com",
                 FromName = "adfenixemailparser",
                 To = new[] { @event.ToEmail },

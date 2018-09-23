@@ -51,7 +51,7 @@
                 IsBodyHtml = true,
                 //Subject = subject,
                 FromEmail = "admin@adfenixleads.com",
-                FromName = "Admin",
+                FromName = "AdfenixLeads",
                 To = new[] { @event.InqueryHistory.AgentEmail },
                 ReplyTo = "admin@adfenixleads.com",
                 AggregateId = @event.InqueryHistory.Id,

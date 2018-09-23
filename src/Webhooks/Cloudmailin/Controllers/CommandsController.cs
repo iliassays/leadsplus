@@ -32,7 +32,6 @@
         {
 
             var aggregateId = Guid.NewGuid().ToString();
-             
 
             var @event = new AgentInboundEmailTrackedIntegrationEvent()
             {
@@ -40,7 +39,7 @@
                 PlainText = Request.Form["plain"],
                 OrganizationEmail = Request.Form["envelope[from]"],
                 AgentEmail = Request.Form["envelope[to]"],
-                Subject = $"{Request.Form["headers[Subject]"]} :[agg-{aggregateId}]",
+                Subject = $"{Request.Form["headers[Subject]"]}",
                 AggregateId = aggregateId
             };
 
