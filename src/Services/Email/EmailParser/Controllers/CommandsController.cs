@@ -37,7 +37,7 @@
 
             var @event = new EmailParsedIntegrationEvent()
             {
-                ExtractedField = FilterExtractedFields(Request.Form),
+                ExtractedFields = FilterExtractedFields(Request.Form),
                 AggregateId = ExtractAggregateId(),
             };
 

@@ -25,8 +25,8 @@ namespace Contact.Infrastructure.AutofacModules
             builder.RegisterAssemblyTypes(typeof(NotifyAgentWhenContactCreatedDomainEventHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(INotificationHandler<>));
 
-            builder.RegisterAssemblyTypes(typeof(CreateContactCommand).GetTypeInfo().Assembly)
-                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+            //builder.RegisterAssemblyTypes(typeof(CreateContactCommand).GetTypeInfo().Assembly)
+            //    .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
             // Register the Command's Validators (Validators based on FluentValidation library)
             builder

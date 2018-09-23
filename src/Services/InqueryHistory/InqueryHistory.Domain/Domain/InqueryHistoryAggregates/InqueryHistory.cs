@@ -4,6 +4,19 @@
     using System;
     using System.Collections.Generic;
     using Events;
+    using MongoDB.Bson.Serialization.Attributes;
+    using MongoDB.Bson;
+
+    public enum InqueryStatus
+    {
+        Submitted = 0,
+        SentForParsing = 1,
+        Parsed = 2,
+        AutoresponderSending = 3,
+        AutoresponderSendingCompleted = 4,
+        Processed = 5,
+        Failed = 6
+    }
 
     public class InqueryHistory : AggregateRoot, IViewModel
     {
@@ -19,6 +32,7 @@
 
         public string AgentId { get; set; }
 
+        [BsonRepresentation(BsonType.String)]
         public InqueryStatus InqueryStatus { get; set; }
         public InqueryParsedToken InqueryParsedToken { get; set; }
         public Dictionary<string, string> ExtractedFields { get; set; }
@@ -105,7 +119,7 @@
 
         public void SetProcessedStatus()
         {
-            if (InqueryStatus == InqueryStatus.AutoresponderSending)
+            if (InqueryStatus == InqueryStatus.AutoresponderSendingCompleted)
             {
                 AddDomainEvent(new InqueryHistoryStatusChangedToProcessedDomainEvent(Id));
 

@@ -24,7 +24,7 @@
         private readonly IRepository<InqueryHistory> inqueryHistoryRepository;
 
         public UpdateAgentAutoresponderSentCommandHandler(IMediator mediator, 
-            IRepository<InqueryHistory> agentRepository, 
+            IRepository<InqueryHistory> inqueryHistoryRepository, 
             IEventBus eventBus, 
             IIdentityService identityService,
             IQueryExecutor queryExecutor)

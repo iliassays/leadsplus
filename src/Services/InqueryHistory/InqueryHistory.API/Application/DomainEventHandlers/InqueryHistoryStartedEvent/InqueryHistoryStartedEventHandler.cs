@@ -17,18 +17,18 @@
         private readonly ILoggerFactory logger;
         private readonly IIdentityService identityService;
         private readonly IEventBus eventBus;
-        private readonly IRepository<InqueryHistory> agentRepository;
+        private readonly IRepository<InqueryHistory> inqueryHistoryRepository;
 
         public InqueryHistoryStartedEventHandler(
             ILoggerFactory logger,
             IIdentityService identityService,
             IEventBus eventBus,
-            IRepository<InqueryHistory> agentRepository)
+            IRepository<InqueryHistory> inqueryHistoryRepository)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.agentRepository = agentRepository ?? throw new ArgumentNullException(nameof(agentRepository));
+            this.inqueryHistoryRepository = inqueryHistoryRepository ?? throw new ArgumentNullException(nameof(inqueryHistoryRepository));
         }
 
         public async Task Handle(InqueryHistoryStartedDomainEvent @event, CancellationToken cancellationToken)

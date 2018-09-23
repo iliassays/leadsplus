@@ -31,6 +31,7 @@
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Threading.Tasks;
+    using System.Reflection;
 
     public class Startup
     {
@@ -57,6 +58,9 @@
 
             var container = new ContainerBuilder();
             container.Populate(services);
+
+            container.RegisterAssemblyTypes(typeof(NewInqueryRequestReceivedIntegrationEventHandler).GetTypeInfo().Assembly)
+                .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
 
             container.RegisterModule(new MediatorModule());
             container.RegisterModule(new ApplicationModule(Configuration));
@@ -91,7 +95,7 @@
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Contact.API V1");
-                   c.OAuthClientId("agentswaggerui");
+                   c.OAuthClientId("inquirywaggerui");
                    c.OAuthAppName("Inquery History Swagger UI");
                });
 

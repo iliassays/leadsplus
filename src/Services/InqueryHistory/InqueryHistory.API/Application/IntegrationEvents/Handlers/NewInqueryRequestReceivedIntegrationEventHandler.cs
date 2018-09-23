@@ -25,7 +25,7 @@
         private readonly ILoggerFactory logger;
 
         public NewInqueryRequestReceivedIntegrationEventHandler(IMediator mediator,
-            IRepository<InqueryHistory> agentRepository,
+            IRepository<InqueryHistory> inqueryHistoryRepository,
             IEventBus eventBus,
             ILoggerFactory logger,
             IIdentityService identityService,
@@ -42,8 +42,8 @@
 
         public async Task Handle(NewInqueryRequestReceivedIntegrationEvent @event)
         {
-            //logger.CreateLogger(nameof(@event)).LogTrace($"customer email tracked {@event.From}.");
-            //logger.CreateLogger(nameof(@event)).LogTrace($"agent email {@event.To}.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"new inquiry request received {@event.AggregateId}.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"new inquiry request received organization email {@event.AgentEmail}.");
 
             //1. Let caller know that we have started the processing
             //2. send the request to zapier to parse the mail,

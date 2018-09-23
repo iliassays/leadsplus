@@ -37,16 +37,17 @@
         {
             //check if cntact for this agent already exist.
 
+            var email = message.Email?.Split(" ")[0];
+
             var contact = await queryExecutor.Execute<GetContactByEmailAndOwnerQuery, Contact>(
-                new GetContactByEmailAndOwnerQuery { OwnerId = message.OwnerId, Email = message.Email });
+                new GetContactByEmailAndOwnerQuery { OwnerId = message.OwnerId, Email = email });
 
             if(contact == null)
             {
-                contact = new Contact(message.AggregateId, message.OwnerId, message.Ownername, message.Source, message.Firstname, message.Lastname, message.Email);
+                contact = new Contact(message.AggregateId, message.OwnerId, message.Ownername, message.Source, message.Firstname, message.Lastname, email);
 
                 await contactRepository.AddAsync(contact);
-            }
-            
+            }            
 
             return true;
         }

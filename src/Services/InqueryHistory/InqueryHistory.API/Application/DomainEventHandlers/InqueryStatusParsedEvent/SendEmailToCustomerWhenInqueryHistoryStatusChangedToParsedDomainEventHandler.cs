@@ -44,6 +44,14 @@
 
         public async Task Handle(InqueryHistoryStatusChangedToParsedDomainEvent @event, CancellationToken cancellationToken)
         {
+            var customerEmail = @event.InqueryHistory.ExtractedFields.ContainsKey("customeremail") ? @event.InqueryHistory.ExtractedFields["customeremail"] : "";
+            customerEmail = customerEmail?.Split(" ")[0];
+
+            if (!string.IsNullOrEmpty(customerEmail))
+            {
+                @event.InqueryHistory.ExtractedFields["customeremail"] = customerEmail;
+            }
+
             var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
             {
                 //Body = mailBody,
@@ -51,8 +59,8 @@
                 //Subject = subject,
                 FromEmail = @event.InqueryHistory.AgentEmail,
                 FromName = $"{@event.InqueryHistory.AgentInfo.Firstname} {@event.InqueryHistory.AgentInfo.Lastname}",
-                To = new[] { @event.InqueryHistory.OrganizationEmail },
-                ReplyTo = @event.InqueryHistory.AgentEmail,
+                To = new[] { customerEmail },
+                ReplyTo = @event.InqueryHistory.AgentInfo.Email,
                 AggregateId = @event.InqueryHistory.Id,
                 TemplateId = "bf191e71-8916-424f-a2ad-3c15a058ac22", //Autoresponder for new Customer. keep it hardcoded for now
                 MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
@@ -90,7 +98,7 @@
             {
                 if (!mergedFields.ContainsKey(item.Key))
                 {
-                    mergedFields.Add(item.Key, item.Value);
+                    mergedFields.Add($"[{item.Key}]", item.Value);
                 }
             }
 

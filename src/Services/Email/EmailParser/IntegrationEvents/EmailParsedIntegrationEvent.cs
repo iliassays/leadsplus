@@ -5,7 +5,7 @@
 
     public class EmailParsedIntegrationEvent : IntegrationEvent
     {
-        public Dictionary<string, string> ExtractedField { get; set; }
+        public Dictionary<string, string> ExtractedFields { get; set; }
 
         public EmailParsedIntegrationEvent()
         {

@@ -25,8 +25,8 @@
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(UpdateInqueryStatusToSentForParsingCommandHandler).GetTypeInfo().Assembly)
-                .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
+            //builder.RegisterAssemblyTypes(typeof(UpdateInqueryStatusToSentForParsingCommandHandler).GetTypeInfo().Assembly)
+            //    .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
 
             builder.RegisterType<QueryExecutor>().As<IQueryExecutor>().SingleInstance();
             //builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
@@ -41,10 +41,7 @@
                 .As<IQueryExecutor>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<GoogleApiConnector>()
-                .As<IGoogleApiConnector>()
-                .InstancePerLifetimeScope();
-
+            
             builder.Register(c => {
                 return ViewModelStoreFactory.Create<Domain.InqueryHistory>(setting["DatabaseConnectionString"], setting["DatabaseName"]);
             }).AsSelf().SingleInstance();

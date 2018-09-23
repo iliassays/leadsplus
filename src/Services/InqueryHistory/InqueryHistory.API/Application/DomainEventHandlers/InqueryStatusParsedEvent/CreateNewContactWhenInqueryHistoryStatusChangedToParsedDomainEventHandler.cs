@@ -82,21 +82,32 @@
 
             eventBus.Publish(createContactIntegrationEvent);
 
-            var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
-            {
-                //Body = mailBody,
-                IsBodyHtml = true,
-                //Subject = "",
-                FromEmail = "admin@adfenixleads.com",
-                FromName = "AdminLeads",
-                To = new[] { @event.InqueryHistory.AgentEmail },
-                ReplyTo = "admin@adfenixleads.com",
-                AggregateId = @event.InqueryHistory.Id,
-                TemplateId = "c1f08213-6f62-4ba0-8dc2-3d768ae759ee", //Autoresponder for Agent for new Lead. keep it hardcoded for now
-                MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
-            };
+            var customerEmail = @event.InqueryHistory.ExtractedFields.ContainsKey("customeremail") ? @event.InqueryHistory.ExtractedFields["customeremail"] : "";
+            customerEmail = customerEmail?.Split(" ")[0];
 
-            eventBus.Publish(emailNeedsToBeSent);
+
+            if (string.IsNullOrEmpty(customerEmail))
+            {
+                @event.InqueryHistory.ExtractedFields["customeremail"] = customerEmail;
+
+                var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
+                {
+                    //Body = mailBody,
+                    IsBodyHtml = true,
+                    //Subject = "",
+                    FromEmail = "admin@adfenixleads.com",
+                    FromName = "AdminLeads",
+                    To = new[] { @event.InqueryHistory.AgentInfo.Email },
+                    ReplyTo = customerEmail,
+                    AggregateId = @event.InqueryHistory.Id,
+                    TemplateId = "c1f08213-6f62-4ba0-8dc2-3d768ae759ee", //Autoresponder for Agent for new Lead. keep it hardcoded for now
+                    MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
+                };
+
+                eventBus.Publish(emailNeedsToBeSent);
+            }
+
+            
 
             logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history email converted to leads {@event.InqueryHistory.Id} - {@event.InqueryHistory.OrganizationEmail}.");
         }
@@ -121,7 +132,7 @@
             {
                 if (!mergedFields.ContainsKey(item.Key))
                 {
-                    mergedFields.Add(item.Key, item.Value);
+                    mergedFields.Add($"[{item.Key}]", item.Value);
                 }
             }
 
