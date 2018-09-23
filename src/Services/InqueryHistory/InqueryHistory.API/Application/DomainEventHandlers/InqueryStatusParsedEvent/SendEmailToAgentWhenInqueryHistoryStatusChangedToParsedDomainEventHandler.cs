@@ -55,7 +55,7 @@
                 To = new[] { @event.InqueryHistory.AgentEmail },
                 ReplyTo = "admin@adfenixleads.com",
                 AggregateId = @event.InqueryHistory.Id,
-                TemplateId = "954b9208-176d-44e8-af2a-8bed61e88631", //keep it hardcoded for now
+                TemplateId = "7d21db97-6845-44af-aa84-37dce9b4eeb4", //Autoresponder for agent For new Inquiry. keep it hardcoded for now
                 MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
             };
 
@@ -75,15 +75,16 @@
         {
             var mergedFields = new Dictionary<string, string>()
                 {
-                    { "[Sender_Name]", $"{agent.Firstname} {agent.Lastname}" },
-                    { "[Sender_Address]", agent.Address },
-                    { "[Sender_City]", agent.City },
-                    { "[Sender_State]", agent.State },
-                    { "[Sender_Zip]", agent.Zip },
-                    { "[Typeform_Link]", agent.AgentTypeFormInfo.TypeFormUrl },
-                    { "[Lead_Link]", "http://contact.adfenixleads.com" },
-                    { "[Lead_Spreadsheet]", agent.AgentTypeFormInfo.SpreadsheetUrl },
-                    { "[Customer_Email]", @event.InqueryHistory.OrganizationEmail },
+                    { "[agentfirstname]", agent.Firstname },
+                    { "[agentlastname]", agent.Lastname },
+                    { "[agentaddress]", agent.Address },
+                    { "[agentcity]", agent.City },
+                    { "[agentstate]", agent.State },
+                    { "[agentzip]", agent.Zip },
+                    { "[agenttypeformlink]", agent.AgentTypeFormInfo.TypeFormUrl },
+                    { "[addressbooklink]", "http://contact.adfenixleads.com" },
+                    { "[inquirylist]", agent.AgentTypeFormInfo.SpreadsheetUrl },
+                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail },
                 };
 
             foreach(var item in @event.InqueryHistory.ExtractedFields)

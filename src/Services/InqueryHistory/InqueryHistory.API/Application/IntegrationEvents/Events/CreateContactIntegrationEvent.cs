@@ -14,6 +14,7 @@
         public string Address { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
+        public string Aboutme { get; set; }
         public string Source { get; set; }
         public string GroupId { get; set; }
         public string OwnerId { get; set; }

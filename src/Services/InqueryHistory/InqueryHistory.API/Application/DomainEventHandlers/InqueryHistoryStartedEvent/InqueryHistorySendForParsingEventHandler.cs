@@ -10,10 +10,12 @@
     using MediatR;
     using Microsoft.Extensions.Logging;
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class SendEmailToCustomerEventHandler
+    public class InqueryHistorySendForParsingEventHandler
                         : INotificationHandler<InqueryHistoryStartedDomainEvent>
     {
         private readonly ILoggerFactory logger;
@@ -21,8 +23,9 @@
         private readonly IIdentityService identityService;
         private readonly IEventBus eventBus;
         private readonly IRepository<InqueryHistory> inqueryHistoryRepository;
+        private readonly Dictionary<string, string> parsingEmailMaping;
 
-        public SendEmailToCustomerEventHandler(
+        public InqueryHistorySendForParsingEventHandler(
             ILoggerFactory logger,
             IIdentityService identityService,
             IEventBus eventBus,
@@ -34,16 +37,24 @@
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             this.inqueryHistoryRepository = inqueryHistoryRepository ?? throw new ArgumentNullException(nameof(inqueryHistoryRepository));
+
+            parsingEmailMaping = new Dictionary<string, string>()
+            {
+                {"gmail.com", "adfenixleads@robot.zapier.com" },
+                {"rightmove.co.uk", "rightmove0co0uk0customerinquery@robot.zapier.com" },
+                {"domain.com.au", "domain0com0au@robot.zapier.com" }
+            };
         }
 
         public async Task Handle(InqueryHistoryStartedDomainEvent @event, CancellationToken cancellationToken)
         {
+            var organizationDomain = @event.InqueryHistory.OrganizationEmail.Split("@")[1];
             //send  inquery for parsing
             var emailNeedsToBeParsed = new EmailNeedsToBeParsedIntegrationEvent
             {
                 Body = @event.InqueryHistory.Message,
                 Subject = @event.InqueryHistory.Subject,
-                //To = new[] { "" }, //decide mailbox to be sent for parsing
+                ToEmail = parsingEmailMaping.ContainsKey(organizationDomain) ? parsingEmailMaping[organizationDomain] : "adfenixleads@robot.zapier.com", 
                 AggregateId = @event.InqueryHistory.Id
             };
 

@@ -66,12 +66,37 @@
             {
                 AggregateId = @event.InqueryHistory.Id,
                 Source = "InqueryRequest",
-                Email = @event.InqueryHistory.OrganizationEmail,
+
+                Email = @event.InqueryHistory.ExtractedFields.ContainsKey("customeremail") ? @event.InqueryHistory.ExtractedFields["customeremail"] : "",
+                Phone = @event.InqueryHistory.ExtractedFields.ContainsKey("customerphone") ? @event.InqueryHistory.ExtractedFields["customerphone"] : "",
+                City = @event.InqueryHistory.ExtractedFields.ContainsKey("customercity") ? @event.InqueryHistory.ExtractedFields["customercity"] : "",
+                Company = @event.InqueryHistory.ExtractedFields.ContainsKey("customercompany") ? @event.InqueryHistory.ExtractedFields["customercompany"] : "",
+                Address = @event.InqueryHistory.ExtractedFields.ContainsKey("customeraddress") ? @event.InqueryHistory.ExtractedFields["customeraddress"] : "",
+                Country = @event.InqueryHistory.ExtractedFields.ContainsKey("customercountry") ? @event.InqueryHistory.ExtractedFields["customercountry"] : "",
+                Firstname = @event.InqueryHistory.ExtractedFields.ContainsKey("customerfirstname") ? @event.InqueryHistory.ExtractedFields["customerfirstname"] : "",
+                Lastname = @event.InqueryHistory.ExtractedFields.ContainsKey("customerlastname") ? @event.InqueryHistory.ExtractedFields["customerlastname"] : "",
+                Aboutme = @event.InqueryHistory.ExtractedFields.ContainsKey("customeraboutme") ? @event.InqueryHistory.ExtractedFields["customeraboutme"] : "",
                 OwnerId = @event.InqueryHistory.AgentInfo.Id,
                 Ownername = $"{@event.InqueryHistory.AgentInfo.Firstname} {@event.InqueryHistory.AgentInfo.Lastname}"
             };
 
             eventBus.Publish(createContactIntegrationEvent);
+
+            var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
+            {
+                //Body = mailBody,
+                IsBodyHtml = true,
+                //Subject = "",
+                FromEmail = "admin@adfenixleads.com",
+                FromName = "AdminLeads",
+                To = new[] { @event.InqueryHistory.AgentEmail },
+                ReplyTo = "admin@adfenixleads.com",
+                AggregateId = @event.InqueryHistory.Id,
+                TemplateId = "c1f08213-6f62-4ba0-8dc2-3d768ae759ee", //Autoresponder for Agent for new Lead. keep it hardcoded for now
+                MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
+            };
+
+            eventBus.Publish(emailNeedsToBeSent);
 
             logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history email converted to leads {@event.InqueryHistory.Id} - {@event.InqueryHistory.OrganizationEmail}.");
         }
@@ -80,18 +105,19 @@
         {
             var mergedFields = new Dictionary<string, string>()
                 {
-                    { "[Sender_Name]", $"{agent.Firstname} {agent.Lastname}" },
-                    { "[Sender_Address]", agent.Address },
-                    { "[Sender_City]", agent.City },
-                    { "[Sender_State]", agent.State },
-                    { "[Sender_Zip]", agent.Zip },
-                    { "[Typeform_Link]", agent.AgentTypeFormInfo.TypeFormUrl },
-                    { "[Lead_Link]", "http://contact.adfenixleads.com" },
-                    { "[Lead_Spreadsheet]", agent.AgentTypeFormInfo.SpreadsheetUrl },
-                    { "[Customer_Email]", @event.InqueryHistory.OrganizationEmail },
+                    { "[agentfirstname]", agent.Firstname },
+                    { "[agentlastname]", agent.Lastname },
+                    { "[agentaddress]", agent.Address },
+                    { "[agentcity]", agent.City },
+                    { "[agentstate]", agent.State },
+                    { "[agentzip]", agent.Zip },
+                    { "[agenttypeformlink]", agent.AgentTypeFormInfo.TypeFormUrl },
+                    { "[addressbooklink]", "http://contact.adfenixleads.com" },
+                    { "[inquirylist]", agent.AgentTypeFormInfo.SpreadsheetUrl },
+                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail },
                 };
 
-            foreach(var item in @event.InqueryHistory.ExtractedFields)
+            foreach (var item in @event.InqueryHistory.ExtractedFields)
             {
                 if (!mergedFields.ContainsKey(item.Key))
                 {

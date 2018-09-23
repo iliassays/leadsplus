@@ -31,7 +31,7 @@
                 Subject = $"{@event.Subject}_{@event.AggregateId}", //later we will push it to header
                 FromEmail = "adfenixemailparser@adfeixleads.com",
                 FromName = "adfenixemailparser",
-                To = new[] { "" }, //decide mailbox to be sent for parsing using OrganizationEmail
+                To = new[] { @event.ToEmail },
                 AggregateId = @event.AggregateId
             };
 

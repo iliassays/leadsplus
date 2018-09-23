@@ -54,7 +54,7 @@
                 To = new[] { @event.InqueryHistory.OrganizationEmail },
                 ReplyTo = @event.InqueryHistory.AgentEmail,
                 AggregateId = @event.InqueryHistory.Id,
-                TemplateId = "ed324a45-f3a7-4232-a551-12abc8051798", //keep it hardcoded for now
+                TemplateId = "bf191e71-8916-424f-a2ad-3c15a058ac22", //Autoresponder for new Customer. keep it hardcoded for now
                 MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
             };
 
@@ -74,15 +74,16 @@
         {
             var mergedFields = new Dictionary<string, string>()
                 {
-                    { "[Sender_Name]", $"{agent.Firstname} {agent.Lastname}" },
-                    { "[Sender_Address]", agent.Address },
-                    { "[Sender_City]", agent.City },
-                    { "[Sender_State]", agent.State },
-                    { "[Sender_Zip]", agent.Zip },
-                    { "[Typeform_Link]", agent.AgentTypeFormInfo.TypeFormUrl },
-                    { "[Lead_Link]", "http://contact.adfenixleads.com" },
-                    { "[Lead_Spreadsheet]", agent.AgentTypeFormInfo.SpreadsheetUrl },
-                    { "[Customer_Email]", @event.InqueryHistory.OrganizationEmail },
+                    { "[agentfirstname]", agent.Firstname },
+                    { "[agentlastname]", agent.Lastname },
+                    { "[agentaddress]", agent.Address },
+                    { "[agentcity]", agent.City },
+                    { "[agentstate]", agent.State },
+                    { "[agentzip]", agent.Zip },
+                    { "[agenttypeformlink]", agent.AgentTypeFormInfo.TypeFormUrl },
+                    { "[addressbooklink]", "http://contact.adfenixleads.com" },
+                    { "[inquirylist]", agent.AgentTypeFormInfo.SpreadsheetUrl },
+                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail },
                 };
 
             foreach (var item in @event.InqueryHistory.ExtractedFields)

@@ -29,6 +29,7 @@
                 Email = @event.Email,
                 Firstname = @event.Firstname,
                 Lastname = @event.Lastname,
+                Aboutme = @event.Aboutme,
                 GroupId = @event.GroupId,
                 OwnerId = @event.OwnerId,
                 Source = @event.Source,
