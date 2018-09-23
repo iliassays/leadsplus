@@ -53,7 +53,7 @@
             eventBus.Publish(newInqueryProcessStartedIntegrationEvent);
             //string id, string customerEmail, string message, string subject, string agentEmail, AgentInfo agentInfo
             var inqueryHistory = new InqueryHistory(@event.AggregateId,
-                @event.CustomerEmail,
+                @event.OrganizationEmail,
                 @event.Body,
                 @event.Subject,
                 @event.AgentEmail,

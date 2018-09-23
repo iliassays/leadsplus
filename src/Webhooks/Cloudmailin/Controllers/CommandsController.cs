@@ -40,7 +40,7 @@
             {
                 Body = createInboundEmailCommand.Text,
                 PlainText = createInboundEmailCommand.Plain,
-                CustomerEmail = createInboundEmailCommand.From,
+                OrganizationEmail = createInboundEmailCommand.From,
                 AgentEmail = createInboundEmailCommand.To,
                 Subject = createInboundEmailCommand.Subject,
                 AggregateId = Guid.NewGuid().ToString()

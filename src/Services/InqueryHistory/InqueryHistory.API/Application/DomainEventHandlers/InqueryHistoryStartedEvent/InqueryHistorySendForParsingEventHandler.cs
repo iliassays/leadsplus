@@ -39,18 +39,15 @@
         public async Task Handle(InqueryHistoryStartedDomainEvent @event, CancellationToken cancellationToken)
         {
             //send  inquery for parsing
-            var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
+            var emailNeedsToBeParsed = new EmailNeedsToBeParsedIntegrationEvent
             {
                 Body = @event.InqueryHistory.Message,
-                IsBodyHtml = true,
                 Subject = @event.InqueryHistory.Subject,
-                FromEmail = "inqueryhistory@adfeixleads.com",
-                FromName = "inqueryhistory",
-                To = new[] { "" }, //decide mailbox to be sent for parsing
+                //To = new[] { "" }, //decide mailbox to be sent for parsing
                 AggregateId = @event.InqueryHistory.Id
             };
 
-            eventBus.Publish(emailNeedsToBeSent);
+            eventBus.Publish(emailNeedsToBeParsed);
 
             var updateInqueryStatusToSentForParsingCommand = new UpdateInqueryStatusToSentForParsingCommand()
             {

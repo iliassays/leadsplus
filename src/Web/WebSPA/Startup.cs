@@ -50,9 +50,10 @@ namespace LeadsPlus.WebSPA
                 }
 
                 checks.AddUrlCheck(Configuration["ContactUrlHC"], TimeSpan.FromMinutes(minutes));
-                //checks.AddUrlCheck(Configuration["AgentUrlHC"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheck(Configuration["AgentUrlHC"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheck(Configuration["IdentityUrlHC"], TimeSpan.FromMinutes(minutes));
-            
+                checks.AddUrlCheck(Configuration["InqueryHistoryUrlHC"], TimeSpan.FromMinutes(minutes));
+
             });
 
             services.Configure<AppSettings>(Configuration);

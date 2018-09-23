@@ -5,7 +5,7 @@
 
     public class EmailNeedsToBeParsedIntegrationEvent : IntegrationEvent
     {
-        public string To { get; set; }
+        public string OrganizationEmail { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
 

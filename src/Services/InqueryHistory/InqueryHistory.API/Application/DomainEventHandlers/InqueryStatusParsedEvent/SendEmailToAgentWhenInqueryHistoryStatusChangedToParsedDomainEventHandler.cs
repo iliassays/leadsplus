@@ -83,7 +83,7 @@
                     { "[Typeform_Link]", agent.AgentTypeFormInfo.TypeFormUrl },
                     { "[Lead_Link]", "http://contact.adfenixleads.com" },
                     { "[Lead_Spreadsheet]", agent.AgentTypeFormInfo.SpreadsheetUrl },
-                    { "[Customer_Email]", @event.InqueryHistory.CustomerEmail },
+                    { "[Customer_Email]", @event.InqueryHistory.OrganizationEmail },
                 };
 
             foreach(var item in @event.InqueryHistory.ExtractedFields)

@@ -107,8 +107,8 @@ services:
       - IdentityUrl=http://identity.api/hc
       - AgentUrl=http://Agent.API/hc
       - ContactUrl=http://Contact.API/hc
-      - cloudmailinwebhook=http://cloudmailin.webhook/hc
-      - spa=http://webspa/hc
+      - CloudmailinWebhook=http://cloudmailin.webhook/hc
+      - AdminPortal=http://webspa/hc
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:

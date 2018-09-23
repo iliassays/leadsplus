@@ -107,8 +107,11 @@ services:
       - IdentityUrl=http://identity.api/hc
       - AgentUrl=http://Agent.API/hc
       - ContactUrl=http://Contact.API/hc
-      - cloudmailinwebhook=http://cloudmailin.webhook/hc
-      - spa=http://webspa/hc
+      - CloudmailinWebhook=http://cloudmailin.webhook/hc
+      - AdminPortal=http://webspa/hc
+      - EmailSenderBackgroundTask=http://emailsender/hc
+      - EmailParserBackgroundTask=http://emailparsar/hc
+      - InqueryHistoryUrl=http://inqueryhistory.api/hc
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
@@ -124,6 +127,7 @@ services:
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${LEADSPLUS_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
       - AgentUrlHC=http://agent.api/hc
       - ContactUrlHC=http://contact.api/hc
+      - InqueryHistoryUrlHC=http://inqueryhistory.api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}

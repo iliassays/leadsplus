@@ -38,17 +38,15 @@ namespace WebStatus
                     minutes = minutesParsed;
                 }
 
-                //checks.AddUrlCheckIfNotNull(Configuration["OrderingUrl"], TimeSpan.FromMinutes(minutes)); 
-                //checks.AddUrlCheckIfNotNull(Configuration["OrderingBackgroundTasksUrl"], TimeSpan.FromMinutes(minutes));
-                //checks.AddUrlCheckIfNotNull(Configuration["BasketUrl"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos                  
                 checks.AddUrlCheckIfNotNull(Configuration["ContactUrl"], TimeSpan.FromMinutes(minutes)); 
                 checks.AddUrlCheckIfNotNull(Configuration["IdentityUrl"], TimeSpan.FromMinutes(minutes)); 
-                checks.AddUrlCheckIfNotNull(Configuration["AgentUrl"], TimeSpan.FromMinutes(minutes)); 
-                //checks.AddUrlCheckIfNotNull(Configuration["MarketingUrl"], TimeSpan.FromMinutes(minutes)); 
-                //checks.AddUrlCheckIfNotNull(Configuration["PaymentUrl"], TimeSpan.FromMinutes(minutes)); 
-                //checks.AddUrlCheckIfNotNull(Configuration["mvc"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
-                checks.AddUrlCheckIfNotNull(Configuration["spa"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
-                checks.AddUrlCheckIfNotNull(Configuration["cloudmailinwebhook"], TimeSpan.Zero);
+                checks.AddUrlCheckIfNotNull(Configuration["AgentUrl"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheckIfNotNull(Configuration["InqueryHistoryUrl"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheckIfNotNull(Configuration["EmailParserBackgroundTask"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheckIfNotNull(Configuration["EmailSenderBackgroundTask"], TimeSpan.FromMinutes(minutes));
+
+                checks.AddUrlCheckIfNotNull(Configuration["AdminPortal"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
+                checks.AddUrlCheckIfNotNull(Configuration["CloudmailinWebhook"], TimeSpan.Zero);
             });
 
             services.AddMvc();

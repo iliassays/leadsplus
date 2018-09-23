@@ -7,7 +7,7 @@
 
     public class InqueryHistory : AggregateRoot, IViewModel
     {
-        public string CustomerEmail { get; set; }
+        public string OrganizationEmail { get; set; }
         public string Message { get; set; }
         public string Subject { get; set; }
         public string AgentEmail { get; set; }
@@ -31,11 +31,11 @@
 
         }
 
-        public InqueryHistory(string id, string customerEmail, string message, string subject, string agentEmail, AgentInfo agentInfo)
+        public InqueryHistory(string id, string organizationEmail, string message, string subject, string agentEmail, AgentInfo agentInfo)
             : this()
         {
             Id = id;
-            CustomerEmail = customerEmail;
+            OrganizationEmail = organizationEmail;
             Message = message;
             Subject = subject;
             AgentEmail = agentEmail;

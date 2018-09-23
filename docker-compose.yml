@@ -62,10 +62,10 @@ services:
       - rabbitmq
 
   emailparsar.backgroundtask:
-    image: leadsplus/emailparsar-backgroundtask:${TAG:-latest}
+    image: leadsplus/emailparser-backgroundtask:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Email/EmailParsar/Dockerfile
+      dockerfile: src/Services/Email/EmailParser/Dockerfile
     depends_on:
       - rabbitmq
 

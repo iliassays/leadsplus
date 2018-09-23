@@ -66,14 +66,14 @@
             {
                 AggregateId = @event.InqueryHistory.Id,
                 Source = "InqueryRequest",
-                Email = @event.InqueryHistory.CustomerEmail,
+                Email = @event.InqueryHistory.OrganizationEmail,
                 OwnerId = @event.InqueryHistory.AgentInfo.Id,
                 Ownername = $"{@event.InqueryHistory.AgentInfo.Firstname} {@event.InqueryHistory.AgentInfo.Lastname}"
             };
 
             eventBus.Publish(createContactIntegrationEvent);
 
-            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history email converted to leads {@event.InqueryHistory.Id} - {@event.InqueryHistory.CustomerEmail}.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history email converted to leads {@event.InqueryHistory.Id} - {@event.InqueryHistory.OrganizationEmail}.");
         }
 
         private Dictionary<string, string> GetMergeField(Domain.AgentInfo agent, InqueryHistoryStatusChangedToParsedDomainEvent @event)
@@ -88,7 +88,7 @@
                     { "[Typeform_Link]", agent.AgentTypeFormInfo.TypeFormUrl },
                     { "[Lead_Link]", "http://contact.adfenixleads.com" },
                     { "[Lead_Spreadsheet]", agent.AgentTypeFormInfo.SpreadsheetUrl },
-                    { "[Customer_Email]", @event.InqueryHistory.CustomerEmail },
+                    { "[Customer_Email]", @event.InqueryHistory.OrganizationEmail },
                 };
 
             foreach(var item in @event.InqueryHistory.ExtractedFields)

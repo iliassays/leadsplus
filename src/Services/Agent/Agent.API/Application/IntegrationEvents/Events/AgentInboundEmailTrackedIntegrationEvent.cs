@@ -6,7 +6,7 @@
     {
         public string Body { get; set; }
         public string Subject { get; set; }
-        public string CustomerEmail { get; set; }
+        public string OrganizationEmail { get; set; }
         public string AgentEmail { get; set; }
         public string PlainText { get; set; }
 

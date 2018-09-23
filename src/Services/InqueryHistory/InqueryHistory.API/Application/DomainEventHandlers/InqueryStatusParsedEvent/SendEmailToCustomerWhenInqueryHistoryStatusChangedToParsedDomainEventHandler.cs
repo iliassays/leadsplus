@@ -51,7 +51,7 @@
                 //Subject = subject,
                 FromEmail = @event.InqueryHistory.AgentEmail,
                 FromName = $"{@event.InqueryHistory.AgentInfo.Firstname} {@event.InqueryHistory.AgentInfo.Lastname}",
-                To = new[] { @event.InqueryHistory.CustomerEmail },
+                To = new[] { @event.InqueryHistory.OrganizationEmail },
                 ReplyTo = @event.InqueryHistory.AgentEmail,
                 AggregateId = @event.InqueryHistory.Id,
                 TemplateId = "ed324a45-f3a7-4232-a551-12abc8051798", //keep it hardcoded for now
@@ -67,7 +67,7 @@
 
             await mediator.Send(updateCustomerAutoresponderSentCommand);
 
-            logger.CreateLogger(nameof(@event)).LogTrace($"Autoresponder sent to customer {@event.InqueryHistory.CustomerEmail}-{@event.InqueryHistory.CustomerEmail}.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"Autoresponder sent to customer {@event.InqueryHistory.OrganizationEmail}-{@event.InqueryHistory.OrganizationEmail}.");
         }
 
         private Dictionary<string, string> GetMergeField(Domain.AgentInfo agent, InqueryHistoryStatusChangedToParsedDomainEvent @event)
@@ -82,7 +82,7 @@
                     { "[Typeform_Link]", agent.AgentTypeFormInfo.TypeFormUrl },
                     { "[Lead_Link]", "http://contact.adfenixleads.com" },
                     { "[Lead_Spreadsheet]", agent.AgentTypeFormInfo.SpreadsheetUrl },
-                    { "[Customer_Email]", @event.InqueryHistory.CustomerEmail },
+                    { "[Customer_Email]", @event.InqueryHistory.OrganizationEmail },
                 };
 
             foreach (var item in @event.InqueryHistory.ExtractedFields)

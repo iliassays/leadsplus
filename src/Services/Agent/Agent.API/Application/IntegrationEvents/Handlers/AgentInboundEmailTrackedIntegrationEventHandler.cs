@@ -29,7 +29,7 @@
 
         public async Task Handle(AgentInboundEmailTrackedIntegrationEvent @event)
         {
-            logger.CreateLogger(nameof(@event)).LogTrace($"customer email tracked {@event.CustomerEmail}.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"customer email tracked {@event.OrganizationEmail}.");
             logger.CreateLogger(nameof(@event)).LogTrace($"agent email {@event.AgentEmail}.");
 
             var agent = await queryExecutor.Execute<GetAgentByIntegrationEmailQuery, Agent>(
@@ -45,7 +45,7 @@
                     AggregateId = @event.AggregateId,
                     Body = @event.Body,
                     Subject = @event.Subject,
-                    CustomerEmail = @event.CustomerEmail,
+                    OrganizationEmail = @event.OrganizationEmail,
                     AgentInfo = new AgentInfo()
                     {
                         Address = agent.Address,
