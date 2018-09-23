@@ -74,6 +74,19 @@ namespace Agent.API.Controllers
                 (IActionResult)BadRequest();
         }
 
+        [Route("updateagentdatastudiourl")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateAgentDataStudioUrl([FromBody] UpdateAgentDataStudioUrlCommand updateAgentDataStudioUrlCommand)
+        {
+            var result = await mediator.Send(updateAgentDataStudioUrlCommand);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
         //POST api/v1/[controller]/CreateAgentCloudMallinAccount
         [Route("createagenttypeformaccount")]
         [HttpPost]

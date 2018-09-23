@@ -23,7 +23,8 @@
         IRequestHandler<CreateAgentIntigrationEmailAccountCommand, bool>,
         IRequestHandler<UpdateAgentIntigrationEmailAccountCommand, bool>,
         IRequestHandler<CreateAgentTypeFormAccountCommand, bool>,
-        IRequestHandler<CreateAgentSpreadsheetAccountCommand, bool>
+        IRequestHandler<CreateAgentSpreadsheetAccountCommand, bool>,
+        IRequestHandler<UpdateAgentDataStudioUrlCommand, bool>
     {
         private readonly IEventBus eventBus;
         private readonly IMediator mediator;
@@ -116,6 +117,22 @@
 
             agent.UpdateMailbox(updateAgentIntigrationEmailAccountCommand.MailboxName);
             await mediator.DispatchDomainEventsAsync(agent);
+
+            return true;
+        }
+
+        public async Task<bool> Handle(UpdateAgentDataStudioUrlCommand createAgentDataStudioUrlCommand, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = createAgentDataStudioUrlCommand.AggregateId });
+            agent.DataStudioUrl = createAgentDataStudioUrlCommand.DataStudioUrl;
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("DataStudioUrl", agent.DataStudioUrl)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
 
             return true;
         }

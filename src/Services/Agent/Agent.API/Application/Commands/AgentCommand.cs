@@ -43,6 +43,11 @@ namespace Agent.Command
         public string MailboxName { get; set; }
     }
 
+    public class UpdateAgentDataStudioUrlCommand : Command, IRequest<bool>
+    {
+        public string DataStudioUrl { get; set; }
+    }
+
     public class CreateAgentTypeFormAccountCommand : Command, IRequest<bool>
     {
         
