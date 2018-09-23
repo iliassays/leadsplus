@@ -51,7 +51,7 @@
         {
             string aggregateId = "";
             string subject = Request.Form["email__subject"];
-            string prefix = ":[agg-";
+            string prefix = "[agg-";
             string suffix = "]";
 
             var splited = subject.Split(':');
@@ -61,10 +61,10 @@
                 if (portion.StartsWith(prefix) && portion.EndsWith(suffix))
                 {
                     //Remove suffix
-                    aggregateId = portion.Remove(0, prefix.Length - 1);
+                    aggregateId = portion.Replace(prefix, string.Empty);
 
                     //Remove preffix
-                    aggregateId = portion.Remove((portion.Length - 1) - suffix.Length, (portion.Length - 1));
+                    aggregateId = aggregateId.Replace(suffix, string.Empty);
                 }
             }
 
@@ -102,7 +102,7 @@
                         continue;
                 }
 
-                fields.Add(item.Key.Remove(0, ("parse__output__").Length - 1), item.Value);
+                fields.Add(item.Key.Remove(0, ("parse__output___").Length - 1), item.Value);
             }
 
             return fields;
