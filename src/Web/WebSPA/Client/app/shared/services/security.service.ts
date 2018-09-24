@@ -89,7 +89,7 @@ export class SecurityService {
         let client_id = 'adminportal';
         let redirect_uri = location.origin + '/';
         let response_type = 'id_token token';
-        let scope = 'openid profile agent contact';
+        let scope = 'openid profile agent contact inqueryhistory';
         let nonce = 'N' + Math.random() + '' + Date.now();
         let state = Date.now() + '' + Math.random();
 
