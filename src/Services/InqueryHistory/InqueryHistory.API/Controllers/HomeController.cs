@@ -2,7 +2,7 @@
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace LeadsPlus.Services.Agent.API.Controllers
+namespace InqueryHistory.API.Controllers
 {
     public class HomeController : Controller
     {
