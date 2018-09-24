@@ -38,6 +38,7 @@
                 Aboutme = @event.Aboutme,
                 GroupId = @event.GroupId,
                 OwnerId = @event.OwnerId,
+                Ownername = @event.Ownername,
                 Source = @event.Source,
                 AggregateId = @event.AggregateId
             };
