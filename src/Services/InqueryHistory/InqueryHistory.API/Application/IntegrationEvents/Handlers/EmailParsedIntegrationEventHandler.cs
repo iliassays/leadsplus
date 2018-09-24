@@ -52,7 +52,7 @@
             var customerEmail = @event.ExtractedFields.ContainsKey("customeremail") ? @event.ExtractedFields["customeremail"] : "";
             customerEmail = customerEmail?.Split(" ")[0];
 
-            if (string.IsNullOrEmpty(customerEmail))
+            if (!string.IsNullOrEmpty(customerEmail))
             {
                 inqueryHistoryToUpdate.CustomerEmail = customerEmail;
             }

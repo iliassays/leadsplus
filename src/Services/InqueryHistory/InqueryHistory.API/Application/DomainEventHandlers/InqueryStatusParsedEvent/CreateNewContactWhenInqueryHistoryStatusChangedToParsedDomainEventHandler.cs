@@ -67,7 +67,7 @@
                 AggregateId = @event.InqueryHistory.Id,
                 Source = "InqueryRequest",
 
-                Email = @event.InqueryHistory.ExtractedFields.ContainsKey("customeremail") ? @event.InqueryHistory.ExtractedFields["customeremail"] : "",
+                Email = @event.InqueryHistory.CustomerEmail,
                 Phone = @event.InqueryHistory.ExtractedFields.ContainsKey("customerphone") ? @event.InqueryHistory.ExtractedFields["customerphone"] : "",
                 City = @event.InqueryHistory.ExtractedFields.ContainsKey("customercity") ? @event.InqueryHistory.ExtractedFields["customercity"] : "",
                 Company = @event.InqueryHistory.ExtractedFields.ContainsKey("customercompany") ? @event.InqueryHistory.ExtractedFields["customercompany"] : "",
