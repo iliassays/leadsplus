@@ -24,6 +24,7 @@ namespace LeadsPlus.Services.Identity.API.Data
             clientUrls.Add("CloudmailinWebhook", configuration.GetValue<string>("CloudmailinWebhookApiClient"));
             clientUrls.Add("ContactApi", configuration.GetValue<string>("ContactApiClient"));
             clientUrls.Add("AgentApi", configuration.GetValue<string>("AgentApiClient"));
+            clientUrls.Add("InqueryHistoryApi", configuration.GetValue<string>("InqueryHistoryApiClient"));
 
             if (!context.Clients.Any())
             {

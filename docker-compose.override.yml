@@ -35,6 +35,7 @@ services:
       - ContactApiClient=http://${LEADSPLUS_PROD_CONTACT_API_DOMAIN}:5102
       - CloudMailinApiClient=http://${LEADSPLUS_PROD_CLOUDMAILIN_API_DOMAIN}:5109
       - EmailSenderApiClient=http://${LEADSPLUS_PROD_EMAILSENDER_API_DOMAIN}:5109
+      - InqueryHistoryApiClient=http://${LEADSPLUS_PROD_INQUIRY_HISTORY_API_DOMAIN}:5106
       - UseCustomizationData=False  
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}

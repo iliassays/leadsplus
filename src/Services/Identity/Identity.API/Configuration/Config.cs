@@ -14,6 +14,7 @@ namespace LeadsPlus.Services.Identity.API.Configuration
                 //new ApiResource("cloudmailinwebhook", "Cloudmailin Webhook"),
                 new ApiResource("contact", "Contact Service"),
                 new ApiResource("agent", "Agent Service"),
+                new ApiResource("inqueryhistory", "Inquery History Service"),
                 //new ApiResource("autorespondar", "Autorespondar Service"),
                 //new ApiResource("smtpservice", "Smtp Service"),
             };
