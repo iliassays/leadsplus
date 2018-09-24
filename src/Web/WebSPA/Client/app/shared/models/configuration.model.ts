@@ -3,4 +3,5 @@ export interface IConfiguration {
     agentUrl: string,
     contactUrl: string,
     signalrHubUrl: string,
+    inquiryHistoryUrl: string
 }

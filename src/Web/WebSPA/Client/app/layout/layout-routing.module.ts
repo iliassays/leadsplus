@@ -12,6 +12,7 @@ const routes: Routes = [
         { path: 'dashboard', component: DashboardComponent },
         { path: 'agent', loadChildren: '../agent/agent.module#AgentModule' },
         { path: 'contact', loadChildren: '../contact/contact.module#ContactModule' },
+        { path: 'inquiryhistory', loadChildren: '../inquiryhistory/inquiryhistory.module#InquiryHistoryModule' },
     ]
   }
 ];

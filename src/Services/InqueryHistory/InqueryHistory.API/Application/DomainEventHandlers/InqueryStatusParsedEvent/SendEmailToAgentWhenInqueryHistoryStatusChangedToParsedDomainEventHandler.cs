@@ -45,14 +45,6 @@
 
         public async Task Handle(InqueryHistoryStatusChangedToParsedDomainEvent @event, CancellationToken cancellationToken)
         {
-            var customerEmail = @event.InqueryHistory.ExtractedFields.ContainsKey("customeremail") ? @event.InqueryHistory.ExtractedFields["customeremail"] : "";
-            customerEmail = customerEmail?.Split(" ")[0];
-
-            if (!string.IsNullOrEmpty(customerEmail))
-            {
-                @event.InqueryHistory.ExtractedFields["customeremail"] = customerEmail;
-            }
-
             var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
             {
                 //Body = mailBody,
@@ -61,7 +53,7 @@
                 FromEmail = "admin@adfenixleads.com",
                 FromName = "AdfenixLeads",
                 To = new[] { @event.InqueryHistory.AgentInfo.Email },
-                ReplyTo = customerEmail,
+                ReplyTo = @event.InqueryHistory.CustomerEmail,
                 AggregateId = @event.InqueryHistory.Id,
                 TemplateId = "7d21db97-6845-44af-aa84-37dce9b4eeb4", //Autoresponder for agent For new Inquiry. keep it hardcoded for now
                 MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)

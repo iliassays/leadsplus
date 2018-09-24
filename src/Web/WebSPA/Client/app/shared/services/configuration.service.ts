@@ -31,7 +31,10 @@ export class ConfigurationService {
                 console.log(this.serverSettings);
                 this.storageService.store('identityUrl', this.serverSettings.identityUrl);
                 this.storageService.store('agentUrl', this.serverSettings.agentUrl);
+                this.storageService.store('inquiryHistoryUrl', this.serverSettings.inquiryHistoryUrl);
+                this.storageService.store('contactUrl', this.serverSettings.contactUrl);
                 this.storageService.store('signalrHubUrl', this.serverSettings.signalrHubUrl);
+
                 this.isReady = true;
                 this.settingsLoadedSource.next();
             }

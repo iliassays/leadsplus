@@ -82,32 +82,23 @@
 
             eventBus.Publish(createContactIntegrationEvent);
 
-            var customerEmail = @event.InqueryHistory.ExtractedFields.ContainsKey("customeremail") ? @event.InqueryHistory.ExtractedFields["customeremail"] : "";
-            customerEmail = customerEmail?.Split(" ")[0];
-
-
-            if (string.IsNullOrEmpty(customerEmail))
+            var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
             {
-                @event.InqueryHistory.ExtractedFields["customeremail"] = customerEmail;
+                //Body = mailBody,
+                IsBodyHtml = true,
+                //Subject = "",
+                FromEmail = "admin@adfenixleads.com",
+                FromName = "AdminLeads",
+                To = new[] { @event.InqueryHistory.AgentInfo.Email },
+                ReplyTo = @event.InqueryHistory.CustomerEmail,
+                AggregateId = @event.InqueryHistory.Id,
+                TemplateId = "c1f08213-6f62-4ba0-8dc2-3d768ae759ee", //Autoresponder for Agent for new Lead. keep it hardcoded for now
+                MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
+            };
 
-                var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
-                {
-                    //Body = mailBody,
-                    IsBodyHtml = true,
-                    //Subject = "",
-                    FromEmail = "admin@adfenixleads.com",
-                    FromName = "AdminLeads",
-                    To = new[] { @event.InqueryHistory.AgentInfo.Email },
-                    ReplyTo = customerEmail,
-                    AggregateId = @event.InqueryHistory.Id,
-                    TemplateId = "c1f08213-6f62-4ba0-8dc2-3d768ae759ee", //Autoresponder for Agent for new Lead. keep it hardcoded for now
-                    MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
-                };
+            eventBus.Publish(emailNeedsToBeSent);
 
-                eventBus.Publish(emailNeedsToBeSent);
-            }
 
-            
 
             logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history email converted to leads {@event.InqueryHistory.Id} - {@event.InqueryHistory.OrganizationEmail}.");
         }

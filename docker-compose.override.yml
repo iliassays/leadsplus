@@ -32,7 +32,7 @@ services:
       - AdminPortalClient=http://${LEADSPLUS_PROD_ADMIN_PORTAL_DOMAIN}:5104
       - ConnectionString=${LEADSPLUS_AZURE_IDENTITY_DB:-Server=sql.data;Database=LeadsPlus.IdentityDb;User Id=sa;Password=Pass@word}       
       - AgentApiClient=http://${LEADSPLUS_PROD_AGENT_API_DOMAIN}:5109
-      - ContactApiClient=http://${LEADSPLUS_PROD_CONTACT_API_DOMAIN}:5109
+      - ContactApiClient=http://${LEADSPLUS_PROD_CONTACT_API_DOMAIN}:5102
       - CloudMailinApiClient=http://${LEADSPLUS_PROD_CLOUDMAILIN_API_DOMAIN}:5109
       - EmailSenderApiClient=http://${LEADSPLUS_PROD_EMAILSENDER_API_DOMAIN}:5109
       - UseCustomizationData=False  
@@ -107,6 +107,7 @@ services:
       - IdentityUrl=http://identity.api/hc
       - AgentUrl=http://Agent.API/hc
       - ContactUrl=http://Contact.API/hc
+      - InquiryHistoryUrl=http://InquiryHistory.API/hc
       - CloudmailinWebhook=http://cloudmailin.webhook/hc
       - AdminPortal=http://webspa/hc
       - EmailSenderBackgroundTask=http://emailsender/hc
@@ -123,7 +124,8 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - IdentityUrl=http://${LEADSPLUS_PROD_IDENTITY_API_DOMAIN}:5105              #Local: You need to open your local dev-machine firewall at range 5100-5105.  at range 5100-5105. 
       - AgentUrl=http://${LEADSPLUS_PROD_AGENT_API_DOMAIN}:5109   
-      - ContactUrl=http://${LEADSPLUS_PROD_CONTACT_API_DOMAIN}:5109
+      - InquiryHistoryUrl=http://${LEADSPLUS_PROD_AGENT_API_DOMAIN}:5106   
+      - ContactUrl=http://${LEADSPLUS_PROD_CONTACT_API_DOMAIN}:5102
       - IdentityUrlHC=http://identity.api/hc     #Local: Use ${LEADSPLUS_PROD_EXTERNAL_DNS_NAME_OR_IP}, if using external IP or DNS name from browser.          
       - AgentUrlHC=http://agent.api/hc
       - ContactUrlHC=http://contact.api/hc

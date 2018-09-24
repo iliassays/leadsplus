@@ -49,6 +49,14 @@
             var inqueryHistoryToUpdate = await queryExecutor.Execute<GetInqueryHistoryQuery, InqueryHistory>(
                 new GetInqueryHistoryQuery { InqueryHistoryId = @event.AggregateId });
 
+            var customerEmail = @event.ExtractedFields.ContainsKey("customeremail") ? @event.ExtractedFields["customeremail"] : "";
+            customerEmail = customerEmail?.Split(" ")[0];
+
+            if (string.IsNullOrEmpty(customerEmail))
+            {
+                inqueryHistoryToUpdate.CustomerEmail = customerEmail;
+            }
+
             inqueryHistoryToUpdate.SetParsedStatus();
             inqueryHistoryToUpdate.ExtractedFields = @event.ExtractedFields;
 
@@ -57,6 +65,7 @@
             var update = Builders<InqueryHistory>.Update
                 .Set("InqueryStatus", inqueryHistoryToUpdate.InqueryStatus)
                 .Set("ExtractedFields", inqueryHistoryToUpdate.ExtractedFields)
+                .Set("CustomerEmail", inqueryHistoryToUpdate.CustomerEmail)
                 .CurrentDate("UpdatedDate");
 
             await inqueryHistoryRepository.Collection

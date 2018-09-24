@@ -1,0 +1,42 @@
+<section class="page-inquiry-list container-fluid with-maxwidth no-breadcrumbs">
+    <article class="article">
+        <h2 class="article-title">Inquiry History</h2>
+        <div class="box box-default table-box mdl-shadow--2dp">
+            <mat-table #table [dataSource]="data">
+                <!--- Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition" -->
+                <!-- ID Column -->
+                <ng-container cdkColumnDef="Organization">
+                    <mat-header-cell *cdkHeaderCellDef> Organization </mat-header-cell>
+                    <mat-cell *cdkCellDef="let row"> {{row.organization}} </mat-cell>
+                </ng-container>
+                <ng-container cdkColumnDef="CustomerEmail">
+                    <mat-header-cell *cdkHeaderCellDef> CustomerEmail </mat-header-cell>
+                    <mat-cell *cdkCellDef="let row"> {{row.customerEmail}} </mat-cell>
+                </ng-container>
+
+                <ng-container cdkColumnDef="AgentEmail">
+                    <mat-header-cell *cdkHeaderCellDef> AgentEmail </mat-header-cell>
+                    <mat-cell *cdkCellDef="let row"> {{row.agentEmail}} </mat-cell>
+                </ng-container>
+                <ng-container cdkColumnDef="InqueryStatus">
+                    <mat-header-cell *cdkHeaderCellDef> InqueryStatus </mat-header-cell>
+                    <mat-cell *cdkCellDef="let row"> {{row.inqueryStatus}} </mat-cell>
+                </ng-container>
+                <ng-container cdkColumnDef="CreatedAt">
+                    <mat-header-cell *cdkHeaderCellDef> CreatedAt </mat-header-cell>
+                    <mat-cell *cdkCellDef="let row"> {{row.createdDate}} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <!--<mat-paginator #paginator
+                           [length]="resultsLength"
+                           [pageIndex]="0"
+                           [pageSize]="25"
+                           [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>-->
+        </div>
+    </article>
+</section>

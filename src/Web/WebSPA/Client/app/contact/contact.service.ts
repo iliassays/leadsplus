@@ -28,7 +28,7 @@ export class ContactService {
         }
 
     getAgents(pageIndex: number, pageSize: number): Observable<IContact[]> {
-        const url = this.contactUrl + '/api/v1/queries/getallcontact';
+        const url = this.contactUrl + '/api/v1/queries/getall';
 
         const requestUrl =
             `${url}?pageIndex=${pageIndex}&pageSize=${pageSize}`;

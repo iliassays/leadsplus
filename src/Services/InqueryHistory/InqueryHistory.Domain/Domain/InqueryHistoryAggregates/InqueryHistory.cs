@@ -21,6 +21,8 @@
     public class InqueryHistory : AggregateRoot, IViewModel
     {
         public string OrganizationEmail { get; set; }
+        public string Organization { get; set; }
+        public string CustomerEmail { get; set; }
         public string Message { get; set; }
         public string Subject { get; set; }
         public string AgentEmail { get; set; }
@@ -50,6 +52,7 @@
         {
             Id = id;
             OrganizationEmail = organizationEmail;
+            Organization = organizationEmail?.Split("@")[1];
             Message = message;
             Subject = subject;
             AgentEmail = agentEmail;

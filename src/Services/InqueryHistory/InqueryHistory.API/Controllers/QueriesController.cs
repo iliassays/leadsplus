@@ -1,5 +1,7 @@
 ﻿namespace Agent.API.Controllers
 {
+    using InqueryHistory.Domain;
+    using InqueryHistory.Domain.Query;
     using InqueryHistory.IntegrationEvents;
     using InvitationHistory.IntegrationEvents;
     using LeadsPlus.BuildingBlocks.EventBus.Abstractions;
@@ -27,20 +29,13 @@
             this.eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
         }
 
-        //GET api/v1/[controller]/1
-        [Route("sayhello")]
+        [Route("getall")]
         [HttpGet]
-        public async Task<IActionResult> SayHello()
+        //[ProducesResponseType(typeof(List<Agent>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllContacts()
         {
-
-            //EmailParsedIntegrationEvent newInqueryRequestReceivedIntegrationEvent = new EmailParsedIntegrationEvent()
-            //{
-                
-            //};
-
-            //eventBus.Publish(newInqueryRequestReceivedIntegrationEvent);
-
-            return Ok("Hello");
+            var contacts = await queryExecutor.Execute<GetAllInqueryHistoryQuery, List<InqueryHistory>>(new GetAllInqueryHistoryQuery());
+            return Ok(contacts);
         }
     }
 }
