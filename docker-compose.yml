@@ -29,7 +29,7 @@ services:
       - rabbitmq
 
   inqueryhistory.api:
-    image: leadsplus/agent-api:${TAG:-latest}
+    image: leadsplus/inqueryhistory-api:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/InqueryHistory/InqueryHistory.API/Dockerfile
