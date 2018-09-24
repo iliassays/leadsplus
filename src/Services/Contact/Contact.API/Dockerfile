@@ -15,4 +15,4 @@ RUN dotnet publish --no-restore -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Agent.API.dll"]
+ENTRYPOINT ["dotnet", "Contact.API.dll"]

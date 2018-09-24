@@ -13,6 +13,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Threading.Tasks;
+    using System.Linq;
 
     [Route("api/v1/[controller]")]
     //[Authorize]
@@ -35,7 +36,14 @@
         public async Task<IActionResult> GetAllContacts()
         {
             var contacts = await queryExecutor.Execute<GetAllInqueryHistoryQuery, List<InqueryHistory>>(new GetAllInqueryHistoryQuery());
-            return Ok(contacts);
+            return Ok(contacts.Select(c => new
+            {
+                organization = c.Organization,
+                customerEmail = c.CustomerEmail,
+                agentEmail = c.AgentEmail,
+                inqueryStatus = Enum.GetName(typeof(InqueryStatus), c.InqueryStatus),
+                createdDate = c.CustomerEmail
+            }));
         }
     }
 }
