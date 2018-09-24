@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace Agent.API.Controllers
+namespace InqueryHistory.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [Authorize]

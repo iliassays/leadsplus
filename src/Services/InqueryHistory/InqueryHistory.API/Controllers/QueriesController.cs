@@ -1,4 +1,4 @@
-﻿namespace Agent.API.Controllers
+﻿namespace InqueryHistory.API.Controllers
 {
     using InqueryHistory.Domain;
     using InqueryHistory.Domain.Query;
