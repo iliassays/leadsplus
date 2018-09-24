@@ -53,6 +53,7 @@ namespace LeadsPlus.Services.Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         "agent",
                         "contact",
+                        "inqueryhistory"
                     }
                 },
                 new Client
