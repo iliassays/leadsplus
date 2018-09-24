@@ -5,7 +5,7 @@ EXPOSE 80
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
 COPY . .
-WORKDIR /src/src/Services/Agent/Agent.API
+WORKDIR /src/src/Services/Contact/Contact.API
 RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c Release -o /app
 
