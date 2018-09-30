@@ -87,27 +87,65 @@ namespace Agent.API.Controllers
                 (IActionResult)BadRequest();
         }
 
-        //POST api/v1/[controller]/CreateAgentCloudMallinAccount
-        [Route("createagenttypeformaccount")]
+        [Route("updateagentautorespondertemplatecommand")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateAgentTypeFormAccount([FromBody] CreateAgentTypeFormAccountCommand createAgentTypeFormAccount)
+        public async Task<IActionResult> UpdateAgentAutoresponderTemplateCommand([FromBody] UpdateAgentAutoresponderTemplateCommand @command)
         {
-            var result = await mediator.Send(createAgentTypeFormAccount);
+            var result = await mediator.Send(@command);
 
             return result ?
                 (IActionResult)Ok(result) :
                 (IActionResult)BadRequest();
         }
 
-        [Route("createagentapreadsheetaccount")]
+        [Route("createagenttypeformaccountforbuyinquiry")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateAgentSpreadsheetAccount([FromBody] CreateAgentSpreadsheetAccountCommand createAgentSpreadsheetAccountCommand)
+        public async Task<IActionResult> CreateAgentTypeFormAccountForBuyInquiry([FromBody] CreateAgentTypeFormAccountForBuyInquiryCommand @command)
         {
-            var result = await mediator.Send(createAgentSpreadsheetAccountCommand);
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("createagenttypeformaccountforrentinquiry")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> CreateAgentTypeFormAccountForRentInquiryCommand([FromBody] CreateAgentTypeFormAccountForRentInquiryCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("createagentapreadsheetaccountforbuyinquiry")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> CreateAgentSpreadsheetAccountForBuyInquiry([FromBody] CreateAgentSpreadsheetAccountForBuyInquiryCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("createagentapreadsheetaccountforrentinquiry")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> CreateAgentSpreadsheetAccountForRentInquiry([FromBody] CreateAgentSpreadsheetAccountForRentInquiryCommand @command)
+        {
+            var result = await mediator.Send(@command);
 
             return result ?
                 (IActionResult)Ok(result) :

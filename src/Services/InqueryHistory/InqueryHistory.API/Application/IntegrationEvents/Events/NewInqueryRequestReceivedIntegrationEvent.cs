@@ -10,6 +10,8 @@
         public string AgentEmail { get; set; }
         public string PlainText { get; set; }
 
+        public int InquiryType { get; set; }
+
         public AgentInfo AgentInfo { get; set; }
 
         public NewInqueryRequestReceivedIntegrationEvent()
@@ -33,11 +35,13 @@
         public string Address { get; set; }
         public string Company { get; set; }
 
-        public AgentTypeFormInfo AgentTypeFormInfo { get; set; }
+        public AgentAutoresponderTemplateInfo AgentAutoresponderTemplateInfo { get; set; }
+        public AgentTypeFormInfo InquiryTypeForm { get; set; }
 
         public AgentInfo()
         {
-            this.AgentTypeFormInfo = new AgentTypeFormInfo();
+            this.InquiryTypeForm = new AgentTypeFormInfo();
+            this.AgentAutoresponderTemplateInfo = new AgentAutoresponderTemplateInfo();
         }
     }
 
@@ -47,6 +51,11 @@
         public string SpreadsheetUrl { get; set; }
         public string SpreadsheetId { get; set; }
         public string SpreadsheetName { get; set; }
-        public int Type { get; set; }
+    }
+
+    public class AgentAutoresponderTemplateInfo
+    {
+        public string AgentAutoresponderTemplateId { get; set; }
+        public string CustomerAutoresponderTemplateId { get; set; }
     }
 }

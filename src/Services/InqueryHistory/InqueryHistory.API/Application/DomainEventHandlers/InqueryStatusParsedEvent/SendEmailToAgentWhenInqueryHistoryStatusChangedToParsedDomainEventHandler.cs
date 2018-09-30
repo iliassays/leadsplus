@@ -16,6 +16,7 @@
     using System.Threading.Tasks;
     using System.Linq;
     using InqueryHistory.Command;
+    using Microsoft.Extensions.Configuration;
 
     public class SendEmailToAgentWhenInqueryHistoryStatusChangedToParsedDomainEventHandler
                         : INotificationHandler<InqueryHistoryStatusChangedToParsedDomainEvent>
@@ -26,6 +27,7 @@
         private readonly IRepository<InqueryHistory> inqueryHistoryRepository;
         private readonly IQueryExecutor queryExecutor;
         private readonly IMediator mediator;
+        private readonly IConfiguration configuration;
 
         public SendEmailToAgentWhenInqueryHistoryStatusChangedToParsedDomainEventHandler(
             ILoggerFactory logger,
@@ -33,7 +35,8 @@
             IEventBus eventBus,
             IRepository<InqueryHistory> inqueryHistoryRepository,
             IQueryExecutor queryExecutor,
-            IMediator mediator)
+            IMediator mediator,
+            IConfiguration configuration)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
@@ -41,10 +44,19 @@
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             this.inqueryHistoryRepository = inqueryHistoryRepository ?? throw new ArgumentNullException(nameof(inqueryHistoryRepository));
             this.queryExecutor = queryExecutor ?? throw new ArgumentNullException(nameof(queryExecutor));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public async Task Handle(InqueryHistoryStatusChangedToParsedDomainEvent @event, CancellationToken cancellationToken)
         {
+            //msut create some template factory if more inquiry type comes. This is bad approach buy quicker for now
+            var agentAutoresponderDefaultTemplateId = configuration.GetValue<string>("AgentAutoresponderDefaultTemplateIdForBuyInquiry");
+
+            if (@event.InqueryHistory.InquiryType == InquiryType.RentInquiry)
+            {
+                agentAutoresponderDefaultTemplateId = configuration.GetValue<string>("AgentAutoresponderDefaultTemplateIdForRentInquiry");
+            }
+
             var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
             {
                 //Body = mailBody,
@@ -55,7 +67,9 @@
                 To = new[] { @event.InqueryHistory.AgentInfo.Email },
                 ReplyTo = @event.InqueryHistory.CustomerEmail,
                 AggregateId = @event.InqueryHistory.Id,
-                TemplateId = "7d21db97-6845-44af-aa84-37dce9b4eeb4", //Autoresponder for agent For new Inquiry. keep it hardcoded for now
+                TemplateId =  string.IsNullOrEmpty(@event.InqueryHistory.AgentInfo.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId) ? 
+                                                    agentAutoresponderDefaultTemplateId : 
+                                                    @event.InqueryHistory.AgentInfo.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId, //Autoresponder for agent For new Inquiry. keep it hardcoded for now
                 MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
             };
 
@@ -81,10 +95,10 @@
                     { "[agentcity]", agent.City },
                     { "[agentstate]", agent.State },
                     { "[agentzip]", agent.Zip },
-                    { "[agenttypeformlink]", agent.AgentTypeFormInfo.TypeFormUrl },
+                    { "[agentinquirytypeformlink]", agent.AgentTypeFormInfo?.TypeFormUrl },
                     { "[addressbooklink]", "http://contact.adfenixleads.com" },
-                    { "[inquirylist]", agent.AgentTypeFormInfo.SpreadsheetUrl },
-                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail },
+                    { "[agentinquiryspreadsheetlink]", agent.AgentTypeFormInfo?.SpreadsheetUrl },
+                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail }
                 };
 
             foreach(var item in @event.InqueryHistory.ExtractedFields)

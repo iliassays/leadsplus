@@ -46,6 +46,9 @@
                     Body = @event.Body,
                     Subject = @event.Subject,
                     OrganizationEmail = @event.OrganizationEmail,
+                    InquiryType = GetInquiryType(@event),
+                    PlainText = @event.PlainText,
+
                     AgentInfo = new AgentInfo()
                     {
                         Address = agent.Address,
@@ -60,13 +63,8 @@
                         Phone = agent.Phone,
                         Id = agent.Id,
                         IntegrationEmail = agent.IntegrationEmail,
-                        AgentTypeFormInfo = new AgentTypeFormInfo
-                        {
-                            SpreadsheetId = agent.AgentTypeForm?.SpreadsheetId,
-                            SpreadsheetName = agent.AgentTypeForm?.SpreadsheetName,
-                            SpreadsheetUrl = agent.AgentTypeForm?.SpreadsheetUrl,
-                            TypeFormUrl = agent.AgentTypeForm?.TypeFormUrl
-                        }
+                        InquiryTypeForm = GetTypeformData(@event, agent),
+                        AgentAutoresponderTemplateInfo = GetAutoresponderTemplateData(@event, agent),
                     }
                 };
 
@@ -78,76 +76,58 @@
             }
         }
 
-        //private void CreateCustomer(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
-        //{
-        //    var createContactIntegrationEvent = new CreateContactIntegrationEvent()
-        //    {
-        //        AggregateId = @event.AggregateId,
-        //        Source = "CloudMailin",
-        //        Email = @event.CustomerEmail,
-        //        OwnerId = agent.Id,
-        //        Ownername = $"{agent.Firstname} {agent.Lastname}"
-        //    };
+        private AgentTypeFormInfo GetTypeformData(AgentInboundEmailTrackedIntegrationEvent @event, Agent agent)
+        {
+            if (GetInquiryType(@event) == InquiryType.RentInquiry) 
+            {
+                return new AgentTypeFormInfo
+                {
+                    SpreadsheetId = agent.RentInquiryTypeForm?.SpreadsheetId,
+                    SpreadsheetName = agent.RentInquiryTypeForm?.SpreadsheetName,
+                    SpreadsheetUrl = agent.RentInquiryTypeForm?.SpreadsheetUrl,
+                    TypeFormUrl = agent.RentInquiryTypeForm?.TypeFormUrl
+                };
+            }
+            else
+            {
+                return new AgentTypeFormInfo
+                {
+                    SpreadsheetId = agent.BuyInquiryTypeForm?.SpreadsheetId,
+                    SpreadsheetName = agent.BuyInquiryTypeForm?.SpreadsheetName,
+                    SpreadsheetUrl = agent.BuyInquiryTypeForm?.SpreadsheetUrl,
+                    TypeFormUrl = agent.BuyInquiryTypeForm?.TypeFormUrl
+                };
+            }
+        }
 
-        //    eventBus.Publish(createContactIntegrationEvent);
-        //    logger.CreateLogger(nameof(@event)).LogTrace($"customer created published {@event.CustomerEmail}.");
-        //}
+        private AgentAutoresponderTemplateInfo GetAutoresponderTemplateData(AgentInboundEmailTrackedIntegrationEvent @event, Agent agent)
+        {
+            if (GetInquiryType(@event) == InquiryType.RentInquiry)
+            {
+                return new AgentAutoresponderTemplateInfo
+                {
+                    CustomerAutoresponderTemplateId = agent.RentInquiryAutoresponderTemplate?.CustomerAutoresponderTemplateId,
+                    AgentAutoresponderTemplateId = agent.RentInquiryAutoresponderTemplate?.AgentAutoresponderTemplateId
+                };
+            }
+            else
+            {
+                return new AgentAutoresponderTemplateInfo
+                {
+                    CustomerAutoresponderTemplateId = agent.BuyInquiryAutoresponderTemplate?.CustomerAutoresponderTemplateId,
+                    AgentAutoresponderTemplateId = agent.BuyInquiryAutoresponderTemplate?.AgentAutoresponderTemplateId
+                };
+            }
+        }
 
-        //private void WelcomeCustomer(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
-        //{
-        //    var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
-        //    {
-        //        //Body = mailBody,
-        //        IsBodyHtml = true,
-        //        //Subject = subject,
-        //        FromEmail = agent.Email,
-        //        FromName = $"{agent.Firstname} {agent.Lastname}",
-        //        To = new[] { @event.CustomerEmail },
-        //        ReplyTo = agent.Email,
-        //        AggregateId = @event.AggregateId,
-        //        TemplateId = "ed324a45-f3a7-4232-a551-12abc8051798", //keep it hardcoded for now
-        //        MergeFields = GetMergeField(agent, @event)
-        //    };
+        public InquiryType GetInquiryType(AgentInboundEmailTrackedIntegrationEvent @event)
+        {
+            if (@event.Subject.Contains("Rent") || @event.PlainText.Contains("Rent"))//Bad way. Need to fugure out something after seeing some templates
+            {
+                return InquiryType.RentInquiry;
+            }
 
-        //    eventBus.Publish(emailNeedsToBeSent);
-
-        //    logger.CreateLogger(nameof(@event)).LogTrace($"customer welcome event sent {@event.CustomerEmail}.");
-        //}
-
-        //private void NotifyAgent(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
-        //{
-        //    var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
-        //    {
-        //        //Body = mailBody,
-        //        IsBodyHtml = true,
-        //        //Subject = subject,
-        //        FromEmail = "admin@adfenixleads.com",
-        //        FromName = "Admin",
-        //        To = new[] { agent.Email },
-        //        ReplyTo = "admin@adfenixleads.com",
-        //        AggregateId = @event.AggregateId,
-        //        TemplateId = "954b9208-176d-44e8-af2a-8bed61e88631", //keep it hardcoded for now
-        //        MergeFields = GetMergeField(agent, @event)
-        //    };
-
-        //    eventBus.Publish(emailNeedsToBeSent);
-        //    logger.CreateLogger(nameof(@event)).LogTrace($"agent email sent {@event.AgentEmail}.");
-        //}
-
-        //private Dictionary<string, string> GetMergeField(Agent agent, AgentInboundEmailTrackedIntegrationEvent @event)
-        //{
-        //    return new Dictionary<string, string>()
-        //        {
-        //            { "[Sender_Name]", $"{agent.Firstname} {agent.Lastname}" },
-        //            { "[Sender_Address]", agent.Address },
-        //            { "[Sender_City]", agent.City },
-        //            { "[Sender_State]", agent.State },
-        //            { "[Sender_Zip]", agent.Zip },
-        //            { "[Typeform_Link]", agent.AgentTypeForm.TypeFormUrl },
-        //            { "[Lead_Link]", "http://contact.adfenixleads.com" },
-        //            { "[Lead_Spreadsheet]", agent.AgentTypeForm.SpreadsheetUrl },
-        //            { "[Customer_Email]", @event.CustomerEmail },
-        //        };
-        //}
+            return InquiryType.BuyInquiry;
+        }
     }
 }

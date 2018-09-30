@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using Events;
+    using System.Linq;    
 
     public class Agent : AggregateRoot, IViewModel
     {
@@ -19,8 +20,12 @@
         public string Address { get; set; }
         public string Company { get; set; }
         public string DataStudioUrl { get; set; }
+        
+        public AgentTypeForm RentInquiryTypeForm { get; set; }
+        public AgentTypeForm BuyInquiryTypeForm { get; set; }
 
-        public AgentTypeForm AgentTypeForm { get; set; }
+        public AgentAutoresponderTemplate BuyInquiryAutoresponderTemplate { get; set; }
+        public AgentAutoresponderTemplate RentInquiryAutoresponderTemplate { get; set; }
 
         public string CreatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
@@ -30,6 +35,7 @@
         {
 
         }
+
         public Agent(string id, string ownerId, string firstname, string lastname, string email, string country, string city, string phone, string address, string company)
             : this()
         {
@@ -75,24 +81,65 @@
             this.AddDomainEvent(agentMailboxUpdatedEvent);
         }
 
-        public void CreateTypeform()
+        public void CreateTypeform(TypeFormType typeFormType)
         {
             var agentTypeformUpdatedEvent = new AgentTypeformCreatedEvent()
             {
-                Agent = this
+                Agent = this,
+                TypeFormType = typeFormType
             };
 
             this.AddDomainEvent(agentTypeformUpdatedEvent);
         }
-        public void CreateSpreadsheet()
+
+        public void CreateSpreadsheet(TypeFormType typeFormType)
         {
             var agentSpreadsheetCreatedEvent = new AgentSpreadsheetCreatedEvent()
             {
-                Agent = this
+                Agent = this,
+                TypeFormType = typeFormType
             };
 
             this.AddDomainEvent(agentSpreadsheetCreatedEvent);
         }
 
+        //public void AddTypeFormItem(string typeFormUrl, TypeFormType type)
+        //{
+        //    var existingTypeform = AgentTypeFormCollection.Where(o => o.TypeformType == type)
+        //        .SingleOrDefault();
+
+        //    if (existingTypeform != null)
+        //    {
+        //        existingTypeform.TypeFormUrl = typeFormUrl;
+        //    }
+        //    else
+        //    {
+        //        //add validated new order item
+
+        //        var agentTypeForm = new AgentTypeForm(typeFormUrl, type);
+        //        AgentTypeFormCollection.Add(agentTypeForm);
+        //    }
+        //}
+
+        //public void LinkSpreadsheetWithTypeFormItem(string spreadsheetUrl, string spreadsheetId, string spreadsheetName, TypeFormType type)
+        //{
+        //    var existingTypeform = AgentTypeFormCollection.Where(o => o.TypeformType == type)
+        //        .SingleOrDefault();
+
+        //    if (existingTypeform != null)
+        //    {
+        //        existingTypeform.AddSpreadsheetToAgentTypeForm(spreadsheetId, spreadsheetName, spreadsheetUrl);
+        //    }
+        //}
+
+        public string GetSpreadsheetName(string suffix)
+        {
+            return $"{this.Email}_{this.Firstname}_{this.Id}_{suffix}";
+        }
+
+        public string GetTypeformName(string suffix)
+        {
+            return $"{this.Email}_{this.Firstname}_{this.Id}_{suffix}";
+        }
     }
 }

@@ -53,6 +53,7 @@
             eventBus.Publish(newInqueryProcessStartedIntegrationEvent);
             //string id, string customerEmail, string message, string subject, string agentEmail, AgentInfo agentInfo
             var inqueryHistory = new InqueryHistory(@event.AggregateId,
+                (InquiryType)(@event.InquiryType),
                 @event.OrganizationEmail,
                 @event.Body,
                 @event.Subject,
@@ -71,12 +72,17 @@
                      Phone = @event.AgentInfo.Phone,
                      Id = @event.AgentInfo.Id,
                      IntegrationEmail = @event.AgentInfo.IntegrationEmail,
+                     AgentAutoresponderTemplateInfo = new Domain.AgentAutoresponderTemplateInfo
+                     {
+                         AgentAutoresponderTemplateId = @event.AgentInfo.AgentAutoresponderTemplateInfo.AgentAutoresponderTemplateId,
+                         CustomerAutoresponderTemplateId = @event.AgentInfo.AgentAutoresponderTemplateInfo.CustomerAutoresponderTemplateId
+                     },
                      AgentTypeFormInfo = new Domain.AgentTypeFormInfo
                      {
-                         SpreadsheetId = @event.AgentInfo.AgentTypeFormInfo?.SpreadsheetId,
-                         SpreadsheetName = @event.AgentInfo.AgentTypeFormInfo?.SpreadsheetName,
-                         SpreadsheetUrl = @event.AgentInfo.AgentTypeFormInfo?.SpreadsheetUrl,
-                         TypeFormUrl = @event.AgentInfo.AgentTypeFormInfo?.TypeFormUrl
+                        SpreadsheetId = @event.AgentInfo.InquiryTypeForm?.SpreadsheetId,
+                        SpreadsheetName = @event.AgentInfo.InquiryTypeForm?.SpreadsheetName,
+                        SpreadsheetUrl = @event.AgentInfo.InquiryTypeForm?.SpreadsheetUrl,
+                        TypeFormUrl = @event.AgentInfo.InquiryTypeForm?.TypeFormUrl
                      }
                 });
 

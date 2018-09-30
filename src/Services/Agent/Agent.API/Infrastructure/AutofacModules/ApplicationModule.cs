@@ -13,6 +13,7 @@
     using System.Linq;
     using System.Collections.Generic;
     using LeadsPlus.GoogleApis;
+    using Agent.TypeFormIntegration;
 
     public class ApplicationModule : Autofac.Module
     {
@@ -43,6 +44,14 @@
 
             builder.RegisterType<GoogleApiConnector>()
                 .As<IGoogleApiConnector>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<TypeFormSettings>()
+                .As<ITypeFormSettings>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<TypeForm>()
+                .As<ITypeForm>()
                 .InstancePerLifetimeScope();
 
             builder.Register(c => {

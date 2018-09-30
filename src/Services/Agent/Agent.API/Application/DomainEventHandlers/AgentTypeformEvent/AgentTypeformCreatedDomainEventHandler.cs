@@ -43,55 +43,9 @@
         }
 
         public async Task Handle(AgentTypeformCreatedEvent agentTypeformCreatedEvent, CancellationToken cancellationToken)
-        {
-            string typeFormTemplateJson = await TypeFormCreator.GetTemplateFormAsync();
-            var typeFormUrl = await CreateTypeformUrl(agentTypeformCreatedEvent.Agent, typeFormTemplateJson);
-
-            if (agentTypeformCreatedEvent.Agent.AgentTypeForm == null)
-            {
-                agentTypeformCreatedEvent.Agent.AgentTypeForm = new AgentTypeForm();
-            }
-
-            agentTypeformCreatedEvent.Agent.AgentTypeForm.TypeFormUrl = typeFormUrl;
-
-            var filter = Builders<Agent>.Filter.Eq("Id", agentTypeformCreatedEvent.Agent.Id);
-            var update = Builders<Agent>.Update
-                .Set("AgentTypeForm", agentTypeformCreatedEvent.Agent.AgentTypeForm)
-                .CurrentDate("UpdatedDate");
-
-            await agentRepository.Collection
-                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+        {            
             //Do create typeform
-            logger.CreateLogger(nameof(agentTypeformCreatedEvent)).LogTrace($"Agent typefor created {agentTypeformCreatedEvent.Agent.Id}.");
-        }
-
-        private async Task<string> CreateTypeformUrl(Agent agent, string typeFormTemplateJson)
-        {
-            //Regex reg = new Regex(@"\""(id\"":[ ]?\""[\d\s\w]*\"",)");
-            //Regex reg = new Regex(@"id\"":[ ]?\""([\d\s\w]*)\"",");
-            //typeformJson = reg.Replace(typeformJson, delegate (Match m)
-            //{
-            //    return string.Empty;
-            //});
-            //typeform.title = $"{agent.Firstname}_{agent.Lastname}_{agent.Email}_{agent.Id}";
-            //typeform.id = "";
-
-            Regex reg = new Regex(@"(\""title\"":[ ]?\"")([\d\s\w]*)");
-
-            typeFormTemplateJson = reg.Replace(typeFormTemplateJson, delegate (Match m)
-            {
-                return m.Groups[1].Value + GetSpreadsheetName(agent);
-            }, 1);
-
-            var cretedTypeFormJson = await TypeFormCreator.CreateTypeFormAsync(typeFormTemplateJson);
-            dynamic cretedTypeForm = JObject.Parse(cretedTypeFormJson);
-
-            return cretedTypeForm._links.display;
-        }
-
-        private string GetSpreadsheetName(Agent agent)
-        {
-            return $"{agent.Email}_{agent.Firstname}_{agent.Id}";
+            logger.CreateLogger(nameof(agentTypeformCreatedEvent)).LogTrace($"Agent typeform created {agentTypeformCreatedEvent.Agent.Id}. Templates {Enum.GetName(typeof(TypeFormType), agentTypeformCreatedEvent.TypeFormType)}");
         }
     }
 }

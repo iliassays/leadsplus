@@ -9,6 +9,7 @@
     using LeadsPlus.Core;
     using LeadsPlus.Core.Query;
     using MediatR;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using MongoDB.Driver;
     using System;
@@ -25,6 +26,7 @@
         private readonly IRepository<InqueryHistory> inqueryHistoryRepository;
         private readonly IQueryExecutor queryExecutor;
         private readonly IMediator mediator;
+        private readonly IConfiguration configuration;
 
         public SendEmailToCustomerWhenInqueryHistoryStatusChangedToParsedDomainEventHandler(
             ILoggerFactory logger,
@@ -32,7 +34,8 @@
             IEventBus eventBus,
             IRepository<InqueryHistory> inqueryHistoryRepository,
             IQueryExecutor queryExecutor,
-            IMediator mediator)
+            IMediator mediator,
+            IConfiguration configuration)
         {
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
@@ -40,10 +43,19 @@
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.inqueryHistoryRepository = inqueryHistoryRepository ?? throw new ArgumentNullException(nameof(inqueryHistoryRepository));
             this.queryExecutor = queryExecutor ?? throw new ArgumentNullException(nameof(queryExecutor));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public async Task Handle(InqueryHistoryStatusChangedToParsedDomainEvent @event, CancellationToken cancellationToken)
         {
+            //msut create some template factory if more inquiry type comes. This is bad approach buy quicker for now
+            var customerAutoresponderDefaultTemplateId = configuration.GetValue<string>("CustomerAutoresponderDefaultTemplateIdForBuyInquiry");
+
+            if(@event.InqueryHistory.InquiryType == InquiryType.RentInquiry)
+            {
+                customerAutoresponderDefaultTemplateId = configuration.GetValue<string>("CustomerAutoresponderDefaultTemplateIdForRentInquiry");
+            }
+
             var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
             {
                 //Body = mailBody,
@@ -54,7 +66,9 @@
                 To = new[] { @event.InqueryHistory.CustomerEmail },
                 ReplyTo = @event.InqueryHistory.AgentInfo.Email,
                 AggregateId = @event.InqueryHistory.Id,
-                TemplateId = "bf191e71-8916-424f-a2ad-3c15a058ac22", //Autoresponder for new Customer. keep it hardcoded for now
+                TemplateId = string.IsNullOrEmpty(@event.InqueryHistory.AgentInfo.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId) ?
+                                                    customerAutoresponderDefaultTemplateId :
+                                                    @event.InqueryHistory.AgentInfo.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId, //Autoresponder for agent For new Inquiry. keep it hardcoded for now
                 MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
             };
 
@@ -80,10 +94,10 @@
                     { "[agentcity]", agent.City },
                     { "[agentstate]", agent.State },
                     { "[agentzip]", agent.Zip },
-                    { "[agenttypeformlink]", agent.AgentTypeFormInfo.TypeFormUrl },
+                    { "[agentinquirytypeformlink]", agent.AgentTypeFormInfo?.TypeFormUrl },
                     { "[addressbooklink]", "http://contact.adfenixleads.com" },
-                    { "[inquirylist]", agent.AgentTypeFormInfo.SpreadsheetUrl },
-                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail },
+                    { "[agentinquiryspreadsheetlink]", agent.AgentTypeFormInfo?.SpreadsheetUrl },
+                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail }
                 };
 
             foreach (var item in @event.InqueryHistory.ExtractedFields)

@@ -12,7 +12,9 @@
     using LeadsPlus.Core.Query;
     using MediatR;
     using MongoDB.Driver;
+    using Newtonsoft.Json.Linq;
     using System;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
     
@@ -22,9 +24,8 @@
         IRequestHandler<DeleteAgentCommand, bool>,
         IRequestHandler<CreateAgentIntigrationEmailAccountCommand, bool>,
         IRequestHandler<UpdateAgentIntigrationEmailAccountCommand, bool>,
-        IRequestHandler<CreateAgentTypeFormAccountCommand, bool>,
-        IRequestHandler<CreateAgentSpreadsheetAccountCommand, bool>,
-        IRequestHandler<UpdateAgentDataStudioUrlCommand, bool>
+        IRequestHandler<UpdateAgentDataStudioUrlCommand, bool>,
+        IRequestHandler<UpdateAgentAutoresponderTemplateCommand, bool>
     {
         private readonly IEventBus eventBus;
         private readonly IMediator mediator;
@@ -137,22 +138,27 @@
             return true;
         }
 
-        public async Task<bool> Handle(CreateAgentTypeFormAccountCommand createAgentTypeFormAccount, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateAgentAutoresponderTemplateCommand @command, CancellationToken cancellationToken)
         {
-            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = createAgentTypeFormAccount.AggregateId });
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
 
-            agent.CreateTypeform();
-            await mediator.DispatchDomainEventsAsync(agent);
+            agent.BuyInquiryAutoresponderTemplate.AgentAutoresponderTemplateId = @command.AgentAutoresponderTemplateForBuyInquiryId;
+            agent.BuyInquiryAutoresponderTemplate.CustomerAutoresponderTemplateId = @command.CustomerAutoresponderTemplateForBuyInquiryId;
+            agent.BuyInquiryAutoresponderTemplate.AutoresponderTemplateType = AutoresponderTemplateType.BuyInquiry;
 
-            return true;
-        }
+            agent.RentInquiryAutoresponderTemplate.AgentAutoresponderTemplateId = @command.AgentAutoresponderTemplateForRentInquiryId;
+            agent.RentInquiryAutoresponderTemplate.CustomerAutoresponderTemplateId = @command.CustomerAutoresponderTemplateForRentInquiryId;
+            agent.BuyInquiryAutoresponderTemplate.AutoresponderTemplateType = AutoresponderTemplateType.RentInquiry;
 
-        public async Task<bool> Handle(CreateAgentSpreadsheetAccountCommand areateAgentSpreadsheetAccountCommand, CancellationToken cancellationToken)
-        {
-            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = areateAgentSpreadsheetAccountCommand.AggregateId });
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
 
-            agent.CreateSpreadsheet();
-            await mediator.DispatchDomainEventsAsync(agent);
+            var update = Builders<Agent>.Update
+                .Set("BuyInquiryAutoresponderTemplate", agent.BuyInquiryAutoresponderTemplate)
+                .Set("RentInquiryAutoresponderTemplate", agent.RentInquiryAutoresponderTemplate)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
 
             return true;
         }

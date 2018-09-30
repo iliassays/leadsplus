@@ -7,6 +7,13 @@
     using MongoDB.Bson.Serialization.Attributes;
     using MongoDB.Bson;
 
+    public enum InquiryType
+    {
+        BuyInquiry = 0,
+        RentInquiry = 1,
+        MortgageInquiry = 2
+    }
+
     public enum InqueryStatus
     {
         Submitted = 0,
@@ -36,6 +43,10 @@
 
         [BsonRepresentation(BsonType.String)]
         public InqueryStatus InqueryStatus { get; set; }
+
+        [BsonRepresentation(BsonType.String)]
+        public InquiryType InquiryType { get; set; }
+
         public InqueryParsedToken InqueryParsedToken { get; set; }
         public Dictionary<string, string> ExtractedFields { get; set; }
 
@@ -47,7 +58,7 @@
 
         }
 
-        public InqueryHistory(string id, string organizationEmail, string message, string subject, string agentEmail, AgentInfo agentInfo)
+        public InqueryHistory(string id, InquiryType inquiryType, string organizationEmail, string message, string subject, string agentEmail, AgentInfo agentInfo)
             : this()
         {
             Id = id;
@@ -56,7 +67,9 @@
             Message = message;
             Subject = subject;
             AgentEmail = agentEmail;
-            this.AgentInfo = agentInfo;
+            AgentInfo = agentInfo;
+            InquiryType = inquiryType;
+
             CreatedDate = DateTime.UtcNow;
             UpdatedDate = DateTime.UtcNow;
 

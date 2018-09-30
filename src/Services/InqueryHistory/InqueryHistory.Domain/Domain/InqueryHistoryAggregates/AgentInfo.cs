@@ -21,6 +21,8 @@
 
         public AgentTypeFormInfo AgentTypeFormInfo { get; set; }
 
+        public AgentAutoresponderTemplateInfo AgentAutoresponderTemplateInfo { get; set; }
+
         public string CreatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime CreatedDate { get; set; }

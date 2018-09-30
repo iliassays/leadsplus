@@ -96,9 +96,8 @@
                 MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
             };
 
-            eventBus.Publish(emailNeedsToBeSent);
-
-
+            //For now there is no such requirement of informing agent for new lead
+            //eventBus.Publish(emailNeedsToBeSent);
 
             logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history email converted to leads {@event.InqueryHistory.Id} - {@event.InqueryHistory.OrganizationEmail}.");
         }
@@ -113,10 +112,8 @@
                     { "[agentcity]", agent.City },
                     { "[agentstate]", agent.State },
                     { "[agentzip]", agent.Zip },
-                    { "[agenttypeformlink]", agent.AgentTypeFormInfo.TypeFormUrl },
                     { "[addressbooklink]", "http://contact.adfenixleads.com" },
-                    { "[inquirylist]", agent.AgentTypeFormInfo.SpreadsheetUrl },
-                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail },
+                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail }
                 };
 
             foreach (var item in @event.InqueryHistory.ExtractedFields)
