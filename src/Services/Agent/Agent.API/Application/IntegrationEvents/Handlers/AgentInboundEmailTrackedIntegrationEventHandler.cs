@@ -46,7 +46,7 @@
                     Body = @event.Body,
                     Subject = @event.Subject,
                     OrganizationEmail = @event.OrganizationEmail,
-                    InquiryType = GetInquiryType(@event),
+                    InquiryType = (int) GetInquiryType(@event),
                     PlainText = @event.PlainText,
 
                     AgentInfo = new AgentInfo()
@@ -63,8 +63,7 @@
                         Phone = agent.Phone,
                         Id = agent.Id,
                         IntegrationEmail = agent.IntegrationEmail,
-                        InquiryTypeForm = GetTypeformData(@event, agent),
-                        AgentAutoresponderTemplateInfo = GetAutoresponderTemplateData(@event, agent),
+                        AgentInquiryInfo = GetTypeformData(@event, agent)
                     }
                 };
 
@@ -76,26 +75,26 @@
             }
         }
 
-        private AgentTypeFormInfo GetTypeformData(AgentInboundEmailTrackedIntegrationEvent @event, Agent agent)
+        private AgentInquiryInfo GetTypeformData(AgentInboundEmailTrackedIntegrationEvent @event, Agent agent)
         {
             if (GetInquiryType(@event) == InquiryType.RentInquiry) 
             {
-                return new AgentTypeFormInfo
+                return new AgentInquiryInfo
                 {
-                    SpreadsheetId = agent.RentInquiryTypeForm?.SpreadsheetId,
-                    SpreadsheetName = agent.RentInquiryTypeForm?.SpreadsheetName,
-                    SpreadsheetUrl = agent.RentInquiryTypeForm?.SpreadsheetUrl,
-                    TypeFormUrl = agent.RentInquiryTypeForm?.TypeFormUrl
+                    SpreadsheetId = agent.RentInquiry?.SpreadsheetId,
+                    SpreadsheetName = agent.RentInquiry?.SpreadsheetName,
+                    SpreadsheetUrl = agent.RentInquiry?.SpreadsheetUrl,
+                    TypeFormUrl = agent.RentInquiry?.TypeFormUrl
                 };
             }
             else
             {
-                return new AgentTypeFormInfo
+                return new AgentInquiryInfo
                 {
-                    SpreadsheetId = agent.BuyInquiryTypeForm?.SpreadsheetId,
-                    SpreadsheetName = agent.BuyInquiryTypeForm?.SpreadsheetName,
-                    SpreadsheetUrl = agent.BuyInquiryTypeForm?.SpreadsheetUrl,
-                    TypeFormUrl = agent.BuyInquiryTypeForm?.TypeFormUrl
+                    SpreadsheetId = agent.BuyInquiry?.SpreadsheetId,
+                    SpreadsheetName = agent.BuyInquiry?.SpreadsheetName,
+                    SpreadsheetUrl = agent.BuyInquiry?.SpreadsheetUrl,
+                    TypeFormUrl = agent.BuyInquiry?.TypeFormUrl
                 };
             }
         }
@@ -106,23 +105,26 @@
             {
                 return new AgentAutoresponderTemplateInfo
                 {
-                    CustomerAutoresponderTemplateId = agent.RentInquiryAutoresponderTemplate?.CustomerAutoresponderTemplateId,
-                    AgentAutoresponderTemplateId = agent.RentInquiryAutoresponderTemplate?.AgentAutoresponderTemplateId
+                    CustomerAutoresponderTemplateId = agent.RentInquiry?.InquiryAutoresponderTemplate?.CustomerAutoresponderTemplateId,
+                    AgentAutoresponderTemplateId = agent.RentInquiry?.InquiryAutoresponderTemplate?.AgentAutoresponderTemplateId
                 };
             }
             else
             {
                 return new AgentAutoresponderTemplateInfo
                 {
-                    CustomerAutoresponderTemplateId = agent.BuyInquiryAutoresponderTemplate?.CustomerAutoresponderTemplateId,
-                    AgentAutoresponderTemplateId = agent.BuyInquiryAutoresponderTemplate?.AgentAutoresponderTemplateId
+                    CustomerAutoresponderTemplateId = agent.BuyInquiry?.InquiryAutoresponderTemplate?.CustomerAutoresponderTemplateId,
+                    AgentAutoresponderTemplateId = agent.BuyInquiry?.InquiryAutoresponderTemplate?.AgentAutoresponderTemplateId
                 };
             }
         }
 
         public InquiryType GetInquiryType(AgentInboundEmailTrackedIntegrationEvent @event)
         {
-            if (@event.Subject.Contains("Rent") || @event.PlainText.Contains("Rent"))//Bad way. Need to fugure out something after seeing some templates
+            if (@event.Subject.Contains("Rent", StringComparison.InvariantCultureIgnoreCase)
+                || @event.PlainText.Contains("Rent", StringComparison.InvariantCultureIgnoreCase) 
+                || @event.PlainText.Contains("Tenant", StringComparison.InvariantCultureIgnoreCase) 
+                || @event.PlainText.Contains("Tenant", StringComparison.InvariantCultureIgnoreCase))//Bad way. Need to fugure out something after seeing some templates
             {
                 return InquiryType.RentInquiry;
             }

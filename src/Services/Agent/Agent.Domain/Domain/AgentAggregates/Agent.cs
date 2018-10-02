@@ -21,11 +21,8 @@
         public string Company { get; set; }
         public string DataStudioUrl { get; set; }
         
-        public AgentTypeForm RentInquiryTypeForm { get; set; }
-        public AgentTypeForm BuyInquiryTypeForm { get; set; }
-
-        public AgentAutoresponderTemplate BuyInquiryAutoresponderTemplate { get; set; }
-        public AgentAutoresponderTemplate RentInquiryAutoresponderTemplate { get; set; }
+        public AgentRentInquiry RentInquiry { get; set; }
+        public AgentBuyInquiry BuyInquiry { get; set; }
 
         public string CreatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
@@ -81,7 +78,7 @@
             this.AddDomainEvent(agentMailboxUpdatedEvent);
         }
 
-        public void CreateTypeform(TypeFormType typeFormType)
+        public void CreateTypeform(InquiryType typeFormType)
         {
             var agentTypeformUpdatedEvent = new AgentTypeformCreatedEvent()
             {
@@ -92,7 +89,7 @@
             this.AddDomainEvent(agentTypeformUpdatedEvent);
         }
 
-        public void CreateSpreadsheet(TypeFormType typeFormType)
+        public void CreateSpreadsheet(InquiryType typeFormType)
         {
             var agentSpreadsheetCreatedEvent = new AgentSpreadsheetCreatedEvent()
             {

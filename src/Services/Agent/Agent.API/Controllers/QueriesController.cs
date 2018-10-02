@@ -16,6 +16,7 @@
     using System.IO;
     using System.Net;
     using System.Threading.Tasks;
+    using System.Linq;
 
     [Route("api/v1/[controller]")]
     //[Authorize]
@@ -23,11 +24,72 @@
     {
         private readonly IQueryExecutor queryExecutor;
         private readonly IMediator mediator;
+        private List<string> customerHeaders = new List<string>()
+        {
+            { "Id" }, { "Date"}, { "Customer Name"}, { "Customer Email"}, { "Customer Phone"}, { "Customer Address"}, { "About Customer"},
+            { "Customer Message"}, { "Enquiry Source"}, { "Enquiry Kind"}, { "Property Address"},
+            { "Property Reference"}, { "Property Url"},
+        };
+
+        private List<string> buyInquiryHeaders = new List<string>()
+        {
+            { "Customer Current Position"}, { "Expected Date Of Moving"}, { "Perpose Of Search"}, { "Preffered Location"},
+            { "Property Of Interest"}, { "Number Of Bedroom Required"}, { "Budget"}, { "Preffered Time of Contacting"},
+            { "Other Important Feature"}, { "Want Best Mortgage Rate?"},
+        };
+
+        private List<string> rentInquiryHeaders = new List<string>()
+        {
+            { "Expected Date Of Moving"}, { "Customer Occupation"}, { "Currently Rent From"}, { "Need Internet Ready?"}, { "Have Property To Sell?"},
+            { "Have Property To Let?"}, { "Preffered Time of Contacting"}
+        };
 
         public QueriesController(IQueryExecutor queryExecutor, IMediator mediator, IHostingEnvironment env)
         {
             this.queryExecutor = queryExecutor ?? throw new ArgumentNullException(nameof(queryExecutor));
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            CreateSpreadsheetForTrackingInquiryTest(InquiryType.BuyInquiry);
+        }
+
+        public Spreadsheet CreateSpreadsheetForTrackingInquiryTest(InquiryType typeFormType)
+        {
+            CreateSpreadsheetCommand createSpreadsheetCommand = new CreateSpreadsheetCommand
+            {
+                SpreadSheetName = "Hello World",
+                WorkSheetName = Enum.GetName(typeof(InquiryType), typeFormType),
+                ApplicationName = "LeadsPlus"
+            };
+
+            var fields = customerHeaders.Concat(buyInquiryHeaders).ToList();
+            foreach (var item in fields)
+            {
+                createSpreadsheetCommand.HeaderValues.Add(item);
+                createSpreadsheetCommand.InitialValues.Add("test"); // this is required for Zapier to function correctly
+            }
+
+            var spreadsheet = mediator.Send(createSpreadsheetCommand).Result;
+
+            AssigSpreadsheetPermissionCommand assigSpreadsheetPermissionCommand = new AssigSpreadsheetPermissionCommand
+            {
+                Email = "shimulsays@gmail.com",
+                SpreadsheetId = spreadsheet.SpreadsheetId,
+                ApplicationName = "LeadsPlus"
+            };
+
+            var assigSpreadsheetPermissionToOrganizationCommandResult = mediator.Send(assigSpreadsheetPermissionCommand).Result;
+
+            //var createContactIntegrationEvent = new CreateContactIntegrationEvent()
+            //{
+            //    AggregateId = agent.Id,
+            //    Source = "AdfenixLeads",
+            //    Email = agent.Email,
+            //    OwnerId = agent.Id,
+            //    Ownername = $"{agent.Firstname} {agent.Lastname}"
+            //};
+
+            //eventBus.Publish(createContactIntegrationEvent);
+
+            return spreadsheet;
         }
 
         //GET api/v1/[controller]/1

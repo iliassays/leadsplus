@@ -4,26 +4,15 @@
     using MongoDB.Bson.Serialization.Attributes;
     using System;
 
-    public enum AutoresponderTemplateType
-    {
-        BuyInquiry = 0,
-        RentInquiry = 1,
-        MortgageInquiry = 2
-    }
-
     public class AgentAutoresponderTemplate
     {
         public string AgentAutoresponderTemplateId { get; set; }
         public string CustomerAutoresponderTemplateId { get; set; }
 
-        [BsonRepresentation(BsonType.String)]
-        public AutoresponderTemplateType AutoresponderTemplateType { get; set; }
-
-        public AgentAutoresponderTemplate(string agentAutoresponderTemplateId, string customerAutoresponderTemplateId, AutoresponderTemplateType templateType)
+        public AgentAutoresponderTemplate(string agentAutoresponderTemplateId, string customerAutoresponderTemplateId)
         {
             this.AgentAutoresponderTemplateId = agentAutoresponderTemplateId;
             this.CustomerAutoresponderTemplateId = customerAutoresponderTemplateId;
-            this.AutoresponderTemplateType = templateType;
         }
     }
 }

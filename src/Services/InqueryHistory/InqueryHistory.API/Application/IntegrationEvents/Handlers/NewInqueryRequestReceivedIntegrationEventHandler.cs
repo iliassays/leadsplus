@@ -54,36 +54,38 @@
             //string id, string customerEmail, string message, string subject, string agentEmail, AgentInfo agentInfo
             var inqueryHistory = new InqueryHistory(@event.AggregateId,
                 (InquiryType)(@event.InquiryType),
-                @event.OrganizationEmail,
                 @event.Body,
                 @event.Subject,
                 @event.AgentEmail,
                 new Domain.AgentInfo()
-                 {
-                     Address = @event.AgentInfo.Address,
-                     City = @event.AgentInfo.City,
-                     State = @event.AgentInfo.State,
-                     Zip = @event.AgentInfo.Zip,
-                     Email = @event.AgentInfo.Email,
-                     Firstname = @event.AgentInfo.Firstname,
-                     Lastname = @event.AgentInfo.Lastname,
-                     Company = @event.AgentInfo.Company,
-                     Country = @event.AgentInfo.Country,
-                     Phone = @event.AgentInfo.Phone,
-                     Id = @event.AgentInfo.Id,
-                     IntegrationEmail = @event.AgentInfo.IntegrationEmail,
-                     AgentAutoresponderTemplateInfo = new Domain.AgentAutoresponderTemplateInfo
-                     {
-                         AgentAutoresponderTemplateId = @event.AgentInfo.AgentAutoresponderTemplateInfo.AgentAutoresponderTemplateId,
-                         CustomerAutoresponderTemplateId = @event.AgentInfo.AgentAutoresponderTemplateInfo.CustomerAutoresponderTemplateId
-                     },
-                     AgentTypeFormInfo = new Domain.AgentTypeFormInfo
-                     {
-                        SpreadsheetId = @event.AgentInfo.InquiryTypeForm?.SpreadsheetId,
-                        SpreadsheetName = @event.AgentInfo.InquiryTypeForm?.SpreadsheetName,
-                        SpreadsheetUrl = @event.AgentInfo.InquiryTypeForm?.SpreadsheetUrl,
-                        TypeFormUrl = @event.AgentInfo.InquiryTypeForm?.TypeFormUrl
-                     }
+                {
+                    Address = @event.AgentInfo.Address,
+                    City = @event.AgentInfo.City,
+                    State = @event.AgentInfo.State,
+                    Zip = @event.AgentInfo.Zip,
+                    Email = @event.AgentInfo.Email,
+                    Firstname = @event.AgentInfo.Firstname,
+                    Lastname = @event.AgentInfo.Lastname,
+                    Company = @event.AgentInfo.Company,
+                    Country = @event.AgentInfo.Country,
+                    Phone = @event.AgentInfo.Phone,
+                    Id = @event.AgentInfo.Id,
+                    IntegrationEmail = @event.AgentInfo.IntegrationEmail,                    
+                    AgentInquiryInfo = new Domain.AgentInquiryInfo
+                    {
+                        SpreadsheetId = @event.AgentInfo.AgentInquiryInfo?.SpreadsheetId,
+                        SpreadsheetName = @event.AgentInfo.AgentInquiryInfo?.SpreadsheetName,
+                        SpreadsheetUrl = @event.AgentInfo.AgentInquiryInfo?.SpreadsheetUrl,
+                        TypeFormUrl = @event.AgentInfo.AgentInquiryInfo?.TypeFormUrl,
+                        AgentAutoresponderTemplateInfo = new Domain.AgentAutoresponderTemplateInfo
+                        {
+                            AgentAutoresponderTemplateId = @event.AgentInfo.AgentInquiryInfo?.AgentAutoresponderTemplateInfo.AgentAutoresponderTemplateId,
+                            CustomerAutoresponderTemplateId = @event.AgentInfo.AgentInquiryInfo?.AgentAutoresponderTemplateInfo.CustomerAutoresponderTemplateId
+                        },
+                    }
+                },
+                new OrganizationInfo {
+                    OrganizationEmail = @event.OrganizationEmail
                 });
 
             await inqueryHistoryRepository.AddAsync(inqueryHistory);

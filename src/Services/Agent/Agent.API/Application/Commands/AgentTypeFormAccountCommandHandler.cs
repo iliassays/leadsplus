@@ -17,15 +17,14 @@
     using MongoDB.Driver;
     using Newtonsoft.Json.Linq;
     using System;
+    using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
     
     public class AgentTypeFormAccountCommandHandler
         : IRequestHandler<CreateAgentTypeFormAccountForBuyInquiryCommand, bool>,
-        IRequestHandler<CreateAgentTypeFormAccountForRentInquiryCommand, bool>,
-        IRequestHandler<CreateAgentSpreadsheetAccountForBuyInquiryCommand, bool>,
-        IRequestHandler<CreateAgentSpreadsheetAccountForRentInquiryCommand, bool>
+        IRequestHandler<CreateAgentTypeFormAccountForRentInquiryCommand, bool>
     {
         private readonly IEventBus eventBus;
         private readonly IMediator mediator;
@@ -62,20 +61,25 @@
 
             string typeFormTemplateJson = await typeForm.GetTypeFormAsync(buyInquiryTemplateUrl);
 
-            var typeFormUrl = await CreateTypeFormUrl(agent, TypeFormType.BuyInquiry, typeFormTemplateJson);
+            var typeFormUrl = await CreateTypeFormUrl(agent, InquiryType.BuyInquiry, typeFormTemplateJson);
 
-            agent.BuyInquiryTypeForm = new AgentTypeForm(typeFormUrl, TypeFormType.BuyInquiry);
+            if (agent.BuyInquiry == null)
+            {
+                agent.BuyInquiry = new AgentBuyInquiry();
+            }
+
+            agent.BuyInquiry.AddTypeformToAgentInquiry(typeFormUrl);
 
             var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
 
             var update = Builders<Agent>.Update
-                .Set("BuyInquiryTypeForm", agent.BuyInquiryTypeForm)
+                .Set("BuyInquiry", agent.BuyInquiry)
                 .CurrentDate("UpdatedDate");
 
             await agentRepository.Collection
                 .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
 
-            agent.CreateTypeform(TypeFormType.BuyInquiry);
+            agent.CreateTypeform(InquiryType.BuyInquiry);
             await mediator.DispatchDomainEventsAsync(agent);
 
             return true;
@@ -89,90 +93,37 @@
 
             string typeFormTemplateJson = await typeForm.GetTypeFormAsync(rentInquiryTemplateUrl);
 
-            var typeFormUrl = await CreateTypeFormUrl(agent, TypeFormType.BuyInquiry, typeFormTemplateJson);
+            var typeFormUrl = await CreateTypeFormUrl(agent, InquiryType.BuyInquiry, typeFormTemplateJson);
 
-            agent.RentInquiryTypeForm = new AgentTypeForm(typeFormUrl, TypeFormType.BuyInquiry);
+            if (agent.RentInquiry == null)
+            {
+                agent.RentInquiry = new AgentRentInquiry();
+            }
+
+            agent.RentInquiry.AddTypeformToAgentInquiry(typeFormUrl);
 
             var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
 
             var update = Builders<Agent>.Update
-                .Set("RentInquiryTypeForm", agent.RentInquiryTypeForm)
+                .Set("RentInquiry", agent.RentInquiry)
                 .CurrentDate("UpdatedDate");
 
             await agentRepository.Collection
                 .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
 
-            agent.CreateTypeform(TypeFormType.RentInquiry);
+            agent.CreateTypeform(InquiryType.RentInquiry);
             await mediator.DispatchDomainEventsAsync(agent);
 
             return true;
         }
 
-        public async Task<bool> Handle(CreateAgentSpreadsheetAccountForBuyInquiryCommand @command, CancellationToken cancellationToken)
-        {
-            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
-
-            //create buyer inquiry template
-            var typeFormBuyInquiryTemplateUrl = configuration.GetValue<string>("TypeFormBuyInquiryTemplateUrl");
-
-            string typeFormTemplateJson = await typeForm.GetTypeFormAsync(typeFormBuyInquiryTemplateUrl);
-
-            var spreadsheet = CreateSpreadsheetForTypeform(agent, typeFormTemplateJson, TypeFormType.BuyInquiry);
-
-            agent.BuyInquiryTypeForm.SpreadsheetUrl = spreadsheet.SpreadsheetUrl;
-            agent.BuyInquiryTypeForm.SpreadsheetId = spreadsheet.SpreadsheetId;
-            agent.BuyInquiryTypeForm.SpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(TypeFormType), TypeFormType.BuyInquiry));
-
-
-            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
-            var update = Builders<Agent>.Update
-                .Set("BuyInquiryTypeForm", agent.BuyInquiryTypeForm)
-                .CurrentDate("UpdatedDate");
-
-            await agentRepository.Collection
-                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
-
-            agent.CreateSpreadsheet(TypeFormType.BuyInquiry);
-            await mediator.DispatchDomainEventsAsync(agent);
-
-            return true;
-        }
-
-        public async Task<bool> Handle(CreateAgentSpreadsheetAccountForRentInquiryCommand @command, CancellationToken cancellationToken)
-        {
-            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
-
-            var typeFormRentInquiryTemplateUrl = configuration.GetValue<string>("TypeFormRentInquiryTemplateUrl");
-
-            string typeFormTemplateJson = await typeForm.GetTypeFormAsync(typeFormRentInquiryTemplateUrl);
-
-            var spreadsheet = CreateSpreadsheetForTypeform(agent, typeFormTemplateJson, TypeFormType.RentInquiry);
-
-            agent.RentInquiryTypeForm.SpreadsheetUrl = spreadsheet.SpreadsheetUrl;
-            agent.RentInquiryTypeForm.SpreadsheetId = spreadsheet.SpreadsheetId;
-            agent.RentInquiryTypeForm.SpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(TypeFormType), TypeFormType.RentInquiry));
-            
-            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
-            var update = Builders<Agent>.Update
-                .Set("RentInquiryTypeForm", agent.RentInquiryTypeForm)
-                .CurrentDate("UpdatedDate");
-
-            await agentRepository.Collection
-                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
-
-            agent.CreateSpreadsheet(TypeFormType.RentInquiry);
-            await mediator.DispatchDomainEventsAsync(agent);
-
-            return true;
-        }
-
-        private async Task<string> CreateTypeFormUrl(Agent agent, TypeFormType typeformType, string typeFormTemplateJson)
+        private async Task<string> CreateTypeFormUrl(Agent agent, InquiryType typeformType, string typeFormTemplateJson)
         {
             Regex reg = new Regex(@"(\""title\"":[ ]?\"")([\d\s\w]*)");
 
             typeFormTemplateJson = reg.Replace(typeFormTemplateJson, delegate (Match m)
             {
-                return m.Groups[1].Value + agent.GetTypeformName(Enum.GetName(typeof(TypeFormType), typeformType));
+                return m.Groups[1].Value + agent.GetTypeformName(Enum.GetName(typeof(InquiryType), typeformType));
             }, 1);
 
             var cretedTypeFormJson = await typeForm.CreateTypeFormAsync(typeFormTemplateJson);
@@ -180,60 +131,5 @@
 
             return cretedTypeForm._links.display;
         }
-
-        private Spreadsheet CreateSpreadsheetForTypeform(Agent agent, string typeFormTemplateJson, TypeFormType typeFormType)
-        {
-            dynamic typeForm = JObject.Parse(typeFormTemplateJson);
-
-            //spreadSheetCreator.CreateSpreadSheetPermission(spreadsheet.SpreadsheetId, "bintusays@gmail.com");
-            //return spreadsheet.SpreadsheetUrl;
-
-            CreateSpreadsheetCommand createSpreadsheetCommand = new CreateSpreadsheetCommand
-            {
-                SpreadSheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(TypeFormType), typeFormType)),
-                WorkSheetName = Enum.GetName(typeof(TypeFormType), typeFormType),
-                ApplicationName = "LeadsPlus"
-            };
-
-            foreach (dynamic item in typeForm.fields)
-            {
-                createSpreadsheetCommand.HeaderValues.Add(item.title);
-                createSpreadsheetCommand.InitialValues.Add("-");
-            }
-
-            var spreadsheet = mediator.Send(createSpreadsheetCommand).Result;
-
-            AssigSpreadsheetPermissionCommand assigSpreadsheetPermissionCommand = new AssigSpreadsheetPermissionCommand
-            {
-                Email = agent.Email,
-                SpreadsheetId = spreadsheet.SpreadsheetId,
-                ApplicationName = "LeadsPlus"
-            };
-
-            var assigSpreadsheetPermissionCommandResult = mediator.Send(assigSpreadsheetPermissionCommand).Result;
-
-            AssigSpreadsheetPermissionCommand assigSpreadsheetPermissionToOrganizationCommand = new AssigSpreadsheetPermissionCommand
-            {
-                Email = "adfenixleads@gmail.com",
-                SpreadsheetId = spreadsheet.SpreadsheetId,
-                ApplicationName = "LeadsPlus"
-            };
-
-            var assigSpreadsheetPermissionToOrganizationCommandResult = mediator.Send(assigSpreadsheetPermissionToOrganizationCommand).Result;
-
-            //var createContactIntegrationEvent = new CreateContactIntegrationEvent()
-            //{
-            //    AggregateId = agent.Id,
-            //    Source = "AdfenixLeads",
-            //    Email = agent.Email,
-            //    OwnerId = agent.Id,
-            //    Ownername = $"{agent.Firstname} {agent.Lastname}"
-            //};
-
-            //eventBus.Publish(createContactIntegrationEvent);
-
-            return spreadsheet;
-        }
-        
     }
 }

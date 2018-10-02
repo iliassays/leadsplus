@@ -5,7 +5,7 @@
 
     public class AgentSpreadsheetCreatedEvent : INotification
     {
-        public TypeFormType TypeFormType { get; set; }
+        public InquiryType TypeFormType { get; set; }
         public Agent Agent { get; set; }
     }
 }

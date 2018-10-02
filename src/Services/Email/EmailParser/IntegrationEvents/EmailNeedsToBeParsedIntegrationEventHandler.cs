@@ -32,7 +32,9 @@
                 FromEmail = "adfenixemailparser@adfeixleads.com",
                 FromName = "adfenixemailparser",
                 To = new[] { @event.ToEmail },
-                AggregateId = @event.AggregateId
+                AggregateId = @event.AggregateId,
+                DisableClickTracking = true,
+                DisableOpenTracking = true
             };
 
             eventBus.Publish(emailNeedsToBeSent);

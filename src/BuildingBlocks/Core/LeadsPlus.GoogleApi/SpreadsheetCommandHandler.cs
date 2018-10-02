@@ -16,7 +16,8 @@
 
     public class SpreadsheetCommandHandler
         : IRequestHandler<CreateSpreadsheetCommand, Spreadsheet>,
-        IRequestHandler<AssigSpreadsheetPermissionCommand, bool>
+        IRequestHandler<AssigSpreadsheetPermissionCommand, bool>,
+        IRequestHandler<InsertRowToSpreadsheetCommand, Spreadsheet>
     {
         private IGoogleApiConnector googleApiConnector;
         private readonly IMediator mediator;
@@ -33,47 +34,67 @@
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        public async Task<Spreadsheet> Handle(CreateSpreadsheetCommand createSpreadsheetCommand, CancellationToken cancellationToken)
+        public async Task<Spreadsheet> Handle(CreateSpreadsheetCommand @command, CancellationToken cancellationToken)
         {
             this.sheetsService = new SheetsService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = googleCredential,
-                ApplicationName = createSpreadsheetCommand.ApplicationName,
+                ApplicationName = @command.ApplicationName,
             });
 
-            Spreadsheet spreadsheet = await CreateSpreadSheet(createSpreadsheetCommand.SpreadSheetName, createSpreadsheetCommand.WorkSheetName);
+            Spreadsheet spreadsheet = await CreateSpreadsheet(@command.SpreadSheetName, @command.WorkSheetName);
 
-            await InsertHeader(spreadsheet.SpreadsheetId, createSpreadsheetCommand.WorkSheetName, createSpreadsheetCommand.HeaderValues);
+            await InsertHeader(spreadsheet.SpreadsheetId, @command.WorkSheetName, @command.HeaderValues);
 
-            if (createSpreadsheetCommand.InitialValues.Count > 0)
+            if (@command.InitialValues.Count > 0)
             {
-                await InsertFirstRow(spreadsheet.SpreadsheetId, createSpreadsheetCommand.WorkSheetName, createSpreadsheetCommand.InitialValues);
+                await InsertFirstRow(spreadsheet.SpreadsheetId, @command.WorkSheetName, @command.InitialValues);
             }
 
             return spreadsheet;
         }
-        
-        public async Task<bool> Handle(AssigSpreadsheetPermissionCommand assigSpreadsheetPermissionCommand, CancellationToken cancellationToken)
+
+        public async Task<Spreadsheet> Handle(InsertRowToSpreadsheetCommand @command, CancellationToken cancellationToken)
+        {
+            this.sheetsService = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = googleCredential,
+                ApplicationName = @command.ApplicationName,
+            });
+
+            Spreadsheet spreadsheet = await GetSpreadsheet(@command.SpreadSheetId);
+
+            //await InsertHeader(spreadsheet.SpreadsheetId, updateSpreadsheetCommand.WorkSheetName, updateSpreadsheetCommand.HeaderValues);
+
+            if (@command.Values.Count > 0)
+            {
+                await InsertFirstRow(spreadsheet.SpreadsheetId, @command.WorkSheetName, @command.Values);
+            }
+
+            return spreadsheet;
+        }
+
+        public async Task<bool> Handle(AssigSpreadsheetPermissionCommand @command, CancellationToken cancellationToken)
         {
             this.driveService = new DriveService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = googleCredential,
-                ApplicationName = assigSpreadsheetPermissionCommand.ApplicationName,
+                ApplicationName = @command.ApplicationName,
             });
 
             Permission userPermission = new Permission()
             {
                 Type = "user",
                 Role = "writer",
-                EmailAddress = assigSpreadsheetPermissionCommand.Email
+                EmailAddress = @command.Email
             };
 
-            await driveService.Permissions.Create(userPermission, assigSpreadsheetPermissionCommand.SpreadsheetId).ExecuteAsync();
+            await driveService.Permissions.Create(userPermission, @command.SpreadsheetId).ExecuteAsync();
 
             return true;
         }
 
-        private async Task<Spreadsheet> CreateSpreadSheet(string spreadSheetName, string worksheetName)
+        private async Task<Spreadsheet> CreateSpreadsheet(string spreadSheetName, string worksheetName)
         {
             Spreadsheet createRequest = new Spreadsheet
             {
@@ -95,6 +116,14 @@
             };
 
             var request = sheetsService.Spreadsheets.Create(createRequest);
+            var response = await request.ExecuteAsync();
+
+            return response;
+        }
+
+        private async Task<Spreadsheet> GetSpreadsheet(string spreadSheetId)
+        {
+            var request = sheetsService.Spreadsheets.Get(spreadSheetId);
             var response = await request.ExecuteAsync();
 
             return response;
@@ -126,7 +155,7 @@
 
             for (int i = 0; i < totValues; i++)
             {
-                rangeEnd = rangeStart++;
+                rangeEnd++;
             }
 
             return $"{sheet}!{rangeStart}:{rangeEnd}";

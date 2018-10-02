@@ -44,7 +44,7 @@
         public async Task Handle(AgentSpreadsheetCreatedEvent agentSpreadsheetCreatedEvent, CancellationToken cancellationToken)
         {
             //Do create typeform
-            logger.CreateLogger(nameof(agentSpreadsheetCreatedEvent)).LogTrace($"Agent spreadsheet created {agentSpreadsheetCreatedEvent.Agent.Id}. Typeform: {Enum.GetName(typeof(TypeFormType), agentSpreadsheetCreatedEvent.TypeFormType)}");
+            logger.CreateLogger(nameof(agentSpreadsheetCreatedEvent)).LogTrace($"Agent spreadsheet created {agentSpreadsheetCreatedEvent.Agent.Id}. Typeform: {Enum.GetName(typeof(global::Agent.Domain.InquiryType), agentSpreadsheetCreatedEvent.TypeFormType)}");
         }
     }
 }

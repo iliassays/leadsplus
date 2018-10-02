@@ -38,11 +38,13 @@
             var contacts = await queryExecutor.Execute<GetAllInqueryHistoryQuery, List<InqueryHistory>>(new GetAllInqueryHistoryQuery());
             return Ok(contacts.Select(c => new
             {
-                organization = c.Organization,
-                customerEmail = c.CustomerEmail,
+                organizationDomain = c.OrganizationInfo.OrganizationDomain,
+                organizationName = c.OrganizationInfo.OrganizationName,
+                customerEmail = c.CustomerInfo.Email,
                 agentEmail = c.AgentEmail,
                 inqueryStatus = Enum.GetName(typeof(InqueryStatus), c.InqueryStatus),
-                createdDate = c.CustomerEmail
+                inqueryType = Enum.GetName(typeof(InquiryType), c.InquiryType),
+                createdDate = c.CreatedDate
             }));
         }
     }

@@ -43,14 +43,15 @@
 
             logger.CreateLogger(nameof(command)).LogTrace($"Creating contact {command.AggregateId}-{command.Email}.");
 
-            var email = command.Email?.Split(" ")[0];
+            var email = command.Email?.Split(" ")[0]; //incase of mailto added badly by parser
 
             var contact = await queryExecutor.Execute<GetContactByEmailAndOwnerQuery, Contact>(
                 new GetContactByEmailAndOwnerQuery { OwnerId = command.OwnerId, Email = email });
 
             if(contact == null)
             {
-                contact = new Contact(command.AggregateId, command.OwnerId, command.Ownername, command.Source, command.Firstname, command.Lastname, email);
+                contact = new Contact(command.AggregateId, command.OwnerId, command.Ownername, command.Source, 
+                    command.Firstname, command.Lastname, email, command.Company, command.Phone, command.Address, command.City, command.Country, command.Aboutme);
 
                 await contactRepository.AddAsync(contact);
 

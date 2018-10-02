@@ -2,12 +2,12 @@
 {
     using LeadsPlus.BuildingBlocks.EventBus.Events;
 
-    public enum InquiryType
-    {
-        BuyInquiry = 0,
-        RentInquiry = 1,
-        MortgageInquiry = 2
-    }
+    //public enum InquiryType
+    //{
+    //    BuyInquiry = 0,
+    //    RentInquiry = 1,
+    //    MortgageInquiry = 2
+    //}
 
     public class NewInqueryRequestReceivedIntegrationEvent : IntegrationEvent
     {
@@ -17,7 +17,7 @@
         public string AgentEmail { get; set; }
         public string PlainText { get; set; }
 
-        public InquiryType InquiryType { get; set; }
+        public int InquiryType { get; set; }
 
         public AgentInfo AgentInfo { get; set; }
 
@@ -42,22 +42,28 @@
         public string Address { get; set; }
         public string Company { get; set; }
 
-        public AgentAutoresponderTemplateInfo AgentAutoresponderTemplateInfo { get; set; }
-        public AgentTypeFormInfo InquiryTypeForm { get; set; }
+
+        public AgentInquiryInfo AgentInquiryInfo { get; set; }
 
         public AgentInfo()
         {
-            this.InquiryTypeForm = new AgentTypeFormInfo();
-            this.AgentAutoresponderTemplateInfo = new AgentAutoresponderTemplateInfo();
+            this.AgentInquiryInfo = new AgentInquiryInfo();
         }
     }
 
-    public class AgentTypeFormInfo
+    public class AgentInquiryInfo
     {
         public string TypeFormUrl { get; set; }
         public string SpreadsheetUrl { get; set; }
         public string SpreadsheetId { get; set; }
         public string SpreadsheetName { get; set; }
+
+        public AgentAutoresponderTemplateInfo AgentAutoresponderTemplateInfo { get; set; }
+
+        public AgentInquiryInfo()
+        {
+            this.AgentAutoresponderTemplateInfo = new AgentAutoresponderTemplateInfo();
+        }
     }
 
     public class AgentAutoresponderTemplateInfo

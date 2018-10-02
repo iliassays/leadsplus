@@ -7,16 +7,16 @@
     {
         public void TypeformSettings(IConfiguration configuration)
         {
-            this.ApiKey = configuration.GetValue<string>("TypeformApiKey");
-            this.ApiRoot = configuration.GetValue<string>("ApiRoot");
-            this.TypeformApi = configuration.GetValue<string>("TypeformApi");
+            this.ApiKey = configuration.GetValue<string>("TypeFormApiKey");
+            this.ApiRoot = configuration.GetValue<string>("TypeFormApiRoot");
+            //this.TypeFormApi = configuration.GetValue<string>("TypeFormApi");
             //this.BuyerInquiryTemplateUrl = configuration.GetValue<string>("BuyerInquiryTemplateUrl");
             //this.RentInquiryTemplateUrl = configuration.GetValue<string>("RentInquiryTemplateUrl");
             //this.WrokSpace = configuration.GetValue<string>("WrokSpace");
         }
 
         public string ApiKey { get; protected set; }
-        public string TypeformApi { get; private set; }
+        //public string TypeFormApi { get; private set; }
 
         //public string BuyerInquiryTemplateUrl { get; private set; }
         //public string RentInquiryTemplateUrl { get; private set; }

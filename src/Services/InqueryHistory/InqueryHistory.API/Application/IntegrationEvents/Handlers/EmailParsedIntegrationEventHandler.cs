@@ -47,31 +47,66 @@
 
             //get the inquery history and update parsed token
             var inqueryHistoryToUpdate = await queryExecutor.Execute<GetInqueryHistoryQuery, InqueryHistory>(
-                new GetInqueryHistoryQuery { InqueryHistoryId = @event.AggregateId });
-
-            var customerEmail = @event.ExtractedFields.ContainsKey("customeremail") ? @event.ExtractedFields["customeremail"] : "";
-            customerEmail = customerEmail?.Split(" ")[0];
-
-            if (!string.IsNullOrEmpty(customerEmail))
-            {
-                inqueryHistoryToUpdate.CustomerEmail = customerEmail;
-            }
+                new GetInqueryHistoryQuery { InqueryHistoryId = @event.AggregateId });            
 
             inqueryHistoryToUpdate.SetParsedStatus();
             inqueryHistoryToUpdate.ExtractedFields = @event.ExtractedFields;
-
-            //confused about this saving. could be better way of handling this
+            inqueryHistoryToUpdate.CustomerInfo = PrepareCustomerInfoFromExtractedFields(inqueryHistoryToUpdate.ExtractedFields);
+            inqueryHistoryToUpdate.OrganizationInfo = PrepareOrganizationInfoFromExtractedFields(inqueryHistoryToUpdate.ExtractedFields, inqueryHistoryToUpdate.OrganizationInfo);
+            inqueryHistoryToUpdate.PropertyInfo = PreparePropertyInfoFromExtractedFields(inqueryHistoryToUpdate.ExtractedFields);
+            
             var filter = Builders<InqueryHistory>.Filter.Eq("Id", @event.AggregateId);
             var update = Builders<InqueryHistory>.Update
                 .Set("InqueryStatus", inqueryHistoryToUpdate.InqueryStatus)
                 .Set("ExtractedFields", inqueryHistoryToUpdate.ExtractedFields)
-                .Set("CustomerEmail", inqueryHistoryToUpdate.CustomerEmail)
+                .Set("CustomerInfo", inqueryHistoryToUpdate.CustomerInfo)
+                .Set("OrganizationInfo", inqueryHistoryToUpdate.OrganizationInfo)
+                .Set("PropertyInfo", inqueryHistoryToUpdate.PropertyInfo)
                 .CurrentDate("UpdatedDate");
 
             await inqueryHistoryRepository.Collection
                 .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
 
             await mediator.DispatchDomainEventsAsync(inqueryHistoryToUpdate);
+        }
+
+        private CustomerInfo PrepareCustomerInfoFromExtractedFields(Dictionary<string, string> extractedFields)
+        {
+            var customerEmail = extractedFields.ContainsKey("customeremail") ? extractedFields["customeremail"] : "";
+            customerEmail = customerEmail?.Split(" ")[0];
+
+            return new CustomerInfo()
+            {
+                Email = customerEmail,
+                Phone = extractedFields.ContainsKey("customerphone") ? extractedFields["customerphone"] : "",
+                City = extractedFields.ContainsKey("customercity") ? extractedFields["customercity"] : "",
+                Company = extractedFields.ContainsKey("customercompany") ? extractedFields["customercompany"] : "",
+                Address = extractedFields.ContainsKey("customeraddress") ? extractedFields["customeraddress"] : "",
+                Country = extractedFields.ContainsKey("customercountry") ? extractedFields["customercountry"] : "",
+                Firstname = extractedFields.ContainsKey("customerfirstname") ? extractedFields["customerfirstname"] : "",
+                Lastname = extractedFields.ContainsKey("customerlastname") ? extractedFields["customerlastname"] : "",
+                Aboutme = extractedFields.ContainsKey("customeraboutme") ? extractedFields["customeraboutme"] : "",
+                
+            };
+        }
+
+        private OrganizationInfo PrepareOrganizationInfoFromExtractedFields(Dictionary<string, string> extractedFields, OrganizationInfo organizationInfo)
+        {
+            organizationInfo.OrganizationDomain = extractedFields.ContainsKey("organizationdomain") ? extractedFields["organizationdomain"] : "";
+            organizationInfo.OrganizationName = extractedFields.ContainsKey("organizationname") ? extractedFields["organizationname"] : "";
+
+            return organizationInfo;
+        }
+
+        private PropertyInfo PreparePropertyInfoFromExtractedFields(Dictionary<string, string> extractedFields)
+        {
+            return new PropertyInfo()
+            {
+                ReferenceNo = extractedFields.ContainsKey("propertyreferenceno") ? extractedFields["propertyreferenceno"] : "",
+                PropertyAddress = extractedFields.ContainsKey("propertyaddress") ? extractedFields["propertyaddress"] : "",
+                PropertyUrl = extractedFields.ContainsKey("propertyurl") ? extractedFields["propertyurl"] : "",
+                Message = extractedFields.ContainsKey("proerptymessage") ? extractedFields["proerptymessage"] : "",
+            };
         }
     }
 }

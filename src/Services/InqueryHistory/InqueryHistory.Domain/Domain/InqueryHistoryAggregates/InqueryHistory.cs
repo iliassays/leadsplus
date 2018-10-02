@@ -27,9 +27,9 @@
 
     public class InqueryHistory : AggregateRoot, IViewModel
     {
-        public string OrganizationEmail { get; set; }
-        public string Organization { get; set; }
-        public string CustomerEmail { get; set; }
+        //public string OrganizationEmail { get; set; }
+        public OrganizationInfo OrganizationInfo { get; set; }
+        //public string CustomerEmail { get; set; }
         public string Message { get; set; }
         public string Subject { get; set; }
         public string AgentEmail { get; set; }
@@ -38,6 +38,9 @@
         public bool AgentAutoresponderSent { get; set; }
 
         public AgentInfo AgentInfo { get; set; }
+        public CustomerInfo CustomerInfo { get; set; }
+
+        public PropertyInfo PropertyInfo { get; set; }
 
         public string AgentId { get; set; }
 
@@ -58,17 +61,19 @@
 
         }
 
-        public InqueryHistory(string id, InquiryType inquiryType, string organizationEmail, string message, string subject, string agentEmail, AgentInfo agentInfo)
+        public InqueryHistory(string id, InquiryType inquiryType, string message, string subject, string agentEmail, AgentInfo agentInfo, OrganizationInfo organizationInfo)
             : this()
         {
             Id = id;
-            OrganizationEmail = organizationEmail;
-            Organization = organizationEmail?.Split("@")[1];
+            //OrganizationEmail = organizationEmail;
+            //Organization = organizationEmail?.Split("@")[1];
             Message = message;
             Subject = subject;
             AgentEmail = agentEmail;
             AgentInfo = agentInfo;
             InquiryType = inquiryType;
+
+            OrganizationInfo = organizationInfo;
 
             CreatedDate = DateTime.UtcNow;
             UpdatedDate = DateTime.UtcNow;
@@ -142,6 +147,11 @@
                 InqueryStatus = InqueryStatus.Processed;
                 Comment = "System completed all the activities for this inquery and turned it to processed.";
             }
+        }
+
+        public string GenerateTypeFormLink(string baseLink)
+        {
+            return $"{baseLink}?AggregateId={Id}&cfn={CustomerInfo.Firstname}&cln={CustomerInfo.Lastname}";
         }
     }
 }

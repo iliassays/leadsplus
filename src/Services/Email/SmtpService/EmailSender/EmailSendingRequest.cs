@@ -10,6 +10,8 @@
         public Dictionary<string, string> MergeFields { get; set; }
         public Sender Sender { get; set; }
         public string TemplateId { get; set; }
+        public bool DisableClickTracking { get; set; }
+        public bool DisableOpenTracking { get; set; }
     }
 }
 

@@ -65,11 +65,11 @@
                 FromEmail = "admin@adfenixleads.com",
                 FromName = "AdfenixLeads",
                 To = new[] { @event.InqueryHistory.AgentInfo.Email },
-                ReplyTo = @event.InqueryHistory.CustomerEmail,
+                ReplyTo = @event.InqueryHistory.CustomerInfo.Email,
                 AggregateId = @event.InqueryHistory.Id,
-                TemplateId =  string.IsNullOrEmpty(@event.InqueryHistory.AgentInfo.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId) ? 
-                                                    agentAutoresponderDefaultTemplateId : 
-                                                    @event.InqueryHistory.AgentInfo.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId, //Autoresponder for agent For new Inquiry. keep it hardcoded for now
+                TemplateId =  string.IsNullOrEmpty(@event.InqueryHistory.AgentInfo?.AgentInquiryInfo?.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId) ? 
+                                                    agentAutoresponderDefaultTemplateId :
+                                                    @event.InqueryHistory.AgentInfo?.AgentInquiryInfo?.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId, //Autoresponder for agent For new Inquiry. keep it hardcoded for now
                 MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
             };
 
@@ -95,10 +95,10 @@
                     { "[agentcity]", agent.City },
                     { "[agentstate]", agent.State },
                     { "[agentzip]", agent.Zip },
-                    { "[agentinquirytypeformlink]", agent.AgentTypeFormInfo?.TypeFormUrl },
+                    { "[agentinquirytypeformlink]", @event.InqueryHistory.GenerateTypeFormLink(agent.AgentInquiryInfo.TypeFormUrl) },
                     { "[addressbooklink]", "http://contact.adfenixleads.com" },
-                    { "[agentinquiryspreadsheetlink]", agent.AgentTypeFormInfo?.SpreadsheetUrl },
-                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail }
+                    { "[agentinquiryspreadsheetlink]", agent.AgentInquiryInfo?.SpreadsheetUrl },
+                    { "[organizationemail]", @event.InqueryHistory.OrganizationInfo.OrganizationEmail }
                 };
 
             foreach(var item in @event.InqueryHistory.ExtractedFields)

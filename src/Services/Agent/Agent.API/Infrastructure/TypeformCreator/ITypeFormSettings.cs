@@ -4,7 +4,7 @@
     {
         string ApiRoot { get; }
         string ApiKey { get; }
-        string TypeformApi { get; }
+        //string TypeFormApi { get; }
         //string BuyerInquiryTemplateUrl { get; }
         //string RentInquiryTemplateUrl { get; }
         //string WrokSpace { get; }

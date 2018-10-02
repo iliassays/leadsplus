@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\..\..\..\LeadsPlus-7d818303309c.json" Link="LeadsPlus-7d818303309c.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="FluentValidation" Version="8.0.100" />
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.35.2.1337" />

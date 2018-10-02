@@ -15,6 +15,8 @@
         public string ReplyTo { get; set; }
         public Dictionary<string, string> MergeFields { get; set; }
         public string TemplateId { get; set; }
+        public bool DisableClickTracking { get; set; }
+        public bool DisableOpenTracking { get; set; }
 
         public EmailNeedsToBeSentIntegrationEvent()
         {

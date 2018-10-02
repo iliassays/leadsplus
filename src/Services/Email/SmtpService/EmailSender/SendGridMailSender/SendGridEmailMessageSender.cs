@@ -53,7 +53,18 @@
                     Name = emailSendingRequest.Sender.FromLabel
                 },
                 TemplateId = emailSendingRequest.TemplateId,
-                
+                TrackingSettings = new TrackingSettings()
+                {
+                    ClickTracking = new ClickTracking()
+                    {
+                        Enable = !emailSendingRequest.DisableClickTracking
+                    },
+                    OpenTracking = new OpenTracking()
+                    {
+                        Enable = !emailSendingRequest.DisableOpenTracking
+                    }
+                }
+
             };
 
             if (!string.IsNullOrEmpty(emailSendingRequest.TemplateId))
@@ -109,6 +120,9 @@
 
         [JsonProperty("content")]
         public List<Content> Content { get; set; }
+
+        [JsonProperty("tracking_settings")]
+        public TrackingSettings TrackingSettings { get; set; }
     }
 
     public class Personalization
@@ -121,6 +135,15 @@
 
         [JsonProperty("substitutions")]
         public Dictionary<string, string> Substitutions { get; set; }
+    }
+
+    public class TrackingSettings
+    {
+        [JsonProperty("click_tracking")]
+        public ClickTracking ClickTracking { get; set; }
+
+        [JsonProperty("open_tracking")]
+        public OpenTracking OpenTracking { get; set; }
     }
 
     public class To
@@ -157,6 +180,18 @@
 
         [JsonProperty("value")]
         public string Value { get; set; }
+    }
+
+    public class ClickTracking
+    {
+        [JsonProperty("enable")]
+        public bool Enable { get; set; }
+    }
+
+    public class OpenTracking
+    {
+        [JsonProperty("enable")]
+        public bool Enable { get; set; }
     }
 }
 

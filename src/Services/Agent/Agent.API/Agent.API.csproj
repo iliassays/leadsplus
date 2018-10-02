@@ -21,16 +21,6 @@
     <Compile Remove="Infrastructure\AgentContext.cs" />
     <Compile Remove="Infrastructure\AgentContextSeed.cs" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="LeadsPlus-7d818303309c.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="LeadsPlus-7d818303309c.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />

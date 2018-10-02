@@ -1,5 +1,6 @@
 ﻿namespace InqueryHistory.DomainEventHandlers.ContactCreatedEvent
 {
+    using HtmlAgilityPack;
     using InqueryHistory.Command;
     using InqueryHistory.Domain;
     using InqueryHistory.Domain.Events;
@@ -23,7 +24,8 @@
         private readonly IIdentityService identityService;
         private readonly IEventBus eventBus;
         private readonly IRepository<InqueryHistory> inqueryHistoryRepository;
-        private readonly Dictionary<string, string> parsingEmailMaping;
+        private readonly Dictionary<string, string> buyInquiryParsingEmailMaping;
+        private readonly Dictionary<string, string> rentInquiryParsingEmailMaping;
 
         public InqueryHistorySendForParsingEventHandler(
             ILoggerFactory logger,
@@ -38,23 +40,43 @@
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             this.inqueryHistoryRepository = inqueryHistoryRepository ?? throw new ArgumentNullException(nameof(inqueryHistoryRepository));
 
-            parsingEmailMaping = new Dictionary<string, string>()
+            //TODO: move it ot database and add dynamically
+            buyInquiryParsingEmailMaping = new Dictionary<string, string>()
             {
-                {"gmail.com", "adfenixleads@robot.zapier.com" },
+                {"gmail.com", "adfenixleads0buyinquiry@robot.zapier.com" },
                 {"rightmove.co.uk", "rightmove0co0uk0customerinquery@robot.zapier.com" },
-                {"domain.com.au", "domain0com0au@robot.zapier.com" }
+                {"domain.com.au", "domain0com0au@robot.zapier.com" },
+                {"realestate.com.au", "realestate0com0au@robot.zapier.com" }
+            };
+
+            rentInquiryParsingEmailMaping = new Dictionary<string, string>()
+            {
+                {"gmail.com", "adfenixleads0rentinquiry@robot.zapier.com" },
+                {"rightmove.co.uk", "rightmove0co0uk0customerinquery@robot.zapier.com" },
+                {"domain.com.au", "domain0com0au@robot.zapier.com" },
+                {"realestate.com.au", "realestate0com0au@robot.zapier.com" }
             };
         }
 
         public async Task Handle(InqueryHistoryStartedDomainEvent @event, CancellationToken cancellationToken)
         {
-            var organizationDomain = @event.InqueryHistory.OrganizationEmail.Split("@")[1];
+            var organizationDomain = @event.InqueryHistory.OrganizationInfo.OrganizationEmail.Split("@")[1];
+
+            var parserEmail = buyInquiryParsingEmailMaping.ContainsKey(organizationDomain) ? buyInquiryParsingEmailMaping[organizationDomain] : "adfenixleads0buyinquiry@robot.zapier.com";
+
+            if (@event.InqueryHistory.InquiryType == InquiryType.RentInquiry)
+            {
+                parserEmail = rentInquiryParsingEmailMaping.ContainsKey(organizationDomain) ? rentInquiryParsingEmailMaping[organizationDomain] : "adfenixleads0rentinquiry@robot.zapier.com";
+            }
+
+            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery parser email {parserEmail}.");
+
             //send  inquery for parsing
             var emailNeedsToBeParsed = new EmailNeedsToBeParsedIntegrationEvent
             {
                 Body = @event.InqueryHistory.Message,
                 Subject = @event.InqueryHistory.Subject,
-                ToEmail = parsingEmailMaping.ContainsKey(organizationDomain) ? parsingEmailMaping[organizationDomain] : "adfenixleads@robot.zapier.com", 
+                ToEmail = parserEmail, 
                 AggregateId = @event.InqueryHistory.Id
             };
 
@@ -68,6 +90,26 @@
             await mediator.Send(updateInqueryStatusToSentForParsingCommand);
 
             logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history send for parsing {@event.InqueryHistory.Id}.");
+        }
+
+        public string FormatMessage(string message)
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(message);
+
+            var aTags = doc.DocumentNode.SelectNodes("//a");
+
+            if (aTags != null)
+            {
+                //iterate through all the anchor tags and retrieve its href attribute value(link)
+                foreach (var aTag in aTags)
+                {
+                    aTag.Attributes.Add("clicktracking", "off");
+                    aTag.Attributes.Add("opentracking", "off");
+                }
+            }
+
+            return doc.DocumentNode.InnerHtml;
         }
     }
 }

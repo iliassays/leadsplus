@@ -142,19 +142,17 @@
         {
             var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
 
-            agent.BuyInquiryAutoresponderTemplate.AgentAutoresponderTemplateId = @command.AgentAutoresponderTemplateForBuyInquiryId;
-            agent.BuyInquiryAutoresponderTemplate.CustomerAutoresponderTemplateId = @command.CustomerAutoresponderTemplateForBuyInquiryId;
-            agent.BuyInquiryAutoresponderTemplate.AutoresponderTemplateType = AutoresponderTemplateType.BuyInquiry;
-
-            agent.RentInquiryAutoresponderTemplate.AgentAutoresponderTemplateId = @command.AgentAutoresponderTemplateForRentInquiryId;
-            agent.RentInquiryAutoresponderTemplate.CustomerAutoresponderTemplateId = @command.CustomerAutoresponderTemplateForRentInquiryId;
-            agent.BuyInquiryAutoresponderTemplate.AutoresponderTemplateType = AutoresponderTemplateType.RentInquiry;
-
+            agent.BuyInquiry.InquiryAutoresponderTemplate.AgentAutoresponderTemplateId = @command.AgentAutoresponderTemplateForBuyInquiryId;
+            agent.BuyInquiry.InquiryAutoresponderTemplate.CustomerAutoresponderTemplateId = @command.CustomerAutoresponderTemplateForBuyInquiryId;
+            
+            agent.RentInquiry.InquiryAutoresponderTemplate.AgentAutoresponderTemplateId = @command.AgentAutoresponderTemplateForRentInquiryId;
+            agent.RentInquiry.InquiryAutoresponderTemplate.CustomerAutoresponderTemplateId = @command.CustomerAutoresponderTemplateForRentInquiryId;
+            
             var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
 
             var update = Builders<Agent>.Update
-                .Set("BuyInquiryAutoresponderTemplate", agent.BuyInquiryAutoresponderTemplate)
-                .Set("RentInquiryAutoresponderTemplate", agent.RentInquiryAutoresponderTemplate)
+                .Set("BuyInquiry", agent.BuyInquiry)
+                .Set("RentInquiry", agent.RentInquiry)
                 .CurrentDate("UpdatedDate");
 
             await agentRepository.Collection

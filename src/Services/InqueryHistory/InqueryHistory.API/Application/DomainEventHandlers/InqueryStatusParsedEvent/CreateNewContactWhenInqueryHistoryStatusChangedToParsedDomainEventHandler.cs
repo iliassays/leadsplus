@@ -65,17 +65,17 @@
             var createContactIntegrationEvent = new CreateContactIntegrationEvent()
             {
                 AggregateId = @event.InqueryHistory.Id,
-                Source = "InqueryRequest",
+                Source = @event.InqueryHistory.InquiryType == InquiryType.BuyInquiry ? "BuyInquiry" : "RentInquiry",
 
-                Email = @event.InqueryHistory.CustomerEmail,
-                Phone = @event.InqueryHistory.ExtractedFields.ContainsKey("customerphone") ? @event.InqueryHistory.ExtractedFields["customerphone"] : "",
-                City = @event.InqueryHistory.ExtractedFields.ContainsKey("customercity") ? @event.InqueryHistory.ExtractedFields["customercity"] : "",
-                Company = @event.InqueryHistory.ExtractedFields.ContainsKey("customercompany") ? @event.InqueryHistory.ExtractedFields["customercompany"] : "",
-                Address = @event.InqueryHistory.ExtractedFields.ContainsKey("customeraddress") ? @event.InqueryHistory.ExtractedFields["customeraddress"] : "",
-                Country = @event.InqueryHistory.ExtractedFields.ContainsKey("customercountry") ? @event.InqueryHistory.ExtractedFields["customercountry"] : "",
-                Firstname = @event.InqueryHistory.ExtractedFields.ContainsKey("customerfirstname") ? @event.InqueryHistory.ExtractedFields["customerfirstname"] : "",
-                Lastname = @event.InqueryHistory.ExtractedFields.ContainsKey("customerlastname") ? @event.InqueryHistory.ExtractedFields["customerlastname"] : "",
-                Aboutme = @event.InqueryHistory.ExtractedFields.ContainsKey("customeraboutme") ? @event.InqueryHistory.ExtractedFields["customeraboutme"] : "",
+                Email = @event.InqueryHistory.CustomerInfo.Email,
+                Phone = @event.InqueryHistory.CustomerInfo.Phone,
+                City = @event.InqueryHistory.CustomerInfo.City,
+                Company = @event.InqueryHistory.CustomerInfo.Company,
+                Address = @event.InqueryHistory.CustomerInfo.Address,
+                Country = @event.InqueryHistory.CustomerInfo.Country,
+                Firstname = @event.InqueryHistory.CustomerInfo.Firstname,
+                Lastname = @event.InqueryHistory.CustomerInfo.Lastname,
+                Aboutme = @event.InqueryHistory.CustomerInfo.Aboutme,
                 OwnerId = @event.InqueryHistory.AgentInfo.Id,
                 Ownername = $"{@event.InqueryHistory.AgentInfo.Firstname} {@event.InqueryHistory.AgentInfo.Lastname}"
             };
@@ -90,7 +90,7 @@
                 FromEmail = "admin@adfenixleads.com",
                 FromName = "AdminLeads",
                 To = new[] { @event.InqueryHistory.AgentInfo.Email },
-                ReplyTo = @event.InqueryHistory.CustomerEmail,
+                ReplyTo = @event.InqueryHistory.CustomerInfo.Email,
                 AggregateId = @event.InqueryHistory.Id,
                 TemplateId = "c1f08213-6f62-4ba0-8dc2-3d768ae759ee", //Autoresponder for Agent for new Lead. keep it hardcoded for now
                 MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
@@ -99,7 +99,7 @@
             //For now there is no such requirement of informing agent for new lead
             //eventBus.Publish(emailNeedsToBeSent);
 
-            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history email converted to leads {@event.InqueryHistory.Id} - {@event.InqueryHistory.OrganizationEmail}.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history email converted to leads Inquiry history: {@event.InqueryHistory.Id} - Inquiry from: {@event.InqueryHistory.OrganizationInfo.OrganizationEmail}.");
         }
 
         private Dictionary<string, string> GetMergeField(Domain.AgentInfo agent, InqueryHistoryStatusChangedToParsedDomainEvent @event)
@@ -113,7 +113,7 @@
                     { "[agentstate]", agent.State },
                     { "[agentzip]", agent.Zip },
                     { "[addressbooklink]", "http://contact.adfenixleads.com" },
-                    { "[organizationemail]", @event.InqueryHistory.OrganizationEmail }
+                    { "[organizationemail]", @event.InqueryHistory.OrganizationInfo.OrganizationEmail }
                 };
 
             foreach (var item in @event.InqueryHistory.ExtractedFields)

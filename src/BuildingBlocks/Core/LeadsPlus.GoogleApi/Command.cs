@@ -19,7 +19,19 @@ namespace LeadsPlus.GoogleApis.Command
             HeaderValues = new List<object>();
             InitialValues = new List<object>();
         }
+    }
 
+    public class InsertRowToSpreadsheetCommand : IRequest<Spreadsheet>
+    {
+        public string ApplicationName { get; set; }
+        public string SpreadSheetId { get; set; }
+        public string WorkSheetName { get; set; }
+        public IList<object> Values { get; set; }
+
+        public InsertRowToSpreadsheetCommand()
+        {
+            Values = new List<object>();
+        }
     }
 
     public class AssigSpreadsheetPermissionCommand : IRequest<bool>
