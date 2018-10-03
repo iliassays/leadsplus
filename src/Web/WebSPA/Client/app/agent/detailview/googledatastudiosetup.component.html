@@ -1,3 +1,17 @@
 <section class="page-agent-google-data-studio-setup container-fluid with-maxwidth no-breadcrumbs">
-    Google datastudio setup
+    <div class="box box-default">
+        <div class="box-header"></div>
+        <div class="box-body padding-xl">
+            <form name="material_login_form" class="form-validation" (ngSubmit)="saveDataStudioLink()" #messageForm="ngForm">
+                <div class="form-group">
+                    <mat-form-field class="full-width">
+                        <input required matInput name="datastudio" placeholder="Agent Data Studio Link" [(ngModel)]="currentAgent.dataStudioUrl">
+                    </mat-form-field>
+                </div>
+
+                <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!messageForm.valid">Save Datastudio</button>
+            </form>
+        </div>
+    </div>
+    
 </section>

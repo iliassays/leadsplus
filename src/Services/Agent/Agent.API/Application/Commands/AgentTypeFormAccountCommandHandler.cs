@@ -93,7 +93,7 @@
 
             string typeFormTemplateJson = await typeForm.GetTypeFormAsync(rentInquiryTemplateUrl);
 
-            var typeFormUrl = await CreateTypeFormUrl(agent, InquiryType.BuyInquiry, typeFormTemplateJson);
+            var typeFormUrl = await CreateTypeFormUrl(agent, InquiryType.RentInquiry, typeFormTemplateJson);
 
             if (agent.RentInquiry == null)
             {

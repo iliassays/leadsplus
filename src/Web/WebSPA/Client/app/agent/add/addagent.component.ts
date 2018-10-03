@@ -30,8 +30,10 @@ export class AgnetAddComponent implements OnInit {
     agentProcessingStatus = {
         agent: 0,
         mailbox: 0,
-        typeform: 0,
-        spreadsheet: 0,
+        typeform_rent: 0,
+        spreadsheet_rent: 0,
+        typeform_buy: 0,
+        spreadsheet_buy: 0,
     };
 
     private aggregateId: string = Guid.newGuid();
@@ -86,7 +88,7 @@ export class AgnetAddComponent implements OnInit {
                 this.agentProcessingStatus.agent = 2;
 
                 this.createMailbox();
-                this.createTypeform();
+                this.createTypeformBuy();
             });
 
         this.errorReceived = false;
@@ -109,41 +111,75 @@ export class AgnetAddComponent implements OnInit {
             });
     }
 
-    createTypeform() {
-        this.agentProcessingStatus.typeform = 1;
+    createTypeformBuy() {
+        this.agentProcessingStatus.typeform_buy = 1;
 
-        this.agentService.createTypeformAccount(this.aggregateId)
+        this.agentService.createTypeformAccountForBuyInquiry(this.aggregateId)
             .catch((errMessage) => {
-                this.agentProcessingStatus.typeform = 3;
+                this.agentProcessingStatus.typeform_buy = 3;
                 
                 //this.errorReceived = true;
                 //this.isAgentProcessing = false;
                 return Observable.throw(errMessage);
             })
             .subscribe(response => {
-                this.agentProcessingStatus.typeform = 2;
-                this.createSpreadsheet();
+                this.agentProcessingStatus.typeform_buy = 2;
+                this.createSpreadsheetBuy();
             });
     }
 
-    createSpreadsheet() {
-        this.agentProcessingStatus.spreadsheet = 1;
+    createSpreadsheetBuy() {
+        this.agentProcessingStatus.spreadsheet_buy = 1;
 
-        this.agentService.createSpreadsheet(this.aggregateId)
+        this.agentService.createSpreadsheetForBuyInquiry(this.aggregateId)
             .catch((errMessage) => {
-                this.agentProcessingStatus.spreadsheet = 3;
+                this.agentProcessingStatus.spreadsheet_buy = 3;
                 //this.errorReceived = true;
                 //this.isAgentProcessing = false;
                 return Observable.throw(errMessage);
             })
             .subscribe(response => {
-                this.agentProcessingStatus.spreadsheet = 2;
+                this.agentProcessingStatus.spreadsheet_buy = 2;
+                //this.isAgentProcessing = false;
+                //this.returnToDetail();
+                //this.isAgentProcessingComplete = true;
+                this.createTypeformRent();
+            });
+    }
+
+    createTypeformRent() {
+        this.agentProcessingStatus.typeform_rent = 1;
+
+        this.agentService.createTypeformAccountForRentInquiry(this.aggregateId)
+            .catch((errMessage) => {
+                this.agentProcessingStatus.typeform_rent = 3;
+
+                //this.errorReceived = true;
+                //this.isAgentProcessing = false;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+                this.agentProcessingStatus.typeform_rent = 2;
+                this.createSpreadsheetRent();
+            });
+    }
+
+    createSpreadsheetRent() {
+        this.agentProcessingStatus.spreadsheet_rent = 1;
+
+        this.agentService.createSpreadsheetForRentInquiry(this.aggregateId)
+            .catch((errMessage) => {
+                this.agentProcessingStatus.spreadsheet_rent = 3;
+                //this.errorReceived = true;
+                //this.isAgentProcessing = false;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+                this.agentProcessingStatus.spreadsheet_rent = 2;
                 this.isAgentProcessing = false;
                 //this.returnToDetail();
                 this.isAgentProcessingComplete = true;
             });
-
-        
     }
 
     returnToDetail() {

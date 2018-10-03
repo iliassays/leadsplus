@@ -13,14 +13,14 @@ import { AgentWrapperService } from '../agent.wrapper.service';
  * @title Table with pagination
  */
 @Component({
-  selector: 'agent-typeform-setup',
+  selector: 'agent-buy-inquiry-setup',
   styleUrls: [],
-    templateUrl: 'typeformsetup.component.html',
+    templateUrl: 'buyinquirysetup.component.html',
 })
-export class AgnetTypeformSetupComponent implements OnInit, AfterViewInit {
+export class AgnetBuyInquirySetupComponent implements OnInit, AfterViewInit {
 
     currentAgent = <IAgent>{
-        agentTypeForm: {}
+        
     };
     integrationEmail;
     isAgentProcessing: boolean;
@@ -34,17 +34,18 @@ export class AgnetTypeformSetupComponent implements OnInit, AfterViewInit {
 
     }
 
-    generateTypeformClicked() {
-        //this.agentService.generateTypeformAccount(this.currentAgent.id)
-        //    .catch((errMessage) => {
-        //        this.errorReceived = true;
-        //        this.isAgentProcessing = false;
-        //        return Observable.throw(errMessage);
-        //    })
-        //    .subscribe(response => {
-        //        debugger;
-        //        this.currentAgent.agentTypeForm = response;
-        //    });
+    public saveAutoresponderTemplate() {
+        this.agentService.updateAgentAutoresponderTemplateForBuyInquiry(this.currentAgent.id,
+            this.currentAgent.buyInquiry.inquiryAutoresponderTemplate.agentAutoresponderTemplateId,
+            this.currentAgent.buyInquiry.inquiryAutoresponderTemplate.customerAutoresponderTemplateId)
+            .catch((errMessage) => {
+                this.errorReceived = true;
+                this.isAgentProcessing = false;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+                
+            });
     }
 
     ngOnInit() {

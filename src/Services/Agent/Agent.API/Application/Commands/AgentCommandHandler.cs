@@ -25,7 +25,8 @@
         IRequestHandler<CreateAgentIntigrationEmailAccountCommand, bool>,
         IRequestHandler<UpdateAgentIntigrationEmailAccountCommand, bool>,
         IRequestHandler<UpdateAgentDataStudioUrlCommand, bool>,
-        IRequestHandler<UpdateAgentAutoresponderTemplateCommand, bool>
+        IRequestHandler<UpdateAgentAutoresponderTemplateForBuyInquiryCommand, bool>,
+        IRequestHandler<UpdateAgentAutoresponderTemplateForRentInquiryCommand, bool>
     {
         private readonly IEventBus eventBus;
         private readonly IMediator mediator;
@@ -138,21 +139,36 @@
             return true;
         }
 
-        public async Task<bool> Handle(UpdateAgentAutoresponderTemplateCommand @command, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateAgentAutoresponderTemplateForBuyInquiryCommand @command, CancellationToken cancellationToken)
         {
             var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
 
             agent.BuyInquiry.InquiryAutoresponderTemplate.AgentAutoresponderTemplateId = @command.AgentAutoresponderTemplateForBuyInquiryId;
             agent.BuyInquiry.InquiryAutoresponderTemplate.CustomerAutoresponderTemplateId = @command.CustomerAutoresponderTemplateForBuyInquiryId;
             
-            agent.RentInquiry.InquiryAutoresponderTemplate.AgentAutoresponderTemplateId = @command.AgentAutoresponderTemplateForRentInquiryId;
-            agent.RentInquiry.InquiryAutoresponderTemplate.CustomerAutoresponderTemplateId = @command.CustomerAutoresponderTemplateForRentInquiryId;
-            
             var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
 
             var update = Builders<Agent>.Update
                 .Set("BuyInquiry", agent.BuyInquiry)
-                .Set("RentInquiry", agent.RentInquiry)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            return true;
+        }
+
+        public async Task<bool> Handle(UpdateAgentAutoresponderTemplateForRentInquiryCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+
+            agent.RentInquiry.InquiryAutoresponderTemplate.AgentAutoresponderTemplateId = @command.AgentAutoresponderTemplateForRentInquiryId;
+            agent.RentInquiry.InquiryAutoresponderTemplate.CustomerAutoresponderTemplateId = @command.CustomerAutoresponderTemplateForRentInquiryId;
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+
+            var update = Builders<Agent>.Update
+                .Set("RentInquiry", agent.BuyInquiry)
                 .CurrentDate("UpdatedDate");
 
             await agentRepository.Collection

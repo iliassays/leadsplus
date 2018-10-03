@@ -1,5 +1,6 @@
 ﻿namespace Email.EmailParser.Controllers
 {
+    using Cloudmailin.Webhook.Command;
     using Email.EmailParser.IntegrationEvents;
     using LeadsPlus.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.AspNetCore.Http;
@@ -28,6 +29,28 @@
         public OkObjectResult SayHello()
         {
             return Ok("Say Hello");
+        }
+
+        [Route("initzapmailbox")]
+        [HttpPost]
+        public IActionResult InitZapMailbox(CreateZapierParserMailboxInitilizationEmailCommand @command)
+        {
+            var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
+            {
+                Body = @command.Body,
+                IsBodyHtml = true,
+                Subject = @command.Subject,
+                FromEmail = "shimulsays@gmail.com",
+                FromName = "Ilias Hossain",
+                To = new[] { @command.ToEmail },
+                AggregateId = Guid.NewGuid().ToString(),
+                DisableClickTracking = true,
+                DisableOpenTracking = true
+            };
+
+            _eventBus.Publish(emailNeedsToBeSent);
+
+            return (IActionResult)Ok(emailNeedsToBeSent);
         }
 
         [Route("parsed")]

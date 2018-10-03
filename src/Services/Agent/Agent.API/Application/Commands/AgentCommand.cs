@@ -48,10 +48,14 @@ namespace Agent.Command
         public string DataStudioUrl { get; set; }
     }
 
-    public class UpdateAgentAutoresponderTemplateCommand : Command, IRequest<bool>
+    public class UpdateAgentAutoresponderTemplateForBuyInquiryCommand : Command, IRequest<bool>
     {
         public string AgentAutoresponderTemplateForBuyInquiryId { get; set; }
         public string CustomerAutoresponderTemplateForBuyInquiryId { get; set; }
+    }
+
+    public class UpdateAgentAutoresponderTemplateForRentInquiryCommand : Command, IRequest<bool>
+    {
         public string AgentAutoresponderTemplateForRentInquiryId { get; set; }
         public string CustomerAutoresponderTemplateForRentInquiryId { get; set; }
     }

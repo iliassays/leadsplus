@@ -58,6 +58,7 @@
                     $"{@event.InqueryHistory.CustomerInfo.Firstname} {@event.InqueryHistory.CustomerInfo.Lastname}",
                     @event.InqueryHistory.CustomerInfo.Email,
                     @event.InqueryHistory.CustomerInfo.Phone,
+                    @event.InqueryHistory.CustomerInfo.Address,
                     @event.InqueryHistory.CustomerInfo.Aboutme,                    
                     @event.InqueryHistory.OrganizationInfo.OrganizationDomain,
                     Enum.GetName(typeof(InquiryType), @event.InqueryHistory.InquiryType),

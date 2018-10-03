@@ -44,7 +44,8 @@
             Phone = phone;
             Address = address;
             Company = company;
-
+            City = city;
+            
             CreatedBy = ownerId;
             CreatedDate = DateTime.UtcNow;
             UpdatedDate = DateTime.UtcNow;

@@ -37,7 +37,7 @@
         private List<string> customerHeaders = new List<string>()
         {
             { "Id" }, { "Date"}, { "Customer Name"}, { "Customer Email"}, { "Customer Phone"}, { "Customer Address"}, { "About Customer"},
-            { "Customer Message"}, { "Enquiry Source"}, { "Enquiry Kind"}, { "Property Address"},
+            { "Enquiry Source"}, { "Enquiry Kind"}, { "Customer Message"}, { "Property Address"},
             { "Property Reference"}, { "Property Url"},
         };
 

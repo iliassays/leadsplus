@@ -27,6 +27,8 @@
         public AgentInquiry(InquiryType inquiryType)
         {
             this.InquiryType = inquiryType;
+
+            this.InquiryAutoresponderTemplate = new AgentAutoresponderTemplate();
         }
 
         public void AddTypeformToAgentInquiry(string typeFormUrl)

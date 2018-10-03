@@ -1,5 +1,6 @@
 ﻿namespace Cloudmailin.Webhook.Controllers
 {
+    using Cloudmailin.IntegrationEvents;
     using Cloudmailin.Webhook.IntegrationEvents;
     using LeadsPlus.BuildingBlocks.EventBus.Abstractions;
     using Microsoft.AspNetCore.Mvc;
@@ -43,8 +44,29 @@
                 AggregateId = aggregateId
             };
 
-            //This  will trigger event in Agent Api to send a autorespondar
-            _eventBus.Publish(@event);
+            if (@event.Subject.Contains(":::::"))
+            {
+                var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
+                {
+                    Body = @event.Body,
+                    IsBodyHtml = true,
+                    Subject = @event.Subject,
+                    FromEmail = "shimulsays@gmail.com",
+                    FromName = "Ilias Hossain",
+                    To = new[] { @event.Subject.Split(":::::")[1] },
+                    AggregateId = Guid.NewGuid().ToString(),
+                    DisableClickTracking = true,
+                    DisableOpenTracking = true
+                };
+
+                _eventBus.Publish(emailNeedsToBeSent);
+
+            }
+            else
+            {
+                //This  will trigger event in Agent Api to send a autorespondar
+                _eventBus.Publish(@event);
+            }
 
             return (IActionResult)Ok(@event);
         }

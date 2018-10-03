@@ -6,7 +6,7 @@ import {map, catchError} from 'rxjs/operators';
 import { from } from 'rxjs/observable/from';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { ConfigurationService } from '../shared/services/configuration.service';
-import { IAgent, IAgentTypeForm} from './agent.model';
+import { IAgent} from './agent.model';
 import { DataService } from '../shared/services/data.service';
 import { AgentWrapperService } from './agent.wrapper.service';
 
@@ -94,9 +94,9 @@ export class AgentService {
         });
     }
 
-    createTypeformAccount(agentId: string): Observable<string> {
+    createTypeformAccountForBuyInquiry(agentId: string): Observable<string> {
         const requestUrl =
-            `${this.agentUrl}/api/v1/commands/createagenttypeformaccount`;
+            `${this.agentUrl}/api/v1/commands/createagenttypeformaccountforbuyinquiry`;
         
         let data = {
             aggregateId: agentId
@@ -108,12 +108,87 @@ export class AgentService {
         });
     }
 
-    createSpreadsheet(agentId: string): Observable<string> {
+    createSpreadsheetForBuyInquiry(agentId: string): Observable<string> {
         const requestUrl =
-            `${this.agentUrl}/api/v1/commands/createagentapreadsheetaccount`;
+            `${this.agentUrl}/api/v1/commands/createagentapreadsheetaccountforbuyinquiry`;
         
         let data = {
             aggregateId: agentId
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
+    createTypeformAccountForRentInquiry(agentId: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/createagenttypeformaccountforrentinquiry`;
+
+        let data = {
+            aggregateId: agentId
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
+    createSpreadsheetForRentInquiry(agentId: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/createagentapreadsheetaccountforrentinquiry`;
+
+        let data = {
+            aggregateId: agentId
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
+    updateAgentAutoresponderTemplateForBuyInquiry(agentId: string, agentAutoresponderTemplateForBuyInquiryId: string, customerAutoresponderTemplateForBuyInquiryId: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/updateagentautorespondertemplateforbuyinquiry`;
+
+        let data = {
+            aggregateId: agentId,
+            agentAutoresponderTemplateForBuyInquiryId: agentAutoresponderTemplateForBuyInquiryId,
+            customerAutoresponderTemplateForBuyInquiryId: customerAutoresponderTemplateForBuyInquiryId
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
+    updateAgentAutoresponderTemplateForRentInquiry(agentId: string, agentAutoresponderTemplateForRentInquiryId: string, customerAutoresponderTemplateForRentInquiryId: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/updateagentautorespondertemplateforrentinquiry`;
+
+        let data = {
+            aggregateId: agentId,
+            agentAutoresponderTemplateForRentInquiryId: agentAutoresponderTemplateForRentInquiryId,
+            customerAutoresponderTemplateForRentInquiryId: customerAutoresponderTemplateForRentInquiryId
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
+    updateAgentDatastudioUrl(agentId: string, dataStudioUrl: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/updateagentdatastudiourl`;
+
+        let data = {
+            aggregateId: agentId,
+            dataStudioUrl: dataStudioUrl
         };
 
         return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {

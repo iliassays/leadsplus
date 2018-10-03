@@ -60,7 +60,7 @@ services:
       - TypeFormApiKey=${LEADSPLUS_TYPEFORM_API_KEY}
       - TypeFormApiRoot=${LEADSPLUS_TYPEFORM_API_ROOT}
       - TypeFormBuyInquiryTemplateUrl=${LEADSPLUS_TYPEFORM_BUY_INQUIRY_TEMPLATE_URL}
-      - TypeFormRentInquiryTemplateUrl=${LEADSPLUS_TYPEFORM_BUY_INQUIRY_TEMPLATE_URL}
+      - TypeFormRentInquiryTemplateUrl=${LEADSPLUS_TYPEFORM_RENT_INQUIRY_TEMPLATE_URL}
     ports:
       - "5109:80"   # Important: In a production environment your should remove the external port (5109) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).

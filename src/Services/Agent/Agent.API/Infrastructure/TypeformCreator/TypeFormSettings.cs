@@ -5,7 +5,7 @@
 
     public class TypeFormSettings : ITypeFormSettings
     {
-        public void TypeformSettings(IConfiguration configuration)
+        public TypeFormSettings(IConfiguration configuration)
         {
             this.ApiKey = configuration.GetValue<string>("TypeFormApiKey");
             this.ApiRoot = configuration.GetValue<string>("TypeFormApiRoot");

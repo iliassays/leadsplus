@@ -28,7 +28,14 @@
 
         public async Task<string> Create()
         {
-            await GetWithBasicAuthAsync(GetMailboxUrl(emailAccount));
+            try
+            {
+                await GetWithBasicAuthAsync(GetMailboxUrl(emailAccount));
+            }
+            catch(Exception ex)
+            {
+
+            }
 
             return $"{emailAccount.UserName}@{emailAccount.EmailDomain}" ;
         }

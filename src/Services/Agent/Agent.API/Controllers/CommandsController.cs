@@ -87,11 +87,24 @@ namespace Agent.API.Controllers
                 (IActionResult)BadRequest();
         }
 
-        [Route("updateagentautorespondertemplatecommand")]
+        [Route("updateagentautorespondertemplateforbuyinquiry")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> UpdateAgentAutoresponderTemplateCommand([FromBody] UpdateAgentAutoresponderTemplateCommand @command)
+        public async Task<IActionResult> UpdateAgentAutoresponderTemplateForBuyInquiry([FromBody] UpdateAgentAutoresponderTemplateForBuyInquiryCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("updateagentautorespondertemplateforrentinquiry")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateAgentAutoresponderTemplateForRentInquiry([FromBody] UpdateAgentAutoresponderTemplateForRentInquiryCommand @command)
         {
             var result = await mediator.Send(@command);
 

@@ -41,7 +41,10 @@
                 .As<IQueryExecutor>()
                 .InstancePerLifetimeScope();
 
-            
+            builder.RegisterType<GoogleApiConnector>()
+               .As<IGoogleApiConnector>()
+               .InstancePerLifetimeScope();
+
             builder.Register(c => {
                 return ViewModelStoreFactory.Create<Domain.InqueryHistory>(setting["DatabaseConnectionString"], setting["DatabaseName"]);
             }).AsSelf().SingleInstance();

@@ -10,12 +10,36 @@ export interface IAgent {
     integrationEmail: string;
     id: string;
     aggregateId: string;
-    agentTypeForm: IAgentTypeForm
+    dataStudioUrl: string;
+    buyInquiry: IAgentBuyInquiry;
+    rentInquiry: IAgentRentInquiry
 }
 
-export interface IAgentTypeForm {
+export interface IAgentBuyInquiry {
     typeFormUrl: string;
     spreadsheetUrl: string;
+    spreadsheetId: string;
+    spreadsheetName: string;
     type: string;
-    aggregateId: string;
+    mortgageSpreadsheetUrl: string;
+    mortgageSpreadsheetId: string;
+    mortgageSpreadsheetName: string;
+    inquiryAutoresponderTemplate: IInquiryAutoresponderTemplate;
+}
+
+export interface IAgentRentInquiry {
+    typeFormUrl: string;
+    spreadsheetUrl: string;
+    spreadsheetId: string;
+    spreadsheetName: string;
+    type: string;
+    landlordSpreadsheetUrl: string;
+    landlordSpreadsheetId: string;
+    landlordSpreadsheetName: string;
+    inquiryAutoresponderTemplate: IInquiryAutoresponderTemplate;
+}
+
+export interface IInquiryAutoresponderTemplate {
+    agentAutoresponderTemplateId: string;
+    customerAutoresponderTemplateId: string;
 }

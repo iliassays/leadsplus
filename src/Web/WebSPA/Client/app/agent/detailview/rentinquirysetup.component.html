@@ -1,0 +1,104 @@
+<section class="page-agent-rent-inquiry-setup container-fluid with-maxwidth no-breadcrumbs">
+    <article class="article" *ngIf="currentAgent != null">
+        <h2 class="article-title"></h2>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="box box-default">
+                    <div class="box-header">Inquiry Setup</div>
+                    <div class="box-body padding-xl">
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="Typeformurl" class="col-md-2 control-label">Typeform Url</label></strong>
+                            </div>
+                            <div class="col-md-9">
+                                <span *ngIf="currentAgent != null">{{currentAgent.rentInquiry.typeFormUrl}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="Spreadsheeturl" class="col-md-2 control-label">Spreadsheet Url</label></strong>
+                            </div>
+
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span *ngIf="currentAgent != null">{{currentAgent.rentInquiry.spreadsheetUrl}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="Spreadsheetname" class="col-md-2 control-label">Spreadsheet Name</label></strong>
+                            </div>
+
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span *ngIf="currentAgent != null">{{currentAgent.rentInquiry.spreadsheetName}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="box box-default">
+                    <div class="box-header">Landlord</div>
+                    <div class="box-body padding-xl">
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="inputEmail3" class="col-md-2 control-label">Landlord Spreadsheet Url</label></strong>
+                            </div>
+
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.rentInquiry.landlordSpreadsheetUrl}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="inputPassword3" class="col-md-2 control-label">Landlord Spreadsheet Id</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.rentInquiry.landlordSpreadsheetId}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="inputPassword3" class="col-md-2 control-label">Landlord Spreadsheet Name</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.rentInquiry.landlordSpreadsheetName}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="box box-default">
+                    <div class="box-header">Autoresponder Template</div>
+                    <div class="box-body padding-xl">
+                        <form name="material_login_form" *ngIf="currentAgent != null" class="form-validation" (ngSubmit)="saveAutoresponderTemplate()" #messageForm="ngForm">
+                            <div class="form-group">
+                                <mat-form-field class="full-width">
+                                    <input required matInput name="agentAutoresponderTemplateId" placeholder="Agent Autoresponder TemplateId" [(ngModel)]="currentAgent.rentInquiry.inquiryAutoresponderTemplate.agentAutoresponderTemplateId">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <mat-form-field class="full-width">
+                                    <input required matInput name="customerAutoresponderTemplateId" placeholder="Customer Autoresponder TemplateId" [(ngModel)]="currentAgent.rentInquiry.inquiryAutoresponderTemplate.customerAutoresponderTemplateId">
+                                </mat-form-field>
+                            </div>
+                            <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!messageForm.valid">Save Template</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+
+            </div>
+        </div>
+        <div id="zap_integration">
+
+        </div>
+    </article>
+</section>

@@ -48,7 +48,7 @@
 
             if (@command.InitialValues.Count > 0)
             {
-                await InsertFirstRow(spreadsheet.SpreadsheetId, @command.WorkSheetName, @command.InitialValues);
+                await InsertRow(spreadsheet.SpreadsheetId, @command.WorkSheetName, @command.InitialValues);
             }
 
             return spreadsheet;
@@ -68,7 +68,7 @@
 
             if (@command.Values.Count > 0)
             {
-                await InsertFirstRow(spreadsheet.SpreadsheetId, @command.WorkSheetName, @command.Values);
+                await InsertRow(spreadsheet.SpreadsheetId, @command.WorkSheetName, @command.Values);
             }
 
             return spreadsheet;
@@ -210,7 +210,7 @@
             return true;
         }
 
-        private async Task<bool> InsertFirstRow(string spreadSheetId, string workSheetName, IList<object> initialValues)
+        private async Task<bool> InsertRow(string spreadSheetId, string workSheetName, IList<object> initialValues)
         {
             string sheet = workSheetName;
             var range = CreateRange(workSheetName, initialValues.Count);

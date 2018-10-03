@@ -4,6 +4,7 @@
     using InqueryHistory.Command;
     using InqueryHistory.Commands;
     using InvitationHistory.Infrastructure.Behaviors;
+    using LeadsPlus.GoogleApis.Command;
     using MediatR;
     using System.Reflection;
 
@@ -21,6 +22,9 @@
             // Register the DomainEventHandler classes (they implement INotificationHandler<>) in assembly holding the Domain Events
             builder.RegisterAssemblyTypes(typeof(UpdateAgentAutoresponderSentCommandHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(INotificationHandler<>));
+
+            builder.RegisterAssemblyTypes(typeof(CreateSpreadsheetCommand).GetTypeInfo().Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
             //builder
             //    .RegisterAssemblyTypes(typeof(CreateAgentCommandValidator).GetTypeInfo().Assembly)

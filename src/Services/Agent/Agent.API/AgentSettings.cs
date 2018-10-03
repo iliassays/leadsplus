@@ -10,5 +10,8 @@ namespace Agent
         public string EventBusConnection { get; set; }
         public string DatabaseConnectionString { get; set; }
         public string DatabaseName { get; set; }
+
+        public string TypeFormApiKey { get; set; }
+        public string TypeFormApiRoot { get; set; }
     }
 }

@@ -12,7 +12,9 @@ import { AgentDetailViewComponent } from './detailview/detail.component';
 import { AgnetIntegrationSetupComponent } from './detailview/integrationsetup.component';
 import { AgnetZapSetupComponent } from './detailview/zapsetup.component';
 import { AgnetGoogleDataStudioSetupComponent } from './detailview/googledatastudiosetup.component';
-import { AgnetTypeformSetupComponent } from './detailview/typeformsetup.component';
+import { AgnetRentInquirySetupComponent } from './detailview/rentinquirysetup.component';
+import { AgnetBuyInquirySetupComponent } from './detailview/buyinquirysetup.component';
+//import { AgnetRentInquirySetupComponent1 } from './detailview/rentinquirysetup.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {CdkTableModule} from '@angular/cdk/table';
@@ -100,7 +102,8 @@ import {
     AgnetIntegrationSetupComponent,
     AgnetZapSetupComponent,
     AgnetGoogleDataStudioSetupComponent,
-    AgnetTypeformSetupComponent,
+    AgnetBuyInquirySetupComponent,
+    AgnetRentInquirySetupComponent,
     AgnetAddComponent,
     AgentListViewComponent
     ],

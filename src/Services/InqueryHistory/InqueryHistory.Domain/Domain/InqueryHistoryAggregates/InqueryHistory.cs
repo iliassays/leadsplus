@@ -151,7 +151,7 @@
 
         public string GenerateTypeFormLink(string baseLink)
         {
-            return $"{baseLink}?AggregateId={Id}&cfn={CustomerInfo.Firstname}&cln={CustomerInfo.Lastname}";
+            return $"{baseLink}?id={Id}&cfn={CustomerInfo.Firstname}&cln={CustomerInfo.Lastname}";
         }
     }
 }

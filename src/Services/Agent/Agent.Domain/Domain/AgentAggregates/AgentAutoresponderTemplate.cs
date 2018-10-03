@@ -9,6 +9,11 @@
         public string AgentAutoresponderTemplateId { get; set; }
         public string CustomerAutoresponderTemplateId { get; set; }
 
+        public AgentAutoresponderTemplate()
+        {
+            
+        }
+
         public AgentAutoresponderTemplate(string agentAutoresponderTemplateId, string customerAutoresponderTemplateId)
         {
             this.AgentAutoresponderTemplateId = agentAutoresponderTemplateId;
