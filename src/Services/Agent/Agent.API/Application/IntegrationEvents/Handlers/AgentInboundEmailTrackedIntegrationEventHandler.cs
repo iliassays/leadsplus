@@ -63,8 +63,10 @@
                         Phone = agent.Phone,
                         Id = agent.Id,
                         IntegrationEmail = agent.IntegrationEmail,
-                        AgentInquiryInfo = GetTypeformData(@event, agent)
-                    }
+                        
+                    },
+                    AgentInquiryInfo = GetInquiryInfoData(@event, agent),
+                    AgentAutoresponderTemplateInfo = GetAutoresponderTemplateData(@event, agent)
                 };
 
                 eventBus.Publish(newInqueryRequestReceivedIntegrationEvent);
@@ -75,7 +77,7 @@
             }
         }
 
-        private AgentInquiryInfo GetTypeformData(AgentInboundEmailTrackedIntegrationEvent @event, Agent agent)
+        private AgentInquiryInfo GetInquiryInfoData(AgentInboundEmailTrackedIntegrationEvent @event, Agent agent)
         {
             if (GetInquiryType(@event) == InquiryType.RentInquiry) 
             {

@@ -187,7 +187,14 @@ namespace LeadsPlus.BuildingBlocks.EventBusRabbitMQ
                 var eventName = ea.RoutingKey;
                 var message = Encoding.UTF8.GetString(ea.Body);
 
-                await ProcessEvent(eventName, message);
+                try
+                {
+                    await ProcessEvent(eventName, message);
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogError(ex.ToString());
+                }
 
                 channel.BasicAck(ea.DeliveryTag,multiple:false);
             };

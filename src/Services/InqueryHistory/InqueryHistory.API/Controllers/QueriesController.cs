@@ -38,9 +38,9 @@
             var contacts = await queryExecutor.Execute<GetAllInqueryHistoryQuery, List<InqueryHistory>>(new GetAllInqueryHistoryQuery());
             return Ok(contacts.Select(c => new
             {
-                organizationDomain = c.OrganizationInfo.OrganizationDomain,
-                organizationName = c.OrganizationInfo.OrganizationName,
-                customerEmail = c.CustomerInfo.Email,
+                organizationDomain = c.OrganizationInfo?.OrganizationDomain,
+                organizationName = c.OrganizationInfo?.OrganizationName,
+                customerEmail = c.CustomerInfo?.Email,
                 agentEmail = c.AgentEmail,
                 inqueryStatus = Enum.GetName(typeof(InqueryStatus), c.InqueryStatus),
                 inqueryType = Enum.GetName(typeof(InquiryType), c.InquiryType),

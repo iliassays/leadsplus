@@ -168,7 +168,7 @@
             var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
 
             var update = Builders<Agent>.Update
-                .Set("RentInquiry", agent.BuyInquiry)
+                .Set("RentInquiry", agent.RentInquiry)
                 .CurrentDate("UpdatedDate");
 
             await agentRepository.Collection

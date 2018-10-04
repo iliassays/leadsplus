@@ -47,27 +47,30 @@
 
             //get the inquery history and update parsed token
             var inqueryHistoryToUpdate = await queryExecutor.Execute<GetInqueryHistoryQuery, InqueryHistory>(
-                new GetInqueryHistoryQuery { InqueryHistoryId = @event.AggregateId });            
+                new GetInqueryHistoryQuery { InqueryHistoryId = @event.AggregateId });
 
-            inqueryHistoryToUpdate.SetParsedStatus();
-            inqueryHistoryToUpdate.ExtractedFields = @event.ExtractedFields;
-            inqueryHistoryToUpdate.CustomerInfo = PrepareCustomerInfoFromExtractedFields(inqueryHistoryToUpdate.ExtractedFields);
-            inqueryHistoryToUpdate.OrganizationInfo = PrepareOrganizationInfoFromExtractedFields(inqueryHistoryToUpdate.ExtractedFields, inqueryHistoryToUpdate.OrganizationInfo);
-            inqueryHistoryToUpdate.PropertyInfo = PreparePropertyInfoFromExtractedFields(inqueryHistoryToUpdate.ExtractedFields);
-            
-            var filter = Builders<InqueryHistory>.Filter.Eq("Id", @event.AggregateId);
-            var update = Builders<InqueryHistory>.Update
-                .Set("InqueryStatus", inqueryHistoryToUpdate.InqueryStatus)
-                .Set("ExtractedFields", inqueryHistoryToUpdate.ExtractedFields)
-                .Set("CustomerInfo", inqueryHistoryToUpdate.CustomerInfo)
-                .Set("OrganizationInfo", inqueryHistoryToUpdate.OrganizationInfo)
-                .Set("PropertyInfo", inqueryHistoryToUpdate.PropertyInfo)
-                .CurrentDate("UpdatedDate");
+            if (inqueryHistoryToUpdate != null)
+            {
+                inqueryHistoryToUpdate.SetParsedStatus();
+                inqueryHistoryToUpdate.ExtractedFields = @event.ExtractedFields;
+                inqueryHistoryToUpdate.CustomerInfo = PrepareCustomerInfoFromExtractedFields(inqueryHistoryToUpdate.ExtractedFields);
+                inqueryHistoryToUpdate.OrganizationInfo = PrepareOrganizationInfoFromExtractedFields(inqueryHistoryToUpdate.ExtractedFields, inqueryHistoryToUpdate.OrganizationInfo);
+                inqueryHistoryToUpdate.PropertyInfo = PreparePropertyInfoFromExtractedFields(inqueryHistoryToUpdate.ExtractedFields);
 
-            await inqueryHistoryRepository.Collection
-                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+                var filter = Builders<InqueryHistory>.Filter.Eq("Id", @event.AggregateId);
+                var update = Builders<InqueryHistory>.Update
+                    .Set("InqueryStatus", inqueryHistoryToUpdate.InqueryStatus)
+                    .Set("ExtractedFields", inqueryHistoryToUpdate.ExtractedFields)
+                    .Set("CustomerInfo", inqueryHistoryToUpdate.CustomerInfo)
+                    .Set("OrganizationInfo", inqueryHistoryToUpdate.OrganizationInfo)
+                    .Set("PropertyInfo", inqueryHistoryToUpdate.PropertyInfo)
+                    .CurrentDate("UpdatedDate");
 
-            await mediator.DispatchDomainEventsAsync(inqueryHistoryToUpdate);
+                await inqueryHistoryRepository.Collection
+                    .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+                await mediator.DispatchDomainEventsAsync(inqueryHistoryToUpdate);
+            }
         }
 
         private CustomerInfo PrepareCustomerInfoFromExtractedFields(Dictionary<string, string> extractedFields)
@@ -105,7 +108,7 @@
                 ReferenceNo = extractedFields.ContainsKey("propertyreferenceno") ? extractedFields["propertyreferenceno"] : "",
                 PropertyAddress = extractedFields.ContainsKey("propertyaddress") ? extractedFields["propertyaddress"] : "",
                 PropertyUrl = extractedFields.ContainsKey("propertyurl") ? extractedFields["propertyurl"] : "",
-                Message = extractedFields.ContainsKey("proerptymessage") ? extractedFields["proerptymessage"] : "",
+                Message = extractedFields.ContainsKey("propertymessage") ? extractedFields["proerptymessage"] : "",
             };
         }
     }

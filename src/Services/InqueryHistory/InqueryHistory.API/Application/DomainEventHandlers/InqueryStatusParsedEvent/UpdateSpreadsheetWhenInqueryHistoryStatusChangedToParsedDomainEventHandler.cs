@@ -48,7 +48,7 @@
         {
             InsertRowToSpreadsheetCommand insertRowToSpreadsheetCommand = new InsertRowToSpreadsheetCommand
             {
-                SpreadSheetId = @event.InqueryHistory.AgentInfo.AgentInquiryInfo.SpreadsheetId,
+                SpreadSheetId = @event.InqueryHistory.AgentInquiryInfo.SpreadsheetId,
                 WorkSheetName = Enum.GetName(typeof(InquiryType), @event.InqueryHistory.InquiryType),
                 ApplicationName = "LeadsPlus",
                 Values = new List<object>()

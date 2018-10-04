@@ -20,7 +20,7 @@
         public string Address { get; set; }
         public string Company { get; set; }
 
-        public AgentInquiryInfo AgentInquiryInfo { get; set; }
+        
 
         public string CreatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
@@ -28,7 +28,7 @@
 
         public AgentInfo()
         {
-
+            
         }
     }
 }

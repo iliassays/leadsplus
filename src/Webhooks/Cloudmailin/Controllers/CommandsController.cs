@@ -46,9 +46,10 @@
 
             if (@event.Subject.Contains(":::::"))
             {
+                var usePlainText = @event.Subject.Split(":::::")[2];
                 var emailNeedsToBeSent = new EmailNeedsToBeSentIntegrationEvent
                 {
-                    Body = @event.Body,
+                    Body = usePlainText.Equals("useplaintext", StringComparison.InvariantCultureIgnoreCase) ? @event.PlainText : @event.Body,
                     IsBodyHtml = true,
                     Subject = @event.Subject,
                     FromEmail = "shimulsays@gmail.com",

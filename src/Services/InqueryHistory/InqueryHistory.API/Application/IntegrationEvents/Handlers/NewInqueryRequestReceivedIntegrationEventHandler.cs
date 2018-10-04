@@ -71,18 +71,20 @@
                     Phone = @event.AgentInfo.Phone,
                     Id = @event.AgentInfo.Id,
                     IntegrationEmail = @event.AgentInfo.IntegrationEmail,                    
-                    AgentInquiryInfo = new Domain.AgentInquiryInfo
-                    {
-                        SpreadsheetId = @event.AgentInfo.AgentInquiryInfo?.SpreadsheetId,
-                        SpreadsheetName = @event.AgentInfo.AgentInquiryInfo?.SpreadsheetName,
-                        SpreadsheetUrl = @event.AgentInfo.AgentInquiryInfo?.SpreadsheetUrl,
-                        TypeFormUrl = @event.AgentInfo.AgentInquiryInfo?.TypeFormUrl,
-                        AgentAutoresponderTemplateInfo = new Domain.AgentAutoresponderTemplateInfo
-                        {
-                            AgentAutoresponderTemplateId = @event.AgentInfo.AgentInquiryInfo?.AgentAutoresponderTemplateInfo.AgentAutoresponderTemplateId,
-                            CustomerAutoresponderTemplateId = @event.AgentInfo.AgentInquiryInfo?.AgentAutoresponderTemplateInfo.CustomerAutoresponderTemplateId
-                        },
-                    }
+                    
+                },
+                new Domain.AgentInquiryInfo
+                {
+                    SpreadsheetId = @event.AgentInquiryInfo?.SpreadsheetId,
+                    SpreadsheetName = @event.AgentInquiryInfo?.SpreadsheetName,
+                    SpreadsheetUrl = @event.AgentInquiryInfo?.SpreadsheetUrl,
+                    TypeFormUrl = @event.AgentInquiryInfo?.TypeFormUrl,
+                    
+                },
+                new Domain.AgentAutoresponderTemplateInfo
+                {
+                    AgentAutoresponderTemplateId = @event.AgentAutoresponderTemplateInfo.AgentAutoresponderTemplateId,
+                    CustomerAutoresponderTemplateId = @event.AgentAutoresponderTemplateInfo.CustomerAutoresponderTemplateId
                 },
                 new OrganizationInfo {
                     OrganizationEmail = @event.OrganizationEmail

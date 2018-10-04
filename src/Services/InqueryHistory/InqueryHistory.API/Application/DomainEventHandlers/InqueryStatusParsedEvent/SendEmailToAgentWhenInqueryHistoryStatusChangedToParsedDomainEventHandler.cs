@@ -67,9 +67,9 @@
                 To = new[] { @event.InqueryHistory.AgentInfo.Email },
                 ReplyTo = @event.InqueryHistory.CustomerInfo.Email,
                 AggregateId = @event.InqueryHistory.Id,
-                TemplateId =  string.IsNullOrEmpty(@event.InqueryHistory.AgentInfo?.AgentInquiryInfo?.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId) ? 
+                TemplateId =  string.IsNullOrEmpty(@event.InqueryHistory.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId) ? 
                                                     agentAutoresponderDefaultTemplateId :
-                                                    @event.InqueryHistory.AgentInfo?.AgentInquiryInfo?.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId, //Autoresponder for agent For new Inquiry. keep it hardcoded for now
+                                                    @event.InqueryHistory.AgentAutoresponderTemplateInfo?.AgentAutoresponderTemplateId, //Autoresponder for agent For new Inquiry. keep it hardcoded for now
                 MergeFields = GetMergeField(@event.InqueryHistory.AgentInfo, @event)
             };
 
@@ -95,9 +95,9 @@
                     { "[agentcity]", agent.City },
                     { "[agentstate]", agent.State },
                     { "[agentzip]", agent.Zip },
-                    { "[agentinquirytypeformlink]", @event.InqueryHistory.GenerateTypeFormLink(agent.AgentInquiryInfo.TypeFormUrl) },
+                    { "[agentinquirytypeformlink]", @event.InqueryHistory.GenerateTypeFormLink(@event.InqueryHistory.AgentInquiryInfo.TypeFormUrl) },
                     { "[addressbooklink]", "http://contact.adfenixleads.com" },
-                    { "[agentinquiryspreadsheetlink]", agent.AgentInquiryInfo?.SpreadsheetUrl },
+                    { "[agentinquiryspreadsheetlink]", @event.InqueryHistory.AgentInquiryInfo?.SpreadsheetUrl },
                     { "[organizationemail]", @event.InqueryHistory.OrganizationInfo.OrganizationEmail }
                 };
 

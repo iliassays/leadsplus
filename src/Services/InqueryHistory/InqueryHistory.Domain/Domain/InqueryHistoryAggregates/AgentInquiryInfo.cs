@@ -12,11 +12,11 @@
         public string SpreadsheetId { get; set; }
         public string SpreadsheetName { get; set; }
 
-        public AgentAutoresponderTemplateInfo AgentAutoresponderTemplateInfo { get; set; }
+        
 
         public AgentInquiryInfo()
         {
-            AgentAutoresponderTemplateInfo = new AgentAutoresponderTemplateInfo();
+            
         }
     }
 }

@@ -38,6 +38,8 @@
         public bool AgentAutoresponderSent { get; set; }
 
         public AgentInfo AgentInfo { get; set; }
+        public AgentInquiryInfo AgentInquiryInfo { get; set; }
+        public AgentAutoresponderTemplateInfo AgentAutoresponderTemplateInfo { get; set; }
         public CustomerInfo CustomerInfo { get; set; }
 
         public PropertyInfo PropertyInfo { get; set; }
@@ -61,7 +63,9 @@
 
         }
 
-        public InqueryHistory(string id, InquiryType inquiryType, string message, string subject, string agentEmail, AgentInfo agentInfo, OrganizationInfo organizationInfo)
+        public InqueryHistory(string id, InquiryType inquiryType, string message, string subject, 
+            string agentEmail, AgentInfo agentInfo, AgentInquiryInfo agentInquiryInfo, 
+            AgentAutoresponderTemplateInfo agentAutoresponderTemplateInfo, OrganizationInfo organizationInfo)
             : this()
         {
             Id = id;
@@ -72,8 +76,10 @@
             AgentEmail = agentEmail;
             AgentInfo = agentInfo;
             InquiryType = inquiryType;
-
+            
             OrganizationInfo = organizationInfo;
+            AgentInquiryInfo = agentInquiryInfo;
+            AgentAutoresponderTemplateInfo = agentAutoresponderTemplateInfo;
 
             CreatedDate = DateTime.UtcNow;
             UpdatedDate = DateTime.UtcNow;
