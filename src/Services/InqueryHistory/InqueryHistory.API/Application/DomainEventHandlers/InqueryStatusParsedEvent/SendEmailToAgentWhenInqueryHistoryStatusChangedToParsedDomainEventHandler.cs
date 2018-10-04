@@ -82,7 +82,7 @@
 
             await mediator.Send(updateAgentAutoresponderSentCommand);
 
-            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history email send to agent {@event.InqueryHistory.Id} - {@event.InqueryHistory.AgentEmail}.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history email send to agent {@event.InqueryHistory.Id} - {@event.InqueryHistory.AgentInfo.Email} -templateid {emailNeedsToBeSent.TemplateId}.");
         }
 
         private Dictionary<string, string> GetMergeField(Domain.AgentInfo agent, InqueryHistoryStatusChangedToParsedDomainEvent @event)

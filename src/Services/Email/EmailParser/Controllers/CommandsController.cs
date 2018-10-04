@@ -125,7 +125,14 @@
                         continue;
                 }
 
-                fields.Add(item.Key.Remove(0, ("parse__output___").Length - 1), item.Value);
+                var key = item.Key.Remove(0, ("parse__output___").Length - 1);
+
+                if (!fields.ContainsKey(key))
+                {
+                    fields.Add(item.Key.Remove(0, ("parse__output___").Length - 1), item.Value);
+                }
+
+                logger.CreateLogger("GetParsed").LogTrace($"KEy: {item.Key}: value: {item.Value}");
             }
 
             return fields;

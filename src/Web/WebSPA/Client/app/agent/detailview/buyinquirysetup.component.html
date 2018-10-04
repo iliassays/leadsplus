@@ -80,12 +80,12 @@
                         <form name="material_login_form" *ngIf="currentAgent != null" class="form-validation" (ngSubmit)="saveAutoresponderTemplate()" #messageForm="ngForm">
                             <div class="form-group">
                                 <mat-form-field class="full-width">
-                                    <input required matInput name="agentAutoresponderTemplateId" placeholder="Agent Autoresponder TemplateId" [(ngModel)]="currentAgent.buyInquiry.inquiryAutoresponderTemplate.agentAutoresponderTemplateId">
+                                    <input matInput name="agentAutoresponderTemplateId" placeholder="Agent Autoresponder TemplateId" [(ngModel)]="currentAgent.buyInquiry.inquiryAutoresponderTemplate.agentAutoresponderTemplateId">
                                 </mat-form-field>
                             </div>
                             <div class="form-group">
                                 <mat-form-field class="full-width">
-                                    <input required matInput name="customerAutoresponderTemplateId" placeholder="Customer Autoresponder TemplateId" [(ngModel)]="currentAgent.buyInquiry.inquiryAutoresponderTemplate.customerAutoresponderTemplateId">
+                                    <input matInput name="customerAutoresponderTemplateId" placeholder="Customer Autoresponder TemplateId" [(ngModel)]="currentAgent.buyInquiry.inquiryAutoresponderTemplate.customerAutoresponderTemplateId">
                                 </mat-form-field>
                             </div>
                             <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!messageForm.valid">Save Template</button>
