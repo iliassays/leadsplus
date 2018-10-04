@@ -108,7 +108,7 @@
                 ReferenceNo = extractedFields.ContainsKey("propertyreferenceno") ? extractedFields["propertyreferenceno"] : "",
                 PropertyAddress = extractedFields.ContainsKey("propertyaddress") ? extractedFields["propertyaddress"] : "",
                 PropertyUrl = extractedFields.ContainsKey("propertyurl") ? extractedFields["propertyurl"] : "",
-                Message = extractedFields.ContainsKey("propertymessage") ? extractedFields["proerptymessage"] : "",
+                Message = extractedFields.ContainsKey("propertymessage") ? extractedFields["propertymessage"] : "",
             };
         }
     }
