@@ -31,6 +31,7 @@
         public OrganizationInfo OrganizationInfo { get; set; }
         //public string CustomerEmail { get; set; }
         public string Message { get; set; }
+        public string MessagePlainText { get; set; }
         public string Subject { get; set; }
         public string AgentEmail { get; set; }
         public string Comment { get; set; }
@@ -63,7 +64,7 @@
 
         }
 
-        public InqueryHistory(string id, InquiryType inquiryType, string message, string subject, 
+        public InqueryHistory(string id, InquiryType inquiryType, string messagePlainText, string message, string subject, 
             string agentEmail, AgentInfo agentInfo, AgentInquiryInfo agentInquiryInfo, 
             AgentAutoresponderTemplateInfo agentAutoresponderTemplateInfo, OrganizationInfo organizationInfo)
             : this()
@@ -72,6 +73,7 @@
             //OrganizationEmail = organizationEmail;
             //Organization = organizationEmail?.Split("@")[1];
             Message = message;
+            MessagePlainText = messagePlainText;
             Subject = subject;
             AgentEmail = agentEmail;
             AgentInfo = agentInfo;

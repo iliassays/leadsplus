@@ -4,7 +4,7 @@
         <div class="box box-default table-box mdl-shadow--2dp">
             <mat-table #table [dataSource]="data">
                 <!--- Note that these columns can be defined in any order.
-                The actual rendered columns are set as a property on the row definition" -->
+    The actual rendered columns are set as a property on the row definition" -->
                 <!-- ID Column -->
                 <ng-container cdkColumnDef="Organization">
                     <mat-header-cell *cdkHeaderCellDef> Organization </mat-header-cell>
@@ -20,8 +20,12 @@
                     <mat-cell *cdkCellDef="let row"> {{row.agentEmail}} </mat-cell>
                 </ng-container>
                 <ng-container cdkColumnDef="InqueryStatus">
+                    <mat-header-cell *cdkHeaderCellDef> InquiryType </mat-header-cell>
+                    <mat-cell *cdkCellDef="let row"> {{row.inquiryType}} </mat-cell>
+                </ng-container>
+                <ng-container cdkColumnDef="InqueryStatus">
                     <mat-header-cell *cdkHeaderCellDef> InqueryStatus </mat-header-cell>
-                    <mat-cell *cdkCellDef="let row"> {{row.inqueryStatus}} </mat-cell>
+                    <mat-cell *cdkCellDef="let row"> {{row.inquiryStatus}} </mat-cell>
                 </ng-container>
                 <ng-container cdkColumnDef="CreatedAt">
                     <mat-header-cell *cdkHeaderCellDef> CreatedAt </mat-header-cell>

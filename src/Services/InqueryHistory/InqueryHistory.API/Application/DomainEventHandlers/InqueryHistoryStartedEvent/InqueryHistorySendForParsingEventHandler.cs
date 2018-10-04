@@ -74,7 +74,7 @@
             //send  inquery for parsing
             var emailNeedsToBeParsed = new EmailNeedsToBeParsedIntegrationEvent
             {
-                Body = @event.InqueryHistory.Message,
+                Body = @event.InqueryHistory.MessagePlainText,
                 Subject = @event.InqueryHistory.Subject,
                 ToEmail = parserEmail, 
                 AggregateId = @event.InqueryHistory.Id

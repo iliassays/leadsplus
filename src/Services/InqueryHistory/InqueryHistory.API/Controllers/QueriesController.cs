@@ -42,8 +42,8 @@
                 organizationName = c.OrganizationInfo?.OrganizationName,
                 customerEmail = c.CustomerInfo?.Email,
                 agentEmail = c.AgentEmail,
-                inqueryStatus = Enum.GetName(typeof(InqueryStatus), c.InqueryStatus),
-                inqueryType = Enum.GetName(typeof(InquiryType), c.InquiryType),
+                inquiryStatus = Enum.GetName(typeof(InqueryStatus), c.InqueryStatus),
+                inquiryType = Enum.GetName(typeof(InquiryType), c.InquiryType),
                 createdDate = c.CreatedDate
             }));
         }

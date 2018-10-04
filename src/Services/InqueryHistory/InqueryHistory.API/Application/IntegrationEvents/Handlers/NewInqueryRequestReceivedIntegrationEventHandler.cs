@@ -54,6 +54,7 @@
             //string id, string customerEmail, string message, string subject, string agentEmail, AgentInfo agentInfo
             var inqueryHistory = new InqueryHistory(@event.AggregateId,
                 (InquiryType)(@event.InquiryType),
+                @event.PlainText,
                 @event.Body,
                 @event.Subject,
                 @event.AgentEmail,
