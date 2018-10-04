@@ -6,9 +6,9 @@
                 <!--- Note that these columns can be defined in any order.
     The actual rendered columns are set as a property on the row definition" -->
                 <!-- ID Column -->
-                <ng-container cdkColumnDef="Organization">
+                <ng-container cdkColumnDef="OrganizationDomain">
                     <mat-header-cell *cdkHeaderCellDef> Organization </mat-header-cell>
-                    <mat-cell *cdkCellDef="let row"> {{row.organization}} </mat-cell>
+                    <mat-cell *cdkCellDef="let row"> {{row.organizationDomain}} </mat-cell>
                 </ng-container>
                 <ng-container cdkColumnDef="CustomerEmail">
                     <mat-header-cell *cdkHeaderCellDef> CustomerEmail </mat-header-cell>
@@ -19,12 +19,12 @@
                     <mat-header-cell *cdkHeaderCellDef> AgentEmail </mat-header-cell>
                     <mat-cell *cdkCellDef="let row"> {{row.agentEmail}} </mat-cell>
                 </ng-container>
-                <ng-container cdkColumnDef="InqueryStatus">
+                <ng-container cdkColumnDef="InquiryType">
                     <mat-header-cell *cdkHeaderCellDef> InquiryType </mat-header-cell>
                     <mat-cell *cdkCellDef="let row"> {{row.inquiryType}} </mat-cell>
                 </ng-container>
-                <ng-container cdkColumnDef="InqueryStatus">
-                    <mat-header-cell *cdkHeaderCellDef> InqueryStatus </mat-header-cell>
+                <ng-container cdkColumnDef="InquiryStatus">
+                    <mat-header-cell *cdkHeaderCellDef> InquiryStatus </mat-header-cell>
                     <mat-cell *cdkCellDef="let row"> {{row.inquiryStatus}} </mat-cell>
                 </ng-container>
                 <ng-container cdkColumnDef="CreatedAt">

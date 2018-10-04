@@ -18,7 +18,7 @@ import { InquiryHistoryService } from '../inquiryhistory.service';
 })
 export class InquiryHistoryListComponent implements OnInit {
 
-    displayedColumns: string[] = ['Organization', 'CustomerEmail', 'AgentEmail', 'InquiryType', 'InquiryStatus', 'CreatedAt'];
+    displayedColumns: string[] = ['OrganizationDomain', 'CustomerEmail', 'AgentEmail', 'InquiryType', 'InquiryStatus', 'CreatedAt'];
     //exampleDatabase: ExampleHttpDao | null;
     data: IInquiryHistory[] = [];
 

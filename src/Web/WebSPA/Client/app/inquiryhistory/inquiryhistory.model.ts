@@ -1,8 +1,8 @@
 export interface IInquiryHistory {
-    inqueryStatus: string;
+    inquiryStatus: string;
     agentEmail: string;
     customerEmail: string;
-    organization: string;
+    organizationDomain: string;
     createdDate: string;
     id: string;
     aggregateId: string;
