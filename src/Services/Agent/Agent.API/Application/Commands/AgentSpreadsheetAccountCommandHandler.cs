@@ -125,7 +125,7 @@
             agent.RentInquiry.SpreadsheetId = spreadsheet.SpreadsheetId;
             agent.RentInquiry.SpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(InquiryType), InquiryType.RentInquiry));
             
-            var mortgageSpreadsheet = CreateSpreadsheetForTrackingInquiry(agent, motgageInquiryHeaders, InquiryType.LandlordInquiry);
+            var mortgageSpreadsheet = CreateSpreadsheetForTrackingInquiry(agent, landLoardInquiryHeaders, InquiryType.LandlordInquiry);
 
             agent.RentInquiry.LandlordSpreadsheetUrl = mortgageSpreadsheet.SpreadsheetUrl;
             agent.RentInquiry.LandlordSpreadsheetId = mortgageSpreadsheet.SpreadsheetId;
