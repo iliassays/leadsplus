@@ -28,6 +28,16 @@ namespace Agent.Command
         public string Address { get; set; }
     }
 
+    public class UpdateAgentLogoCommand : Command, IRequest<bool>
+    {
+        public string Logo { get; set; }
+    }
+
+    public class MarkAgentAsLaunched : Command, IRequest<bool>
+    {
+        
+    }
+
     public class DeleteAgentCommand : Command, IRequest<bool>
     {
         
@@ -41,6 +51,14 @@ namespace Agent.Command
     public class UpdateAgentIntigrationEmailAccountCommand : Command, IRequest<bool>
     {
         public string MailboxName { get; set; }
+    }
+
+    public class UpdateAgentSocialMediaCommand : Command, IRequest<bool>
+    {
+        public string Facebook { get; set; }
+        public string Instagram { get; set; }
+        public string Twitter { get; set; }
+        public string LinkedIn { get; set; }
     }
 
     public class UpdateAgentDataStudioUrlCommand : Command, IRequest<bool>

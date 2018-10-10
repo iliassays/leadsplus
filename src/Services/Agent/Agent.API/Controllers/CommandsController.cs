@@ -61,6 +61,47 @@ namespace Agent.API.Controllers
                 (IActionResult) BadRequest();
         }
 
+        [Route("updateagentsocialmedia")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> UpdateAgentSocialMedia([FromBody] UpdateAgentSocialMediaCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("updateagentlogo")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> UpdateAgentLogo([FromBody] UpdateAgentLogoCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+            
+
+        }
+
+        [Route("markagentaslaunched")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> MarkAgentAsLaunched([FromBody] MarkAgentAsLaunched @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
         [Route("createagentintigrationemail")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -157,6 +198,58 @@ namespace Agent.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateAgentSpreadsheetAccountForRentInquiry([FromBody] CreateAgentSpreadsheetAccountForRentInquiryCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("updateagentspreadsheetforbuyinquiry")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateAgentSpreadsheetForBuyInquiryCommand([FromBody] UpdateAgentSpreadsheetForBuyInquiryCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("updateagentmortgagespreadsheetforbuyinquiry")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateAgentMortgageSpreadsheetForBuyInquiryCommand([FromBody] UpdateAgentMortgageSpreadsheetForBuyInquiryCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("updateagentspreadsheetforrentinquiry")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateAgentSpreadsheetForRentInquiryCommand([FromBody] UpdateAgentSpreadsheetForRentInquiryCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("updateagentlandlordspreadsheetforrentinquiry")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateAgentLandlordSpreadsheetForRentInquiryCommand([FromBody] UpdateAgentLandlordSpreadsheetForRentInquiryCommand @command)
         {
             var result = await mediator.Send(@command);
 

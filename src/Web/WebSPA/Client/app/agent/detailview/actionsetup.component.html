@@ -1,0 +1,19 @@
+<section class="page-agent-rent-inquiry-setup container-fluid with-maxwidth no-breadcrumbs">
+    <article class="article" *ngIf="currentAgent">
+        <h2 class="article-title"></h2>
+        <div class="row" *ngIf="!currentAgent?.isLaunched">
+            <div class="col-md-5">
+                <strong><label class="control-label">Launch this Agent?</label></strong>
+            </div>
+
+            <div class="col-md-7" style="word-break:break-word">
+                <button type="button" mat-raised-button color="primary" class="float-left" (click)="markAsLaunched()">Launch It</button>
+            </div>
+        </div>
+        <div class="row" *ngIf="currentAgent?.isLaunched">
+            <div class="col-md-12">
+                <div class="callout callout-info">This agent is lunched and notification successfully sent.</div>
+            </div>
+        </div>
+    </article>
+</section>

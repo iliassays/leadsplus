@@ -1,5 +1,5 @@
 <section class="page-agent-buy-inquiry-setup container-fluid with-maxwidth no-breadcrumbs">
-    <article class="article" *ngIf="currentAgent != null">
+    <article class="article" *ngIf="currentAgent && currentAgent?.buyInquiry">
         <h2 class="article-title"></h2>
         <div class="row">
             <div class="col-xl-6">
@@ -7,7 +7,7 @@
                     <div class="box-header">Inquiry Setup</div>
                     <div class="box-body padding-xl">
 
-                        <div class="form-group row">                            
+                        <div class="form-group row">
                             <div class="col-md-3">
                                 <strong><label for="Typeformurl" class="col-md-2 control-label">Typeform Url</label></strong>
                             </div>
@@ -19,7 +19,7 @@
                             <div class="col-md-3">
                                 <strong><label for="Spreadsheeturl" class="col-md-2 control-label">Spreadsheet Url</label></strong>
                             </div>
-                            
+
                             <div class="col-md-9" style="word-break:break-word">
                                 <span *ngIf="currentAgent != null">{{currentAgent.buyInquiry.spreadsheetUrl}}</span>
                             </div>
@@ -28,12 +28,26 @@
                             <div class="col-md-3">
                                 <strong><label for="Spreadsheetname" class="col-md-2 control-label">Spreadsheet Name</label></strong>
                             </div>
-                            
+
                             <div class="col-md-9" style="word-break:break-word">
                                 <span *ngIf="currentAgent != null">{{currentAgent.buyInquiry.spreadsheetName}}</span>
                             </div>
                         </div>
-
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label class="col-md-2 control-label">Spreadsheet Public Link</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <form name="spreadsheetShareableLink_form" *ngIf="currentAgent != null" class="form-validation" (ngSubmit)="saveSpreadsheet()" #spreadsheetForm="ngForm">
+                                    <div class="form-group">
+                                        <mat-form-field class="full-width">
+                                            <input matInput name="spreadsheetShareableLink" placeholder="" [(ngModel)]="currentAgent.buyInquiry.spreadsheetShareableUrl">
+                                        </mat-form-field>
+                                    </div>
+                                    <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!spreadsheetForm.valid">Save</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,7 +60,7 @@
                             <div class="col-md-3">
                                 <strong><label for="inputEmail3" class="col-md-2 control-label">Mortgage Spreadsheet Url</label></strong>
                             </div>
-                            
+
                             <div class="col-md-9" style="word-break:break-word">
                                 <span>{{currentAgent.buyInquiry.mortgageSpreadsheetUrl}}</span>
                             </div>
@@ -67,7 +81,21 @@
                                 <span>{{currentAgent.buyInquiry.mortgageSpreadsheetName}}</span>
                             </div>
                         </div>
-
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label class="col-md-2 control-label">Mortgage Spreadsheet Public</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <form name="mortgageSpreadsheetShareableLink_form" *ngIf="currentAgent != null" class="form-validation" (ngSubmit)="saveMortgageSpreadsheet()" #mortgageForm="ngForm">
+                                    <div class="form-group">
+                                        <mat-form-field class="full-width">
+                                            <input matInput name="mortgageSpreadsheetShareableLink" placeholder="" [(ngModel)]="currentAgent.buyInquiry.mortgageSpreadsheetShareableUrl">
+                                        </mat-form-field>
+                                    </div>
+                                    <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!mortgageForm.valid">Save</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

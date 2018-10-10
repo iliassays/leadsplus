@@ -9,7 +9,7 @@
         BuyInquiry = 0,
         RentInquiry = 1,
         MortgageInquiry = 2,
-        LandlordInquiry = 2
+        LandlordInquiry = 3
     }
 
     public class AgentInquiry
@@ -18,6 +18,7 @@
         public string SpreadsheetUrl { get; set; }
         public string SpreadsheetId { get; set; }
         public string SpreadsheetName { get; set; }
+        public string SpreadsheetShareableUrl { get; set; }
 
         public AgentAutoresponderTemplate InquiryAutoresponderTemplate { get; set; }
 
@@ -31,7 +32,7 @@
             this.InquiryAutoresponderTemplate = new AgentAutoresponderTemplate();
         }
 
-        public void AddTypeformToAgentInquiry(string typeFormUrl)
+        public void UpdateTypeform(string typeFormUrl)
         {
             this.TypeFormUrl = typeFormUrl;
         }
@@ -41,6 +42,14 @@
             this.SpreadsheetUrl = spreadsheetUrl;
             this.SpreadsheetId = spreadsheetId;
             this.SpreadsheetName = spreadsheetName;
+        }
+
+        public void UpdateSpreadsheet(string spreadsheetId, string spreadsheetName, string spreadsheetUrl, string spreadsheetShareableUrl)
+        {
+            this.SpreadsheetUrl = spreadsheetUrl;
+            this.SpreadsheetId = spreadsheetId;
+            this.SpreadsheetName = spreadsheetName;
+            this.SpreadsheetShareableUrl = spreadsheetShareableUrl;
         }
     }
 }

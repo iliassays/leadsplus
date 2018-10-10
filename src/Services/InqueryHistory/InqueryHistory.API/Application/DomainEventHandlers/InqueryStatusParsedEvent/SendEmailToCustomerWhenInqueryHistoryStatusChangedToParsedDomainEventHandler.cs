@@ -92,12 +92,22 @@
                     { "[agentlastname]", agent.Lastname },
                     { "[agentaddress]", agent.Address },
                     { "[agentcity]", agent.City },
+                    { "[agentcompany]", agent.Company },
                     { "[agentstate]", agent.State },
                     { "[agentzip]", agent.Zip },
+                    { "[agentfacebook]", agent.Facebook },
+                    { "[agentinstagram]", agent.Instagram },
+                    { "[agenttwitter]", agent.Twitter },
+                    { "[agentlinkedIn]", agent.LinkedIn },
+                    { "[agentlogo]", agent.Logo },
                     { "[agentinquirytypeformlink]", @event.InqueryHistory.GenerateTypeFormLink(@event.InqueryHistory.AgentInquiryInfo.TypeFormUrl) },
                     { "[addressbooklink]", "http://contact.adfenixleads.com" },
                     { "[agentinquiryspreadsheetlink]", @event.InqueryHistory.AgentInquiryInfo?.SpreadsheetUrl },
-                    { "[organizationemail]", @event.InqueryHistory.OrganizationInfo.OrganizationEmail }
+                    { "[agentmortgagespreadsheetlink]", @event.InqueryHistory.AgentInquiryInfo?.MortgageShareableUrl },
+                    { "[agentlandlordspreadsheetlink]", @event.InqueryHistory.AgentInquiryInfo?.LandlordShareableUrl },
+                    { "[organizationemail]", @event.InqueryHistory.OrganizationInfo.OrganizationEmail },
+                    { "[organizationdomain]", @event.InqueryHistory.OrganizationInfo.OrganizationDomain },
+                    { "[organizationname]", @event.InqueryHistory.OrganizationInfo.OrganizationName }
                 };
 
             foreach (var item in @event.InqueryHistory.ExtractedFields)

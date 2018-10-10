@@ -1,49 +1,60 @@
 <section class="page-agent-detail-view container-fluid with-maxwidth">
     <form [formGroup]="newAgentForm" (ngSubmit)="submitForm(newAgentForm.value)">
         <div class="row">
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input matInput placeholder="First name" formControlName="firstname">
-                </mat-form-field>
-            </div>
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width"> <input matInput placeholder="Last name" formControlName="lastname" /> </mat-form-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 form-group">
-                <mat-form-field class="full-width"> <input matInput placeholder="Email" formControlName="email" /></mat-form-field>
-            </div>
-            <div class="col-lg-6 form-group">
-                <mat-form-field class="full-width"> <input matInput placeholder="Phone" formControlName="phone" /></mat-form-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 form-group">
-                <mat-form-field class="full-width" dividerColor="primary"> <input matInput placeholder="City" formControlName="city" /> </mat-form-field>
-            </div>
-            <div class="col-lg-6 form-group">
-                <mat-form-field class="full-width" dividerColor="primary"> <input matInput placeholder="Country" formControlName="country" /> </mat-form-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 form-group">
-                <mat-form-field class="full-width"> <input matInput placeholder="Company" formControlName="company" /></mat-form-field>
-            </div>
-            <div class="col-lg-6 form-group">
-                <mat-form-field class="full-width"> <input matInput placeholder="Address" formControlName="address" /></mat-form-field>
-            </div>
-        </div>
+            <div class="col-3">
+                <img src="{{logo}}" width="200px" height="200px" (click)="fileInput.click()" />
+                <input #fileInput type="file" ng2FileSelect [uploader]="uploader" accept="image/png" (change)="uploadLogo()"  style="display:none; " />
 
-        <div class="row" *ngIf="newAgentForm.dirty">
-            <div class="col-lg-6">
-
+                <!--<input name="file" type="file"
+           class="file-upload" data-cloudinary-field="image_id"
+           data-form-data="{ 'transformation': {'crop':'limit','tags':'samples','width':3000,'height':2000}}" />-->
             </div>
-            <div class="col-lg-6 text-right">
-                <button mat-raised-button class="btn-w-md" color="primary" type="submit" [disabled]="!newAgentForm.valid || isAgentProcessing">Update</button>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-6 form-group">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="First name" formControlName="firstname">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6 form-group">
+                        <mat-form-field class="full-width"> <input matInput placeholder="Last name" formControlName="lastname" /> </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 form-group">
+                        <mat-form-field class="full-width"> <input matInput placeholder="Email" formControlName="email" /></mat-form-field>
+                    </div>
+                    <div class="col-lg-6 form-group">
+                        <mat-form-field class="full-width"> <input matInput placeholder="Phone" formControlName="phone" /></mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 form-group">
+                        <mat-form-field class="full-width" dividerColor="primary"> <input matInput placeholder="City" formControlName="city" /> </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 form-group">
+                        <mat-form-field class="full-width" dividerColor="primary"> <input matInput placeholder="Country" formControlName="country" /> </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 form-group">
+                        <mat-form-field class="full-width"> <input matInput placeholder="Company" formControlName="company" /></mat-form-field>
+                    </div>
+                    <div class="col-lg-6 form-group">
+                        <mat-form-field class="full-width"> <input matInput placeholder="Address" formControlName="address" /></mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="newAgentForm.dirty">
+                    <div class="col-lg-6">
+
+                    </div>
+                    <div class="col-lg-6 text-right">
+                        <button mat-raised-button class="btn-w-md" color="primary" type="submit" [disabled]="!newAgentForm.valid || isAgentProcessing">Update</button>
+                    </div>
+                </div>
             </div>
         </div>
-
         <div class="row" style="margin-top: 30px;">
             <div class="col-lg-12">
                 <mat-tab-group [(selectedIndex)]="selectedTab">
@@ -60,14 +71,24 @@
                             <agent-rent-inquiry-setup></agent-rent-inquiry-setup>
                         </section>
                     </mat-tab>
-                    <mat-tab label="Google data studio Setup">
+                    <mat-tab label="Google datastudio">
                         <section class="tab-content container-fluid">
                             <agent-google-datastudio-setup></agent-google-datastudio-setup>
+                        </section>
+                    </mat-tab>
+                    <mat-tab label="Social Media">
+                        <section class="tab-content container-fluid">
+                            <agent-social-setup></agent-social-setup>
                         </section>
                     </mat-tab>
                     <mat-tab label="Sendgrid Integration">
                         <section class="tab-content container-fluid">
                             <agent-zap-setup></agent-zap-setup>
+                        </section>
+                    </mat-tab>
+                    <mat-tab label="Action">
+                        <section class="tab-content container-fluid">
+                            <agent-action></agent-action>
                         </section>
                     </mat-tab>
                     <mat-tab label="Zap">

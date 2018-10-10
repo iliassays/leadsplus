@@ -24,7 +24,11 @@
 
     public class AgentSpreadsheetAccountCommandHandler
         : IRequestHandler<CreateAgentSpreadsheetAccountForBuyInquiryCommand, bool>,
-        IRequestHandler<CreateAgentSpreadsheetAccountForRentInquiryCommand, bool>
+        IRequestHandler<CreateAgentSpreadsheetAccountForRentInquiryCommand, bool>,
+        IRequestHandler<UpdateAgentSpreadsheetForBuyInquiryCommand, bool>,
+        IRequestHandler<UpdateAgentMortgageSpreadsheetForBuyInquiryCommand, bool>,
+        IRequestHandler<UpdateAgentSpreadsheetForRentInquiryCommand, bool>,
+        IRequestHandler<UpdateAgentLandlordSpreadsheetForRentInquiryCommand, bool>
     {
         private readonly IEventBus eventBus;
         private readonly IMediator mediator;
@@ -145,6 +149,70 @@
             return true;
         }
 
+        public async Task<bool> Handle(UpdateAgentSpreadsheetForBuyInquiryCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+            agent.BuyInquiry.UpdateSpreadsheet(@command.SpreadsheetId, @command.SpreadsheetName, @command.SpreadsheetUrl, @command.SpreadsheetShareableUrl);
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("BuyInquiry", agent.BuyInquiry)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            return true;
+        }
+
+        public async Task<bool> Handle(UpdateAgentMortgageSpreadsheetForBuyInquiryCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+            agent.BuyInquiry.UpdateMortgageSpreadsheet(@command.SpreadsheetId, @command.SpreadsheetName, @command.SpreadsheetUrl, @command.SpreadsheetShareableUrl);
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("BuyInquiry", agent.BuyInquiry)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            return true;
+        }
+
+        public async Task<bool> Handle(UpdateAgentSpreadsheetForRentInquiryCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+            agent.RentInquiry.UpdateSpreadsheet(@command.SpreadsheetId, @command.SpreadsheetName, @command.SpreadsheetUrl, @command.SpreadsheetShareableUrl);
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("RentInquiry", agent.RentInquiry)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            return true;
+        }
+
+        public async Task<bool> Handle(UpdateAgentLandlordSpreadsheetForRentInquiryCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+            agent.RentInquiry.UpdateLandlordSpreadsheet(@command.SpreadsheetId, @command.SpreadsheetName, @command.SpreadsheetUrl, @command.SpreadsheetShareableUrl);
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("RentInquiry", agent.RentInquiry)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            return true;
+        }
+
         private async Task<string> CreateTypeFormUrl(Agent agent, InquiryType typeformType, string typeFormTemplateJson)
         {
             Regex reg = new Regex(@"(\""title\"":[ ]?\"")([\d\s\w]*)");
@@ -177,14 +245,16 @@
 
             var spreadsheet = mediator.Send(createSpreadsheetCommand).Result;
 
-            AssigSpreadsheetPermissionCommand assigSpreadsheetPermissionCommand = new AssigSpreadsheetPermissionCommand
-            {
-                Email = agent.Email,
-                SpreadsheetId = spreadsheet.SpreadsheetId,
-                ApplicationName = "LeadsPlus"
-            };
+            //no longer necessary. we will create a sharable link and share.
 
-            var assigSpreadsheetPermissionCommandResult = mediator.Send(assigSpreadsheetPermissionCommand).Result;
+            //AssigSpreadsheetPermissionCommand assigSpreadsheetPermissionCommand = new AssigSpreadsheetPermissionCommand
+            //{
+            //    Email = agent.Email,
+            //    SpreadsheetId = spreadsheet.SpreadsheetId,
+            //    ApplicationName = "LeadsPlus"
+            //};
+
+            //var assigSpreadsheetPermissionCommandResult = mediator.Send(assigSpreadsheetPermissionCommand).Result;
 
             AssigSpreadsheetPermissionCommand assigSpreadsheetPermissionToOrganizationCommand = new AssigSpreadsheetPermissionCommand
             {
@@ -194,47 +264,6 @@
             };
 
             var assigSpreadsheetPermissionToOrganizationCommandResult = mediator.Send(assigSpreadsheetPermissionToOrganizationCommand).Result;
-
-            //var createContactIntegrationEvent = new CreateContactIntegrationEvent()
-            //{
-            //    AggregateId = agent.Id,
-            //    Source = "AdfenixLeads",
-            //    Email = agent.Email,
-            //    OwnerId = agent.Id,
-            //    Ownername = $"{agent.Firstname} {agent.Lastname}"
-            //};
-
-            //eventBus.Publish(createContactIntegrationEvent);
-
-            return spreadsheet;
-        }
-
-        public Spreadsheet CreateSpreadsheetForTrackingInquiryTest(InquiryType typeFormType)
-        {
-            CreateSpreadsheetCommand createSpreadsheetCommand = new CreateSpreadsheetCommand
-            {
-                SpreadSheetName = "Hello World",
-                WorkSheetName = Enum.GetName(typeof(InquiryType), typeFormType),
-                ApplicationName = "LeadsPlus"
-            };
-
-            var fields = customerHeaders.Concat(buyInquiryHeaders).ToList();
-            foreach (var item in fields)
-            {
-                createSpreadsheetCommand.HeaderValues.Add(item);
-                createSpreadsheetCommand.InitialValues.Add("test"); // this is required for Zapier to function correctly
-            }
-
-            var spreadsheet = mediator.Send(createSpreadsheetCommand).Result;
-
-            AssigSpreadsheetPermissionCommand assigSpreadsheetPermissionCommand = new AssigSpreadsheetPermissionCommand
-            {
-                Email = "shimulsays@gmail.com",
-                SpreadsheetId = spreadsheet.SpreadsheetId,
-                ApplicationName = "LeadsPlus"
-            };
-
-            var assigSpreadsheetPermissionToOrganizationCommandResult = mediator.Send(assigSpreadsheetPermissionCommand).Result;
 
             //var createContactIntegrationEvent = new CreateContactIntegrationEvent()
             //{

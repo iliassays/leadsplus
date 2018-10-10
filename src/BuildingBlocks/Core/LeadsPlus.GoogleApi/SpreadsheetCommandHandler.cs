@@ -39,7 +39,7 @@
             this.sheetsService = new SheetsService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = googleCredential,
-                ApplicationName = @command.ApplicationName,
+                ApplicationName = @command.ApplicationName
             });
 
             Spreadsheet spreadsheet = await CreateSpreadsheet(@command.SpreadSheetName, @command.WorkSheetName);
@@ -76,6 +76,12 @@
 
         public async Task<bool> Handle(AssigSpreadsheetPermissionCommand @command, CancellationToken cancellationToken)
         {
+            this.sheetsService = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = googleCredential,
+                ApplicationName = @command.ApplicationName,
+            });
+
             this.driveService = new DriveService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = googleCredential,

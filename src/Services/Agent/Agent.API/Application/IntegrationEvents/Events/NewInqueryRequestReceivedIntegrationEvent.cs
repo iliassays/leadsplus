@@ -43,8 +43,14 @@
         public string State { get; set; }
         public string Zip { get; set; }
         public string Phone { get; set; }
+        public string Logo { get; set; }
         public string Address { get; set; }
         public string Company { get; set; }
+
+        public string Facebook { get; set; }
+        public string Twitter { get; set; }
+        public string Instagram { get; set; }
+        public string LinkedIn { get; set; }
 
         public AgentInfo()
         {
@@ -58,6 +64,9 @@
         public string SpreadsheetUrl { get; set; }
         public string SpreadsheetId { get; set; }
         public string SpreadsheetName { get; set; }
+        public string SpreadsheetShareableUrl { get; set; }
+        public string MortgageShareableUrl { get; set; }
+        public string LandlordShareableUrl { get; set; }
 
         public AgentInquiryInfo()
         {

@@ -46,7 +46,7 @@
                     Body = @event.Body,
                     Subject = @event.Subject,
                     OrganizationEmail = @event.OrganizationEmail,
-                    InquiryType = (int) GetInquiryType(@event),
+                    InquiryType = (int)GetInquiryType(@event),
                     PlainText = @event.PlainText,
 
                     AgentInfo = new AgentInfo()
@@ -61,9 +61,13 @@
                         Company = agent.Company,
                         Country = agent.Country,
                         Phone = agent.Phone,
+                        Logo = agent.Logo,
                         Id = agent.Id,
                         IntegrationEmail = agent.IntegrationEmail,
-                        
+                        Facebook = agent.Facebook,
+                        Instagram = agent.Instagram,
+                        LinkedIn = agent.LinkedIn,
+                        Twitter = agent.Twitter
                     },
                     AgentInquiryInfo = GetInquiryInfoData(@event, agent),
                     AgentAutoresponderTemplateInfo = GetAutoresponderTemplateData(@event, agent)
@@ -86,7 +90,9 @@
                     SpreadsheetId = agent.RentInquiry?.SpreadsheetId,
                     SpreadsheetName = agent.RentInquiry?.SpreadsheetName,
                     SpreadsheetUrl = agent.RentInquiry?.SpreadsheetUrl,
-                    TypeFormUrl = agent.RentInquiry?.TypeFormUrl
+                    TypeFormUrl = agent.RentInquiry?.TypeFormUrl,
+                    SpreadsheetShareableUrl = agent.RentInquiry?.SpreadsheetShareableUrl,
+                    LandlordShareableUrl = agent.RentInquiry?.LandlordSpreadsheetShareableUrl,
                 };
             }
             else
@@ -96,7 +102,9 @@
                     SpreadsheetId = agent.BuyInquiry?.SpreadsheetId,
                     SpreadsheetName = agent.BuyInquiry?.SpreadsheetName,
                     SpreadsheetUrl = agent.BuyInquiry?.SpreadsheetUrl,
-                    TypeFormUrl = agent.BuyInquiry?.TypeFormUrl
+                    TypeFormUrl = agent.BuyInquiry?.TypeFormUrl,
+                    SpreadsheetShareableUrl = agent.BuyInquiry?.SpreadsheetShareableUrl,
+                    MortgageShareableUrl = agent.BuyInquiry?.MortgageSpreadsheetShareableUrl
                 };
             }
         }

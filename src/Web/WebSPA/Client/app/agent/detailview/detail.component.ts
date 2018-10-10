@@ -11,7 +11,7 @@ import { AgentService } from '../agent.service';
 import { AgentWrapperService } from '../agent.wrapper.service';
 import { ConfigurationService } from '../../shared/services/configuration.service';
 import { Guid } from '../../shared/models/guid';
-
+import { CloudinaryOptions, CloudinaryUploader } from 'ng2-cloudinary';
 /**
  * @title Table with pagination
  */
@@ -26,6 +26,15 @@ export class AgentDetailViewComponent implements OnInit {
     isAgentProcessing: boolean;
     errorReceived: boolean;
     agents: IAgent[];
+    loading: any;
+    logo: string;
+
+    uploader: CloudinaryUploader = new CloudinaryUploader(
+        new CloudinaryOptions({
+            cloudName: "adfenixleads-com",
+            uploadPreset: 'ezm7phkq'
+        })
+    );
 
     constructor(private agentService: AgentService,
         private agnetEvents: AgentWrapperService,
@@ -34,6 +43,32 @@ export class AgentDetailViewComponent implements OnInit {
         private formBuilder: FormBuilder) {
 
         this.initAgentForm();
+    }
+
+    uploadLogo() {
+        this.loading = true;
+
+        this.uploader.uploadAll(); // call for uploading the data to Cloudinary
+
+        /* Getting the success response from Cloudinary. */
+        this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
+            let res = JSON.parse(response);
+            this.loading = false;
+            
+            var currentAgent = this.agnetEvents.getCurrentAgent();
+            this.logo = res.secure_url;
+
+            this.agentService.saveLogo(currentAgent.id, res.secure_url)
+                .catch((err) => this.handleError(err))
+                .subscribe(agents => {
+                    
+                });
+        }
+
+        /* Getting the Error message Cloudinary throws. */
+        this.uploader.onErrorItem = function (fileItem, response, status, headers) {
+            console.info('onErrorItem', fileItem, response, status, headers)
+        };
     }
 
     getAgents(pageSize: number, pageIndex: number) {
@@ -94,6 +129,8 @@ export class AgentDetailViewComponent implements OnInit {
             'address': [currentAgent.address, Validators.required],
             'email': [currentAgent.email, Validators.required]
         });
+
+        this.logo = currentAgent.logo;
     }
 
   ngOnInit() {

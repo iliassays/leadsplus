@@ -68,7 +68,7 @@
                 agent.BuyInquiry = new AgentBuyInquiry();
             }
 
-            agent.BuyInquiry.AddTypeformToAgentInquiry(typeFormUrl);
+            agent.BuyInquiry.UpdateTypeform(typeFormUrl);
 
             var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
 
@@ -100,7 +100,7 @@
                 agent.RentInquiry = new AgentRentInquiry();
             }
 
-            agent.RentInquiry.AddTypeformToAgentInquiry(typeFormUrl);
+            agent.RentInquiry.UpdateTypeform(typeFormUrl);
 
             var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
 

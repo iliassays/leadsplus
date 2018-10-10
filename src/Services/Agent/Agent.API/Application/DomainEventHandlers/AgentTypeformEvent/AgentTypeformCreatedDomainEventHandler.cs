@@ -1,4 +1,4 @@
-﻿namespace Contact.DomainEventHandlers.ContactCreatedEvent
+﻿namespace Agent.DomainEventHandlers
 {
     using Agent.Command;
     using Agent.Domain;

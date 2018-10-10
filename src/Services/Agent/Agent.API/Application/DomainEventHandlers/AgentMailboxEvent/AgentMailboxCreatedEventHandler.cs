@@ -1,4 +1,4 @@
-﻿namespace Contact.DomainEventHandlers.ContactCreatedEvent
+﻿namespace Agent.DomainEventHandlers
 {
     using Agent.Domain.Events;
     using LeadsPlus.BuildingBlocks.EventBus.Abstractions;

@@ -1,5 +1,5 @@
 <section class="page-agent-rent-inquiry-setup container-fluid with-maxwidth no-breadcrumbs">
-    <article class="article" *ngIf="currentAgent != null">
+    <article class="article" *ngIf="currentAgent && currentAgent.rentInquiry">
         <h2 class="article-title"></h2>
         <div class="row">
             <div class="col-xl-6">
@@ -33,7 +33,21 @@
                                 <span *ngIf="currentAgent != null">{{currentAgent.rentInquiry.spreadsheetName}}</span>
                             </div>
                         </div>
-
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label class="col-md-2 control-label">Spreadsheet Public Link</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <form name="spreadsheetShareableLink_form" *ngIf="currentAgent != null" class="form-validation" (ngSubmit)="saveSpreadsheet()" #spreadsheetForm="ngForm">
+                                    <div class="form-group">
+                                        <mat-form-field class="full-width">
+                                            <input matInput name="spreadsheetShareableLink" placeholder="" [(ngModel)]="currentAgent.rentInquiry.spreadsheetShareableUrl">
+                                        </mat-form-field>
+                                    </div>
+                                    <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!spreadsheetForm.valid">Save</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,7 +81,21 @@
                                 <span>{{currentAgent.rentInquiry.landlordSpreadsheetName}}</span>
                             </div>
                         </div>
-
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label class="col-md-2 control-label">Landlord Spreadsheet Public</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <form name="landlordSpreadsheetShareableLink_form" *ngIf="currentAgent != null" class="form-validation" (ngSubmit)="saveLandlordSpreadsheet()" #landlordForm="ngForm">
+                                    <div class="form-group">
+                                        <mat-form-field class="full-width">
+                                            <input matInput name="landlordSpreadsheetShareableLink" placeholder="" [(ngModel)]="currentAgent.rentInquiry.landlordSpreadsheetShareableUrl">
+                                        </mat-form-field>
+                                    </div>
+                                    <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!landlordForm.valid">Save</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

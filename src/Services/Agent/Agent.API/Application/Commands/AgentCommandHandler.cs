@@ -24,9 +24,12 @@
         IRequestHandler<DeleteAgentCommand, bool>,
         IRequestHandler<CreateAgentIntigrationEmailAccountCommand, bool>,
         IRequestHandler<UpdateAgentIntigrationEmailAccountCommand, bool>,
+        IRequestHandler<UpdateAgentSocialMediaCommand, bool>,
         IRequestHandler<UpdateAgentDataStudioUrlCommand, bool>,
         IRequestHandler<UpdateAgentAutoresponderTemplateForBuyInquiryCommand, bool>,
-        IRequestHandler<UpdateAgentAutoresponderTemplateForRentInquiryCommand, bool>
+        IRequestHandler<UpdateAgentAutoresponderTemplateForRentInquiryCommand, bool>,
+        IRequestHandler<UpdateAgentLogoCommand, bool>,
+        IRequestHandler<MarkAgentAsLaunched, bool>
     {
         private readonly IEventBus eventBus;
         private readonly IMediator mediator;
@@ -118,6 +121,66 @@
             var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = updateAgentIntigrationEmailAccountCommand.AggregateId });
 
             agent.UpdateMailbox(updateAgentIntigrationEmailAccountCommand.MailboxName);
+            await mediator.DispatchDomainEventsAsync(agent);
+
+            return true;
+        }
+
+        public async Task<bool> Handle(UpdateAgentLogoCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+
+            agent.UpdateLogo(@command.Logo);
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("Logo", agent.Logo)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            await mediator.DispatchDomainEventsAsync(agent);
+
+            return true;
+        }
+
+        public async Task<bool> Handle(MarkAgentAsLaunched @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+
+            agent.MarkAsLunched();
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("IsLaunched", true)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            await mediator.DispatchDomainEventsAsync(agent);
+
+            return true;
+        }
+
+        public async Task<bool> Handle(UpdateAgentSocialMediaCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+
+            agent.UpdateSocialMedia(@command.Facebook, @command.Instagram, @command.Twitter, @command.LinkedIn);
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("Facebook", agent.Facebook)
+                .Set("Instagram", agent.Instagram)
+                .Set("Twitter", agent.Twitter)
+                .Set("LinkedIn", agent.LinkedIn)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
             await mediator.DispatchDomainEventsAsync(agent);
 
             return true;

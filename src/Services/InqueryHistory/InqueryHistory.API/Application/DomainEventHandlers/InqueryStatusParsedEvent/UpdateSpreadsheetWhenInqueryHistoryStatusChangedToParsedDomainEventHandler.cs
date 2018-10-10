@@ -54,7 +54,7 @@
                 Values = new List<object>()
                 {
                     @event.InqueryHistory.Id,
-                    @event.InqueryHistory.CreatedDate,
+                    @event.InqueryHistory.CreatedDate.ToLocalTime(),
                     $"{@event.InqueryHistory.CustomerInfo.Firstname} {@event.InqueryHistory.CustomerInfo.Lastname}",
                     @event.InqueryHistory.CustomerInfo.Email,
                     @event.InqueryHistory.CustomerInfo.Phone,
@@ -75,29 +75,29 @@
             logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history spreadsheet updated. Inquiry history: {@event.InqueryHistory.Id} - Inquiry from: {@event.InqueryHistory.OrganizationInfo.OrganizationEmail}.");
         }
 
-        private Dictionary<string, string> GetMergeField(Domain.AgentInfo agent, InqueryHistoryStatusChangedToParsedDomainEvent @event)
-        {
-            var mergedFields = new Dictionary<string, string>()
-                {
-                    { "[agentfirstname]", agent.Firstname },
-                    { "[agentlastname]", agent.Lastname },
-                    { "[agentaddress]", agent.Address },
-                    { "[agentcity]", agent.City },
-                    { "[agentstate]", agent.State },
-                    { "[agentzip]", agent.Zip },
-                    { "[addressbooklink]", "http://contact.adfenixleads.com" },
-                    { "[organizationemail]", @event.InqueryHistory.OrganizationInfo.OrganizationEmail }
-                };
+        //private Dictionary<string, string> GetMergeField(Domain.AgentInfo agent, InqueryHistoryStatusChangedToParsedDomainEvent @event)
+        //{
+        //    var mergedFields = new Dictionary<string, string>()
+        //        {
+        //            { "[agentfirstname]", agent.Firstname },
+        //            { "[agentlastname]", agent.Lastname },
+        //            { "[agentaddress]", agent.Address },
+        //            { "[agentcity]", agent.City },
+        //            { "[agentstate]", agent.State },
+        //            { "[agentzip]", agent.Zip },
+        //            { "[addressbooklink]", "http://contact.adfenixleads.com" },
+        //            { "[organizationemail]", @event.InqueryHistory.OrganizationInfo.OrganizationEmail }
+        //        };
 
-            foreach (var item in @event.InqueryHistory.ExtractedFields)
-            {
-                if (!mergedFields.ContainsKey(item.Key))
-                {
-                    mergedFields.Add($"[{item.Key}]", item.Value);
-                }
-            }
+        //    foreach (var item in @event.InqueryHistory.ExtractedFields)
+        //    {
+        //        if (!mergedFields.ContainsKey(item.Key))
+        //        {
+        //            mergedFields.Add($"[{item.Key}]", item.Value);
+        //        }
+        //    }
 
-            return mergedFields;
-        }
+        //    return mergedFields;
+        //}
     }
 }

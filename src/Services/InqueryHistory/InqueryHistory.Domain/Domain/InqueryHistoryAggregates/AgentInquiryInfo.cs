@@ -11,8 +11,9 @@
         public string SpreadsheetUrl { get; set; }
         public string SpreadsheetId { get; set; }
         public string SpreadsheetName { get; set; }
+        public string MortgageShareableUrl { get; set; }
+        public string LandlordShareableUrl { get; set; }
 
-        
 
         public AgentInquiryInfo()
         {

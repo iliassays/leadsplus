@@ -20,7 +20,12 @@
         public string Address { get; set; }
         public string Company { get; set; }
 
-        
+        public string Logo { get; set; }
+
+        public string Facebook { get; set; }
+        public string Twitter { get; set; }
+        public string Instagram { get; set; }
+        public string LinkedIn { get; set; }
 
         public string CreatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }

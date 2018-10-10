@@ -159,7 +159,7 @@
 
         public string GenerateTypeFormLink(string baseLink)
         {
-            return $"{baseLink}?id={Id}&cfn={CustomerInfo.Firstname}&cln={CustomerInfo.Lastname}";
+            return $"{baseLink}?id={Id}&cfn={CustomerInfo.Firstname}&cln={CustomerInfo.Lastname}&afacebook={AgentInfo.Facebook}&ainstagram={AgentInfo.Instagram}&atwitter={AgentInfo.Twitter}&alinkedin={AgentInfo.LinkedIn}&alogo={AgentInfo.Logo}&propertyurl={PropertyInfo.PropertyUrl}";
         }
     }
 }

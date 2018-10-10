@@ -14,11 +14,15 @@ import { AgnetZapSetupComponent } from './detailview/zapsetup.component';
 import { AgnetGoogleDataStudioSetupComponent } from './detailview/googledatastudiosetup.component';
 import { AgnetRentInquirySetupComponent } from './detailview/rentinquirysetup.component';
 import { AgnetBuyInquirySetupComponent } from './detailview/buyinquirysetup.component';
+import { AgnetSocialMediaSetupComponent } from './detailview/socialmediasetup.component';
+import { AgnetActionSetupComponent } from './detailview/actionsetup.component';
 //import { AgnetRentInquirySetupComponent1 } from './detailview/rentinquirysetup.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {CdkTableModule} from '@angular/cdk/table';
 import { AgentWrapperService } from './agent.wrapper.service';
+import { Ng2CloudinaryModule } from 'ng2-cloudinary';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import {
   MatAutocompleteModule,
@@ -94,7 +98,9 @@ import {
     AgentRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    Ng2CloudinaryModule,
+    FileUploadModule
   ],
   declarations: [    
     AgentComponent,
@@ -104,6 +110,8 @@ import {
     AgnetGoogleDataStudioSetupComponent,
     AgnetBuyInquirySetupComponent,
     AgnetRentInquirySetupComponent,
+    AgnetSocialMediaSetupComponent,
+    AgnetActionSetupComponent,
     AgnetAddComponent,
     AgentListViewComponent
     ],

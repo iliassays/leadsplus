@@ -17,10 +17,17 @@
         public string State { get; set; }
         public string Zip { get; set; }
         public string Phone { get; set; }
+        public string Logo { get; set; }
         public string Address { get; set; }
         public string Company { get; set; }
         public string DataStudioUrl { get; set; }
-        
+        public bool IsLaunched { get; set; }
+
+        public string Facebook { get; set; }
+        public string Twitter { get; set; }
+        public string Instagram { get; set; }
+        public string LinkedIn { get; set; }
+
         public AgentRentInquiry RentInquiry { get; set; }
         public AgentBuyInquiry BuyInquiry { get; set; }
 
@@ -79,6 +86,30 @@
             this.AddDomainEvent(agentMailboxUpdatedEvent);
         }
 
+        public void UpdateLogo(string logo)
+        {
+            Logo = logo;
+
+            var agentLogoUpdatedEvent = new AgentLogoUpdatedEvent()
+            {
+                Agent = this
+            };
+
+            this.AddDomainEvent(agentLogoUpdatedEvent);
+        }
+
+        public void MarkAsLunched()
+        {
+            IsLaunched = true;
+
+            var agentMarkedAsLunchedEvent = new AgentMarkedAsLaunchedEvent()
+            {
+                Agent = this
+            };
+
+            this.AddDomainEvent(agentMarkedAsLunchedEvent);
+        }
+
         public void CreateTypeform(InquiryType typeFormType)
         {
             var agentTypeformUpdatedEvent = new AgentTypeformCreatedEvent()
@@ -99,6 +130,21 @@
             };
 
             this.AddDomainEvent(agentSpreadsheetCreatedEvent);
+        }
+
+        public void UpdateSocialMedia(string facebook, string instagram, string twitter, string linkedin)
+        {
+            Facebook = facebook;
+            Instagram = instagram;
+            Twitter = twitter;
+            LinkedIn = linkedin;
+
+            var agentSocialMediaUpdatedEvent = new AgentSocialMediaUpdatedEvent()
+            {
+                Agent = this
+            };
+
+            this.AddDomainEvent(agentSocialMediaUpdatedEvent);
         }
 
         //public void AddTypeFormItem(string typeFormUrl, TypeFormType type)

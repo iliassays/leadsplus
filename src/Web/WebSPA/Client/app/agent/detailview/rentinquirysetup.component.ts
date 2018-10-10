@@ -30,6 +30,38 @@ export class AgnetRentInquirySetupComponent implements OnInit {
 
     }
 
+    public saveSpreadsheet() {
+        this.agentService.updateAgentSpreadsheetShareableLinkForRentInquiry(this.currentAgent.id,
+            this.currentAgent.rentInquiry.spreadsheetUrl,
+            this.currentAgent.rentInquiry.spreadsheetId,
+            this.currentAgent.rentInquiry.spreadsheetName,
+            this.currentAgent.rentInquiry.spreadsheetShareableUrl)
+            .catch((errMessage) => {
+                this.errorReceived = true;
+                this.isAgentProcessing = false;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+
+            });
+    }
+
+    public saveMortgageSpreadsheet() {
+        this.agentService.updateAgentLandlordSpreadsheetShareableLinkForRentInquiry(this.currentAgent.id,
+            this.currentAgent.rentInquiry.landlordSpreadsheetUrl,
+            this.currentAgent.rentInquiry.landlordSpreadsheetId,
+            this.currentAgent.rentInquiry.landlordSpreadsheetName,
+            this.currentAgent.rentInquiry.landlordSpreadsheetShareableUrl)
+            .catch((errMessage) => {
+                this.errorReceived = true;
+                this.isAgentProcessing = false;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+
+            });
+    }
+
     public saveAutoresponderTemplate() {
         this.agentService.updateAgentAutoresponderTemplateForRentInquiry(this.currentAgent.id,
             this.currentAgent.rentInquiry.inquiryAutoresponderTemplate.agentAutoresponderTemplateId,

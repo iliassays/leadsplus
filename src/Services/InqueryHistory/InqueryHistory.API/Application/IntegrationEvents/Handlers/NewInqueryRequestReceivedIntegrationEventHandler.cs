@@ -70,7 +70,12 @@
                     Company = @event.AgentInfo.Company,
                     Country = @event.AgentInfo.Country,
                     Phone = @event.AgentInfo.Phone,
+                    Logo = @event.AgentInfo.Logo,
                     Id = @event.AgentInfo.Id,
+                    Facebook = @event.AgentInfo.Facebook,
+                    Instagram = @event.AgentInfo.Instagram,
+                    Twitter = @event.AgentInfo.Twitter,
+                    LinkedIn = @event.AgentInfo.LinkedIn,
                     IntegrationEmail = @event.AgentInfo.IntegrationEmail,                    
                     
                 },
@@ -80,7 +85,9 @@
                     SpreadsheetName = @event.AgentInquiryInfo?.SpreadsheetName,
                     SpreadsheetUrl = @event.AgentInquiryInfo?.SpreadsheetUrl,
                     TypeFormUrl = @event.AgentInquiryInfo?.TypeFormUrl,
-                    
+                    MortgageShareableUrl = @event.AgentInquiryInfo?.MortgageShareableUrl,
+                    LandlordShareableUrl = @event.AgentInquiryInfo?.LandlordShareableUrl,
+
                 },
                 new Domain.AgentAutoresponderTemplateInfo
                 {
