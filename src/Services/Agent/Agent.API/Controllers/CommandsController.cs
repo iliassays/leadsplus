@@ -206,11 +206,11 @@ namespace Agent.API.Controllers
                 (IActionResult)BadRequest();
         }
 
-        [Route("updateagentspreadsheetforbuyinquiry")]
+        [Route("createagentmortgagespreadsheet")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> UpdateAgentSpreadsheetForBuyInquiryCommand([FromBody] UpdateAgentSpreadsheetForBuyInquiryCommand @command)
+        public async Task<IActionResult> CreateAgentMortgageSpreadsheet([FromBody] CreateAgentMortgageSpreadsheetCommand @command)
         {
             var result = await mediator.Send(@command);
 
@@ -219,11 +219,37 @@ namespace Agent.API.Controllers
                 (IActionResult)BadRequest();
         }
 
-        [Route("updateagentmortgagespreadsheetforbuyinquiry")]
+        [Route("createagentlandlordspreadsheet")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> UpdateAgentMortgageSpreadsheetForBuyInquiryCommand([FromBody] UpdateAgentMortgageSpreadsheetForBuyInquiryCommand @command)
+        public async Task<IActionResult> CreateAgentLandlordSpreadsheet([FromBody] CreateAgentLandlordSpreadsheetCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("createagentvendorspreadsheet")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> CreateAgentVendorSpreadsheet([FromBody] CreateAgentVendorSpreadsheetCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("updateagentspreadsheetforbuyinquiry")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateAgentSpreadsheetForBuyInquiryCommand([FromBody] UpdateAgentSpreadsheetForBuyInquiryCommand @command)
         {
             var result = await mediator.Send(@command);
 
@@ -245,11 +271,38 @@ namespace Agent.API.Controllers
                 (IActionResult)BadRequest();
         }
 
-        [Route("updateagentlandlordspreadsheetforrentinquiry")]
+        [Route("updateagentmortgagespreadsheet")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> UpdateAgentLandlordSpreadsheetForRentInquiryCommand([FromBody] UpdateAgentLandlordSpreadsheetForRentInquiryCommand @command)
+        public async Task<IActionResult> UpdateAgentMortgageSpreadsheetCommand([FromBody] UpdateAgentMortgageSpreadsheetCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+
+        [Route("updateagentlandlordspreadsheet")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateAgentLandlordSpreadsheetCommand([FromBody] UpdateAgentLandlordSpreadsheetCommand @command)
+        {
+            var result = await mediator.Send(@command);
+
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
+        }
+
+        [Route("updateagentvendorspreadsheet")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateAgentVendorSpreadsheetCommand([FromBody] UpdateAgentVendorSpreadsheetCommand @command)
         {
             var result = await mediator.Send(@command);
 
@@ -261,13 +314,13 @@ namespace Agent.API.Controllers
         [Route("Delete")]
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(DeleteAgentCommand deleteAgentCommand)
         {
             var result = await mediator.Send(deleteAgentCommand);
 
-            return NoContent();
+            return result ?
+                (IActionResult)Ok(result) :
+                (IActionResult)BadRequest();
         }
     }
 }

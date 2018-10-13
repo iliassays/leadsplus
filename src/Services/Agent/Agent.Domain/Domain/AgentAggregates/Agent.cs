@@ -31,13 +31,15 @@
         public AgentRentInquiry RentInquiry { get; set; }
         public AgentBuyInquiry BuyInquiry { get; set; }
 
+        public AgentSpreadsheet AgentSpreadsheet { get; set; }
+
         public string CreatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime CreatedDate { get; set; }
 
         public Agent()
         {
-
+            AgentSpreadsheet = new AgentSpreadsheet();
         }
 
         public Agent(string id, string ownerId, string firstname, string lastname, string email, string country, string city, string phone, string address, string company)

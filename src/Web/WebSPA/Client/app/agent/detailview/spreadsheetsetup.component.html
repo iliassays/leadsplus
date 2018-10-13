@@ -1,0 +1,156 @@
+<section class="page-agent-buy-inquiry-setup container-fluid with-maxwidth no-breadcrumbs">
+    <article class="article" *ngIf="currentAgent && currentAgent?.agentSpreadsheet">
+        <h2 class="article-title"></h2>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="box box-default">
+                    <div class="box-header">Mortgage spreadsheet</div>
+                    <div class="box-body padding-xl">
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label class="col-md-2 control-label">Mortgage Spreadsheet Url</label></strong>
+                            </div>
+
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.agentSpreadsheet.mortgageSpreadsheetUrl}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="inputPassword3" class="col-md-2 control-label">Mortgage Spreadsheet Id</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.agentSpreadsheet.mortgageSpreadsheetId}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="inputPassword3" class="col-md-2 control-label">Mortgage Spreadsheet Name</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.agentSpreadsheet.mortgageSpreadsheetName}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label class="col-md-2 control-label">Mortgage Spreadsheet Public</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <form name="mortgageSpreadsheetShareableLink_form" *ngIf="currentAgent != null" class="form-validation" (ngSubmit)="saveMortgageSpreadsheet()" #mortgageForm="ngForm">
+                                    <div class="form-group">
+                                        <mat-form-field class="full-width">
+                                            <input matInput name="mortgageSpreadsheetShareableLink" placeholder="" [(ngModel)]="currentAgent.agentSpreadsheet.mortgageSpreadsheetShareableUrl">
+                                        </mat-form-field>
+                                    </div>
+                                    <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!mortgageForm.valid">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="box box-default">
+                    <div class="box-header">Landlord Spreadsheet</div>
+                    <div class="box-body padding-xl">
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="inputEmail3" class="col-md-2 control-label">Landlord Spreadsheet Url</label></strong>
+                            </div>
+
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.agentSpreadsheet.landlordSpreadsheetUrl}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="inputPassword3" class="col-md-2 control-label">Landlord Spreadsheet Id</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.agentSpreadsheet.landlordSpreadsheetId}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="inputPassword3" class="col-md-2 control-label">Landlord Spreadsheet Name</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.agentSpreadsheet.landlordSpreadsheetName}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label class="col-md-2 control-label">Landlord Spreadsheet Public</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <form name="landlordSpreadsheetShareableLink_form" *ngIf="currentAgent != null" class="form-validation" (ngSubmit)="saveLandlordSpreadsheet()" #landlordForm="ngForm">
+                                    <div class="form-group">
+                                        <mat-form-field class="full-width">
+                                            <input matInput name="landlordSpreadsheetShareableLink" placeholder="" [(ngModel)]="currentAgent.agentSpreadsheet.landlordSpreadsheetShareableUrl">
+                                        </mat-form-field>
+                                    </div>
+                                    <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!landlordForm.valid">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="box box-default">
+                    <div class="box-header">Vendor Spreadsheet</div>
+                    <div class="box-body padding-xl">
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label class="col-md-2 control-label">Vendor Spreadsheet Url</label></strong>
+                            </div>
+
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.agentSpreadsheet.vendorSpreadsheetUrl}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="inputPassword3" class="col-md-2 control-label">Landlord Spreadsheet Id</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.agentSpreadsheet.vendorSpreadsheetId}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label for="inputPassword3" class="col-md-2 control-label">Landlord Spreadsheet Name</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <span>{{currentAgent.agentSpreadsheet.vendorSpreadsheetName}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <strong><label class="col-md-2 control-label">Vendor Spreadsheet Public</label></strong>
+                            </div>
+                            <div class="col-md-9" style="word-break:break-word">
+                                <form name="vendorSpreadsheetShareableLink_form" *ngIf="currentAgent != null" class="form-validation" (ngSubmit)="saveVendorSpreadsheet()" #vendorForm="ngForm">
+                                    <div class="form-group">
+                                        <mat-form-field class="full-width">
+                                            <input matInput name="landlordSpreadsheetShareableLink" placeholder="" [(ngModel)]="currentAgent.agentSpreadsheet.vendorSpreadsheetShareableUrl">
+                                        </mat-form-field>
+                                    </div>
+                                    <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!vendorForm.valid">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>

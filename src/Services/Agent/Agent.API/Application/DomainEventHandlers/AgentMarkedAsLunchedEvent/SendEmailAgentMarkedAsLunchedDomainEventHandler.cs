@@ -81,10 +81,11 @@
                     { "[agentlogo]", agent.Logo },
                     { "[agentbuyinquirytypeformlink]", agent.BuyInquiry.TypeFormUrl },
                     { "[agentbuyinquiryspreadsheetlink]", agent.BuyInquiry.SpreadsheetShareableUrl },
-                    { "[agentmortgagespreadsheetlink]", agent.BuyInquiry.MortgageSpreadsheetShareableUrl },
+                    { "[agentmortgagespreadsheetlink]", agent.AgentSpreadsheet.MortgageSpreadsheetShareableUrl },
                     { "[agentrentinquirytypeformlink]", agent.RentInquiry.TypeFormUrl },
                     { "[agentrentinquiryspreadsheetlink]", agent.RentInquiry.SpreadsheetShareableUrl },
-                    { "[agentlandlordspreadsheetlink]", agent.RentInquiry.LandlordSpreadsheetShareableUrl }
+                    { "[agentlandlordspreadsheetlink]", agent.AgentSpreadsheet.LandlordSpreadsheetShareableUrl },
+                    { "[agentVendorspreadsheetlink]", agent.AgentSpreadsheet.VendorSpreadsheetShareableUrl }
                 };
 
             return mergedFields;

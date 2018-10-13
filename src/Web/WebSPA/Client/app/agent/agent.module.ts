@@ -16,6 +16,7 @@ import { AgnetRentInquirySetupComponent } from './detailview/rentinquirysetup.co
 import { AgnetBuyInquirySetupComponent } from './detailview/buyinquirysetup.component';
 import { AgnetSocialMediaSetupComponent } from './detailview/socialmediasetup.component';
 import { AgnetActionSetupComponent } from './detailview/actionsetup.component';
+import { AgnetSpreadsheetSetupComponent } from './detailview/spreadsheetsetup.component';
 //import { AgnetRentInquirySetupComponent1 } from './detailview/rentinquirysetup.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -112,6 +113,7 @@ import {
     AgnetRentInquirySetupComponent,
     AgnetSocialMediaSetupComponent,
     AgnetActionSetupComponent,
+    AgnetSpreadsheetSetupComponent,
     AgnetAddComponent,
     AgentListViewComponent
     ],

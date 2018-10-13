@@ -101,10 +101,40 @@
             <i class="fa fa-spinner fa-spin"></i> Rent Inquiry: Creating spreadsheet....
         </div>
         <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.spreadsheet_rent === 2">
-            <i class="fa fa-check"></i>  Rent Inquiry: Spreadsheetcreated.
+            <i class="fa fa-check"></i>  Rent Inquiry: Spreadsheet created.
         </div>
         <div class="col-lg-12 callout callout-warning" *ngIf="agentProcessingStatus.spreadsheet_rent === 3">
-            <i class="fa fa-warning"></i>  Rent Inquiry: Spreadsheet creatation failed.
+            <i class="fa fa-warning"></i>  Rent Inquiry: Spreadsheet creation failed.
+        </div>
+
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.spreadsheet_mortgage === 1">
+            <i class="fa fa-spinner fa-spin"></i> Mortgage: Creating spreadsheet....
+        </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.spreadsheet_mortgage === 2">
+            <i class="fa fa-check"></i>  Mortgage: Spreadsheet created.
+        </div>
+        <div class="col-lg-12 callout callout-warning" *ngIf="agentProcessingStatus.spreadsheet_mortgage === 3">
+            <i class="fa fa-warning"></i>  Mortgage: Spreadsheet creation failed.
+        </div>
+
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.spreadsheet_landlord === 1">
+            <i class="fa fa-spinner fa-spin"></i> Landlord: Creating spreadsheet....
+        </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.spreadsheet_landlord === 2">
+            <i class="fa fa-check"></i>  Landlord: Spreadsheet created.
+        </div>
+        <div class="col-lg-12 callout callout-warning" *ngIf="agentProcessingStatus.spreadsheet_landlord === 3">
+            <i class="fa fa-warning"></i>  Landlord: Spreadsheet creatation failed.
+        </div>
+
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.spreadsheet_vendor === 1">
+            <i class="fa fa-spinner fa-spin"></i> Vendor: Creating spreadsheet....
+        </div>
+        <div class="col-lg-12 callout callout-info" *ngIf="agentProcessingStatus.spreadsheet_vendor === 2">
+            <i class="fa fa-check"></i>  Vendor: Spreadsheet created.
+        </div>
+        <div class="col-lg-12 callout callout-warning" *ngIf="agentProcessingStatus.spreadsheet_vendor === 3">
+            <i class="fa fa-warning"></i>  Vendor: Spreadsheet creation failed.
         </div>
     </div>
     <div *ngIf="isAgentProcessingComplete">

@@ -34,6 +34,9 @@ export class AgnetAddComponent implements OnInit {
         spreadsheet_rent: 0,
         typeform_buy: 0,
         spreadsheet_buy: 0,
+        spreadsheet_landlord: 0,
+        spreadsheet_mortgage: 0,
+        spreadsheet_vendor: 0,
     };
 
     private aggregateId: string = Guid.newGuid();
@@ -176,6 +179,57 @@ export class AgnetAddComponent implements OnInit {
             })
             .subscribe(response => {
                 this.agentProcessingStatus.spreadsheet_rent = 2;
+                //this.isAgentProcessing = false;
+                //this.returnToDetail();
+                //this.isAgentProcessingComplete = true;
+                this.createSpreadsheetMortgage();
+            });
+    }
+
+    createSpreadsheetMortgage() {
+        this.agentProcessingStatus.spreadsheet_mortgage = 1;
+
+        this.agentService.createSpreadsheetForMortgage(this.aggregateId)
+            .catch((errMessage) => {
+                this.agentProcessingStatus.spreadsheet_mortgage = 3;
+                //this.errorReceived = true;
+                //this.isAgentProcessing = false;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+                this.agentProcessingStatus.spreadsheet_mortgage = 2;
+                this.createSpreadsheetLandlord();
+            });
+    }
+
+    createSpreadsheetLandlord() {
+        this.agentProcessingStatus.spreadsheet_landlord = 1;
+
+        this.agentService.createSpreadsheetForLandlord(this.aggregateId)
+            .catch((errMessage) => {
+                this.agentProcessingStatus.spreadsheet_landlord = 3;
+                //this.errorReceived = true;
+                //this.isAgentProcessing = false;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+                this.agentProcessingStatus.spreadsheet_landlord = 2;
+                this.createSpreadsheetVendor();
+            });
+    }
+
+    createSpreadsheetVendor() {
+        this.agentProcessingStatus.spreadsheet_vendor = 1;
+
+        this.agentService.createSpreadsheetForVendor(this.aggregateId)
+            .catch((errMessage) => {
+                this.agentProcessingStatus.spreadsheet_vendor = 3;
+                //this.errorReceived = true;
+                //this.isAgentProcessing = false;
+                return Observable.throw(errMessage);
+            })
+            .subscribe(response => {
+                this.agentProcessingStatus.spreadsheet_vendor = 2;
                 this.isAgentProcessing = false;
                 //this.returnToDetail();
                 this.isAgentProcessingComplete = true;

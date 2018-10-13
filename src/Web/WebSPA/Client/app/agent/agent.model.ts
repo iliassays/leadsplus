@@ -18,7 +18,8 @@ export interface IAgent {
     dataStudioUrl: string;
     isLaunched: boolean;
     buyInquiry: IAgentBuyInquiry;
-    rentInquiry: IAgentRentInquiry
+    rentInquiry: IAgentRentInquiry;
+    agentSpreadsheet: IAgentSpreadsheet;
 }
 
 export interface IAgentBuyInquiry {
@@ -28,10 +29,6 @@ export interface IAgentBuyInquiry {
     spreadsheetName: string;
     spreadsheetShareableUrl: string;
     type: string;
-    mortgageSpreadsheetUrl: string;
-    mortgageSpreadsheetId: string;
-    mortgageSpreadsheetName: string;
-    mortgageSpreadsheetShareableUrl: string;
     inquiryAutoresponderTemplate: IInquiryAutoresponderTemplate;
 }
 
@@ -41,12 +38,25 @@ export interface IAgentRentInquiry {
     spreadsheetId: string;
     spreadsheetName: string;
     spreadsheetShareableUrl: string;
-    type: string;
+    type: string;    
+    inquiryAutoresponderTemplate: IInquiryAutoresponderTemplate;
+}
+
+export interface IAgentSpreadsheet {    
+    mortgageSpreadsheetUrl: string;
+    mortgageSpreadsheetId: string;
+    mortgageSpreadsheetName: string;
+    mortgageSpreadsheetShareableUrl: string;
+
     landlordSpreadsheetUrl: string;
     landlordSpreadsheetId: string;
     landlordSpreadsheetName: string;
     landlordSpreadsheetShareableUrl: string;
-    inquiryAutoresponderTemplate: IInquiryAutoresponderTemplate;
+
+    vendorSpreadsheetUrl: string;
+    vendorSpreadsheetId: string;
+    vendorSpreadsheetName: string;
+    vendorSpreadsheetShareableUrl: string;
 }
 
 export interface IInquiryAutoresponderTemplate {

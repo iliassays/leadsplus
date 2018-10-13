@@ -87,7 +87,7 @@
                     TypeFormUrl = @event.AgentInquiryInfo?.TypeFormUrl,
                     MortgageShareableUrl = @event.AgentInquiryInfo?.MortgageShareableUrl,
                     LandlordShareableUrl = @event.AgentInquiryInfo?.LandlordShareableUrl,
-
+                    VendorShareableUrl = @event.AgentInquiryInfo?.VendorShareableUrl,
                 },
                 new Domain.AgentAutoresponderTemplateInfo
                 {

@@ -26,6 +26,7 @@
 
         protected override void Load(ContainerBuilder builder)
         {
+            var s = setting["DatabaseConnectionString"];
             builder.RegisterAssemblyTypes(typeof(AgentCommandHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
 

@@ -48,7 +48,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - DatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://nosql.data}
       - DatabaseName=AgentStore
-      - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
+      - identityUrl=http://identity.api              #Local:mongodb://mongod-banking-api-prod-container:27017 You need to open your local dev-machine firewall at range 5100-5110. 
       - IdentityUrlExternal=http://${LEADSPLUS_PROD_IDENTITY_API_DOMAIN}:5105
       - EventBusConnection=${LEADSPLUS_AZURE_SERVICE_BUS:-rabbitmq}
       - EventBusUserName=${LEADSPLUS_SERVICE_BUS_USERNAME}

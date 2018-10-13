@@ -8,8 +8,9 @@
     {
         BuyInquiry = 0,
         RentInquiry = 1,
-        MortgageInquiry = 2,
-        LandlordInquiry = 3
+        MortgageLeads = 2,
+        LandlordLeads = 3,
+        VendorLeads = 4
     }
 
     public class AgentInquiry

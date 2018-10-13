@@ -58,6 +58,7 @@
         public string SpreadsheetName { get; set; }
         public string MortgageShareableUrl { get; set; }
         public string LandlordShareableUrl { get; set; }
+        public string VendorShareableUrl { get; set; }
 
         public AgentInquiryInfo()
         {

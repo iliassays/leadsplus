@@ -26,9 +26,11 @@
         : IRequestHandler<CreateAgentSpreadsheetAccountForBuyInquiryCommand, bool>,
         IRequestHandler<CreateAgentSpreadsheetAccountForRentInquiryCommand, bool>,
         IRequestHandler<UpdateAgentSpreadsheetForBuyInquiryCommand, bool>,
-        IRequestHandler<UpdateAgentMortgageSpreadsheetForBuyInquiryCommand, bool>,
+        IRequestHandler<UpdateAgentMortgageSpreadsheetCommand, bool>,
         IRequestHandler<UpdateAgentSpreadsheetForRentInquiryCommand, bool>,
-        IRequestHandler<UpdateAgentLandlordSpreadsheetForRentInquiryCommand, bool>
+        IRequestHandler<UpdateAgentLandlordSpreadsheetCommand, bool>,
+        IRequestHandler<CreateAgentVendorSpreadsheetCommand, bool>,
+        IRequestHandler<CreateAgentMortgageSpreadsheetCommand, bool>
     {
         private readonly IEventBus eventBus;
         private readonly IMediator mediator;
@@ -56,6 +58,13 @@
         {
             { "Expected Date Of Moving"}, { "Customer Occupation"}, { "Currently Rent From"}, { "Need Internet Ready?"}, { "Have Property To Sell?"},
             { "Have Property To Let?"}, { "Preffered Time of Contacting"}
+        };
+
+        private List<string> vendorInquiryHeaders = new List<string>()
+        {
+            { "Id"}, { "Date"}, { "Vendor Name"}, { "Vendor Status"}, { "Has the Vendor Been Contracted"},
+            { "Market Appraisal Booked"}, { "Instruction Placed"},{ "Vendor's Email"}, { "Vendor's Phone"}, { "Vendor's Given Address"},
+            { "Portal" }, {"Enquiry Kind"}, { "Property The Vndor Enquired About" }, {"Property Reference"} , {"Property Reference"}, { "Vendor's current postcode"},
         };
 
         private List<string> motgageInquiryHeaders = new List<string>()
@@ -99,12 +108,6 @@
             agent.BuyInquiry.SpreadsheetId = spreadsheet.SpreadsheetId;
             agent.BuyInquiry.SpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(InquiryType), InquiryType.BuyInquiry));
 
-            var mortgageSpreadsheet = CreateSpreadsheetForTrackingInquiry(agent, motgageInquiryHeaders, InquiryType.MortgageInquiry);
-
-            agent.BuyInquiry.MortgageSpreadsheetUrl = mortgageSpreadsheet.SpreadsheetUrl;
-            agent.BuyInquiry.MortgageSpreadsheetId = mortgageSpreadsheet.SpreadsheetId;
-            agent.BuyInquiry.MortgageSpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(InquiryType), InquiryType.MortgageInquiry));
-            
             var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
             var update = Builders<Agent>.Update
                 .Set("BuyInquiry", agent.BuyInquiry)
@@ -129,12 +132,6 @@
             agent.RentInquiry.SpreadsheetId = spreadsheet.SpreadsheetId;
             agent.RentInquiry.SpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(InquiryType), InquiryType.RentInquiry));
             
-            var mortgageSpreadsheet = CreateSpreadsheetForTrackingInquiry(agent, landLoardInquiryHeaders, InquiryType.LandlordInquiry);
-
-            agent.RentInquiry.LandlordSpreadsheetUrl = mortgageSpreadsheet.SpreadsheetUrl;
-            agent.RentInquiry.LandlordSpreadsheetId = mortgageSpreadsheet.SpreadsheetId;
-            agent.RentInquiry.LandlordSpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(InquiryType), InquiryType.LandlordInquiry));
-
             var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
             var update = Builders<Agent>.Update
                 .Set("RentInquiry", agent.RentInquiry)
@@ -144,6 +141,78 @@
                 .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
 
             agent.CreateSpreadsheet(InquiryType.RentInquiry);
+            await mediator.DispatchDomainEventsAsync(agent);
+
+            return true;
+        }
+
+        public async Task<bool> Handle(CreateAgentMortgageSpreadsheetCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+
+            var mortgageSpreadsheet = CreateSpreadsheetForTrackingInquiry(agent, motgageInquiryHeaders, InquiryType.MortgageLeads);
+
+            agent.AgentSpreadsheet.MortgageSpreadsheetUrl = mortgageSpreadsheet.SpreadsheetUrl;
+            agent.AgentSpreadsheet.MortgageSpreadsheetId = mortgageSpreadsheet.SpreadsheetId;
+            agent.AgentSpreadsheet.MortgageSpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(InquiryType), InquiryType.MortgageLeads));
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("AgentSpreadsheet", agent.AgentSpreadsheet)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            agent.CreateSpreadsheet(InquiryType.MortgageLeads);
+            await mediator.DispatchDomainEventsAsync(agent);
+
+            return true;
+        }
+
+        public async Task<bool> Handle(CreateAgentLandlordSpreadsheetCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+
+            var landlordSpreadsheet = CreateSpreadsheetForTrackingInquiry(agent, landLoardInquiryHeaders, InquiryType.LandlordLeads);
+
+            agent.AgentSpreadsheet.LandlordSpreadsheetUrl = landlordSpreadsheet.SpreadsheetUrl;
+            agent.AgentSpreadsheet.LandlordSpreadsheetId = landlordSpreadsheet.SpreadsheetId;
+            agent.AgentSpreadsheet.LandlordSpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(InquiryType), InquiryType.LandlordLeads));
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("AgentSpreadsheet", agent.AgentSpreadsheet)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            agent.CreateSpreadsheet(InquiryType.LandlordLeads);
+            await mediator.DispatchDomainEventsAsync(agent);
+
+            return true;
+        }
+
+        public async Task<bool> Handle(CreateAgentVendorSpreadsheetCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+
+            var landlordSpreadsheet = CreateSpreadsheetForTrackingInquiry(agent, landLoardInquiryHeaders, InquiryType.VendorLeads);
+
+            agent.AgentSpreadsheet.VendorSpreadsheetUrl = landlordSpreadsheet.SpreadsheetUrl;
+            agent.AgentSpreadsheet.VendorSpreadsheetId = landlordSpreadsheet.SpreadsheetId;
+            agent.AgentSpreadsheet.VendorSpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(InquiryType), InquiryType.VendorLeads));
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("AgentSpreadsheet", agent.AgentSpreadsheet)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            agent.CreateSpreadsheet(InquiryType.VendorLeads);
             await mediator.DispatchDomainEventsAsync(agent);
 
             return true;
@@ -164,22 +233,7 @@
 
             return true;
         }
-
-        public async Task<bool> Handle(UpdateAgentMortgageSpreadsheetForBuyInquiryCommand @command, CancellationToken cancellationToken)
-        {
-            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
-            agent.BuyInquiry.UpdateMortgageSpreadsheet(@command.SpreadsheetId, @command.SpreadsheetName, @command.SpreadsheetUrl, @command.SpreadsheetShareableUrl);
-
-            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
-            var update = Builders<Agent>.Update
-                .Set("BuyInquiry", agent.BuyInquiry)
-                .CurrentDate("UpdatedDate");
-
-            await agentRepository.Collection
-                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
-
-            return true;
-        }
+              
 
         public async Task<bool> Handle(UpdateAgentSpreadsheetForRentInquiryCommand @command, CancellationToken cancellationToken)
         {
@@ -197,14 +251,46 @@
             return true;
         }
 
-        public async Task<bool> Handle(UpdateAgentLandlordSpreadsheetForRentInquiryCommand @command, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateAgentMortgageSpreadsheetCommand @command, CancellationToken cancellationToken)
         {
             var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
-            agent.RentInquiry.UpdateLandlordSpreadsheet(@command.SpreadsheetId, @command.SpreadsheetName, @command.SpreadsheetUrl, @command.SpreadsheetShareableUrl);
+            agent.AgentSpreadsheet.UpdateMortgageSpreadsheet(@command.SpreadsheetId, @command.SpreadsheetName, @command.SpreadsheetUrl, @command.SpreadsheetShareableUrl);
 
             var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
             var update = Builders<Agent>.Update
-                .Set("RentInquiry", agent.RentInquiry)
+                .Set("AgentSpreadsheet", agent.AgentSpreadsheet)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            return true;
+        }
+
+        public async Task<bool> Handle(UpdateAgentLandlordSpreadsheetCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+            agent.AgentSpreadsheet.UpdateLandlordSpreadsheet(@command.SpreadsheetId, @command.SpreadsheetName, @command.SpreadsheetUrl, @command.SpreadsheetShareableUrl);
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("AgentSpreadsheet", agent.AgentSpreadsheet)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            return true;
+        }
+
+        public async Task<bool> Handle(UpdateAgentVendorSpreadsheetCommand @command, CancellationToken cancellationToken)
+        {
+            var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
+            agent.AgentSpreadsheet.UpdateVendorSpreadsheet(@command.SpreadsheetId, @command.SpreadsheetName, @command.SpreadsheetUrl, @command.SpreadsheetShareableUrl);
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("AgentSpreadsheet", agent.AgentSpreadsheet)
                 .CurrentDate("UpdatedDate");
 
             await agentRepository.Collection

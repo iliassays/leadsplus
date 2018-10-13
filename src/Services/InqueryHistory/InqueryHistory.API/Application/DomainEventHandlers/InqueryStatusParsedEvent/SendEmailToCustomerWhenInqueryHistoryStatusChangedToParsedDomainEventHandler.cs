@@ -112,7 +112,7 @@
 
             foreach (var item in @event.InqueryHistory.ExtractedFields)
             {
-                if (!mergedFields.ContainsKey(item.Key))
+                if (!mergedFields.ContainsKey($"[{item.Key}]"))
                 {
                     mergedFields.Add($"[{item.Key}]", item.Value);
                 }

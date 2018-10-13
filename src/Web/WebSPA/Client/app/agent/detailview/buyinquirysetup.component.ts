@@ -50,22 +50,6 @@ export class AgnetBuyInquirySetupComponent implements OnInit, AfterViewInit {
             });
     }
 
-    public saveMortgageSpreadsheet() {
-        this.agentService.updateAgentMortgageSpreadsheetShareableLinkForBuyInquiry(this.currentAgent.id,
-            this.currentAgent.buyInquiry.mortgageSpreadsheetUrl,
-            this.currentAgent.buyInquiry.mortgageSpreadsheetId,
-            this.currentAgent.buyInquiry.mortgageSpreadsheetName,
-            this.currentAgent.buyInquiry.mortgageSpreadsheetShareableUrl)
-            .catch((errMessage) => {
-                this.errorReceived = true;
-                this.isAgentProcessing = false;
-                return Observable.throw(errMessage);
-            })
-            .subscribe(response => {
-
-            });
-    }
-
     public saveAutoresponderTemplate() {
         this.agentService.updateAgentAutoresponderTemplateForBuyInquiry(this.currentAgent.id,
             this.currentAgent.buyInquiry.inquiryAutoresponderTemplate.agentAutoresponderTemplateId,

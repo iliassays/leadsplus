@@ -197,6 +197,48 @@ export class AgentService {
         });
     }
 
+    createSpreadsheetForMortgage(agentId: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/createagentmortgagespreadsheet`;
+
+        let data = {
+            aggregateId: agentId
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
+    createSpreadsheetForLandlord(agentId: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/createagentlandlordspreadsheet`;
+
+        let data = {
+            aggregateId: agentId
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
+    createSpreadsheetForVendor(agentId: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/createagentvendorspreadsheet`;
+
+        let data = {
+            aggregateId: agentId
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
     updateAgentAutoresponderTemplateForBuyInquiry(agentId: string, agentAutoresponderTemplateForBuyInquiryId: string, customerAutoresponderTemplateForBuyInquiryId: string): Observable<string> {
         const requestUrl =
             `${this.agentUrl}/api/v1/commands/updateagentautorespondertemplateforbuyinquiry`;
@@ -263,25 +305,6 @@ export class AgentService {
         });
     }
 
-    updateAgentMortgageSpreadsheetShareableLinkForBuyInquiry(agentId: string, spreadsheetUrl: string,
-        spreadsheetId: string, spreadsheetName: string, spreadsheetShareableUrl: string): Observable<string> {
-        const requestUrl =
-            `${this.agentUrl}/api/v1/commands/updateagentmortgagespreadsheetforbuyinquiry`;
-
-        let data = {
-            aggregateId: agentId,
-            spreadsheetUrl: spreadsheetUrl,
-            spreadsheetId: spreadsheetId,
-            SpreadsheetName: spreadsheetName,
-            SpreadsheetShareableUrl: spreadsheetShareableUrl,
-        };
-
-        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
-            this.agnetEvents.agentUpdated();
-            return response.body.toString();
-        });
-    }
-
     updateAgentSpreadsheetShareableLinkForRentInquiry(agentId: string, spreadsheetUrl: string,
         spreadsheetId: string, spreadsheetName: string, spreadsheetShareableUrl: string): Observable<string> {
         const requestUrl =
@@ -301,10 +324,48 @@ export class AgentService {
         });
     }
 
-    updateAgentLandlordSpreadsheetShareableLinkForRentInquiry(agentId: string, spreadsheetUrl: string,
+    updateAgentMortgageSpreadsheetShareableLink(agentId: string, spreadsheetUrl: string,
         spreadsheetId: string, spreadsheetName: string, spreadsheetShareableUrl: string): Observable<string> {
         const requestUrl =
-            `${this.agentUrl}/api/v1/commands/updateagentlandlordspreadsheetforrentinquiry`;
+            `${this.agentUrl}/api/v1/commands/updateagentmortgagespreadsheet`;
+
+        let data = {
+            aggregateId: agentId,
+            spreadsheetUrl: spreadsheetUrl,
+            spreadsheetId: spreadsheetId,
+            SpreadsheetName: spreadsheetName,
+            SpreadsheetShareableUrl: spreadsheetShareableUrl,
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
+    updateAgentLandlordSpreadsheetShareableLink(agentId: string, spreadsheetUrl: string,
+        spreadsheetId: string, spreadsheetName: string, spreadsheetShareableUrl: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/updateagentlandlordspreadsheet`;
+
+        let data = {
+            aggregateId: agentId,
+            spreadsheetUrl: spreadsheetUrl,
+            spreadsheetId: spreadsheetId,
+            SpreadsheetName: spreadsheetName,
+            SpreadsheetShareableUrl: spreadsheetShareableUrl,
+        };
+
+        return this.service.post(requestUrl, data).map((response: HttpResponse<Object>) => {
+            this.agnetEvents.agentUpdated();
+            return response.body.toString();
+        });
+    }
+
+    updateAgentVendorSpreadsheetShareableLink(agentId: string, spreadsheetUrl: string,
+        spreadsheetId: string, spreadsheetName: string, spreadsheetShareableUrl: string): Observable<string> {
+        const requestUrl =
+            `${this.agentUrl}/api/v1/commands/updateagentvendorspreadsheet`;
 
         let data = {
             aggregateId: agentId,

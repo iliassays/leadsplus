@@ -46,7 +46,7 @@
                     Body = @event.Body,
                     Subject = @event.Subject,
                     OrganizationEmail = @event.OrganizationEmail,
-                    InquiryType = (int)GetInquiryType(@event),
+                    InquiryType = (int) GetInquiryType(@event),
                     PlainText = @event.PlainText,
 
                     AgentInfo = new AgentInfo()
@@ -83,30 +83,36 @@
 
         private AgentInquiryInfo GetInquiryInfoData(AgentInboundEmailTrackedIntegrationEvent @event, Agent agent)
         {
+            AgentInquiryInfo agentInquiryInfo = null;
+
             if (GetInquiryType(@event) == InquiryType.RentInquiry) 
             {
-                return new AgentInquiryInfo
+                agentInquiryInfo = new AgentInquiryInfo
                 {
                     SpreadsheetId = agent.RentInquiry?.SpreadsheetId,
                     SpreadsheetName = agent.RentInquiry?.SpreadsheetName,
                     SpreadsheetUrl = agent.RentInquiry?.SpreadsheetUrl,
                     TypeFormUrl = agent.RentInquiry?.TypeFormUrl,
                     SpreadsheetShareableUrl = agent.RentInquiry?.SpreadsheetShareableUrl,
-                    LandlordShareableUrl = agent.RentInquiry?.LandlordSpreadsheetShareableUrl,
                 };
             }
             else
             {
-                return new AgentInquiryInfo
+                agentInquiryInfo = new AgentInquiryInfo
                 {
                     SpreadsheetId = agent.BuyInquiry?.SpreadsheetId,
                     SpreadsheetName = agent.BuyInquiry?.SpreadsheetName,
                     SpreadsheetUrl = agent.BuyInquiry?.SpreadsheetUrl,
                     TypeFormUrl = agent.BuyInquiry?.TypeFormUrl,
                     SpreadsheetShareableUrl = agent.BuyInquiry?.SpreadsheetShareableUrl,
-                    MortgageShareableUrl = agent.BuyInquiry?.MortgageSpreadsheetShareableUrl
                 };
             }
+
+            agentInquiryInfo.LandlordShareableUrl = agent.AgentSpreadsheet?.LandlordSpreadsheetShareableUrl;
+            agentInquiryInfo.MortgageShareableUrl = agent.AgentSpreadsheet?.MortgageSpreadsheetShareableUrl;
+            agentInquiryInfo.VendorShareableUrl = agent.AgentSpreadsheet?.VendorSpreadsheetShareableUrl;
+
+            return agentInquiryInfo;
         }
 
         private AgentAutoresponderTemplateInfo GetAutoresponderTemplateData(AgentInboundEmailTrackedIntegrationEvent @event, Agent agent)

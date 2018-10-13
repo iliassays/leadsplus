@@ -51,57 +51,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-6">
-                <div class="box box-default">
-                    <div class="box-header">Mortgage</div>
-                    <div class="box-body padding-xl">
-
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <strong><label for="inputEmail3" class="col-md-2 control-label">Mortgage Spreadsheet Url</label></strong>
-                            </div>
-
-                            <div class="col-md-9" style="word-break:break-word">
-                                <span>{{currentAgent.buyInquiry.mortgageSpreadsheetUrl}}</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <strong><label for="inputPassword3" class="col-md-2 control-label">Mortgage Spreadsheet Id</label></strong>
-                            </div>
-                            <div class="col-md-9" style="word-break:break-word">
-                                <span>{{currentAgent.buyInquiry.mortgageSpreadsheetId}}</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <strong><label for="inputPassword3" class="col-md-2 control-label">Mortgage Spreadsheet Name</label></strong>
-                            </div>
-                            <div class="col-md-9" style="word-break:break-word">
-                                <span>{{currentAgent.buyInquiry.mortgageSpreadsheetName}}</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <strong><label class="col-md-2 control-label">Mortgage Spreadsheet Public</label></strong>
-                            </div>
-                            <div class="col-md-9" style="word-break:break-word">
-                                <form name="mortgageSpreadsheetShareableLink_form" *ngIf="currentAgent != null" class="form-validation" (ngSubmit)="saveMortgageSpreadsheet()" #mortgageForm="ngForm">
-                                    <div class="form-group">
-                                        <mat-form-field class="full-width">
-                                            <input matInput name="mortgageSpreadsheetShareableLink" placeholder="" [(ngModel)]="currentAgent.buyInquiry.mortgageSpreadsheetShareableUrl">
-                                        </mat-form-field>
-                                    </div>
-                                    <button type="submit" mat-raised-button color="primary" class="float-left" [disabled]="!mortgageForm.valid">Save</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="row">
-            <div class="col-xl-6">
+            <div class="col-xl-12">
                 <div class="box box-default">
                     <div class="box-header">Autoresponder Template</div>
                     <div class="box-body padding-xl">
@@ -120,9 +72,6 @@
                         </form>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-6">
-                
             </div>
         </div>
         <div id="zap_integration">
