@@ -4,12 +4,6 @@ services:
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
 
-  nosql.data:
-    image: mongo
-    restart: always
-    volumes:
-      - ./db:/data/db
-
   rabbitmq:
     image: rabbitmq:3-management
 
@@ -30,7 +24,6 @@ services:
       restart_policy:
         condition: on-failure
     depends_on:
-      - nosql.data
       - rabbitmq
 
   inqueryhistory.api:
@@ -39,7 +32,6 @@ services:
       context: .
       dockerfile: src/Services/InqueryHistory/InqueryHistory.API/Dockerfile
     depends_on:
-      - nosql.data
       - rabbitmq
 
   contact.api:
