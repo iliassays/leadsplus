@@ -30,7 +30,8 @@
         IRequestHandler<UpdateAgentSpreadsheetForRentInquiryCommand, bool>,
         IRequestHandler<UpdateAgentLandlordSpreadsheetCommand, bool>,
         IRequestHandler<CreateAgentVendorSpreadsheetCommand, bool>,
-        IRequestHandler<CreateAgentMortgageSpreadsheetCommand, bool>
+        IRequestHandler<CreateAgentMortgageSpreadsheetCommand, bool>,
+        IRequestHandler<CreateAgentLandlordSpreadsheetCommand, bool>
     {
         private readonly IEventBus eventBus;
         private readonly IMediator mediator;

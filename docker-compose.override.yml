@@ -15,6 +15,11 @@ services:
       - "5433:1433"    # Important: In a production environment your should remove the external port
 
 
+  nosql.data:
+    ports:
+      - "27017:27017"  # Important: In a production environment your should remove the external port
+
+
   rabbitmq:
     ports:
       - "15673:15673"  # Important: In a production environment your should remove the external port
@@ -41,7 +46,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - DatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://127.0.0.1:27017}
+      - DatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://nosql.data}
       - DatabaseName=AgentStore
       - identityUrl=http://identity.api              #Local:mongodb://mongod-banking-api-prod-container:27017 You need to open your local dev-machine firewall at range 5100-5110. 
       - IdentityUrlExternal=http://${LEADSPLUS_PROD_IDENTITY_API_DOMAIN}:5105
@@ -65,7 +70,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - DatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://127.0.0.1:27017}
+      - DatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://nosql.data}
       - DatabaseName=InqueryHistoryStore
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
       - IdentityUrlExternal=http://${LEADSPLUS_PROD_IDENTITY_API_DOMAIN}:5105
@@ -88,7 +93,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - DatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://127.0.0.1:27017}
+      - DatabaseConnectionString=${LEADSPLUS_AZURE_COSMOSDB:-mongodb://nosql.data}
       - DatabaseName=ContactStore
       - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
       - IdentityUrlExternal=http://${LEADSPLUS_PROD_IDENTITY_API_DOMAIN}:5105
