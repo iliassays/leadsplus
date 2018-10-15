@@ -8,7 +8,7 @@ services:
     image: mongo
     restart: always
     volumes:
-      - ./db:/data/db
+      - leadsplus-data:/data/db
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -90,3 +90,6 @@ services:
 #      - webshoppingapigw
 #      - webmarketingapigw
 
+volumes:
+  leadsplus-data:
+   
