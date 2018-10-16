@@ -66,7 +66,7 @@
         {
             { "Id"}, { "Date"}, { "Vendor Name"}, { "Vendor Status"}, { "Has the Vendor Been Contracted"},
             { "Market Appraisal Booked"}, { "Instruction Placed"},{ "Vendor's Email"}, { "Vendor's Phone"}, { "Vendor's Given Address"},
-            { "Portal" }, {"Enquiry Kind"}, { "Property The Vndor Enquired About" }, {"Property Reference"} , {"Property Reference"}, { "Vendor's current postcode"},
+            { "Portal" }, {"Enquiry Kind"}, { "Property The Vndor Enquired About" }, {"Property Reference"} , {"Property Url"}, { "Vendor's current postcode"},
         };
 
         private List<string> motgageInquiryHeaders = new List<string>()
@@ -200,7 +200,7 @@
         {
             var agent = await queryExecutor.Execute<GetAgentQuery, Agent>(new GetAgentQuery() { AgentId = @command.AggregateId });
 
-            var landlordSpreadsheet = CreateSpreadsheetForTrackingInquiry(agent, landLoardInquiryHeaders, InquiryType.VendorLeads);
+            var landlordSpreadsheet = CreateSpreadsheetForTrackingInquiry(agent, vendorInquiryHeaders, InquiryType.VendorLeads);
 
             agent.AgentSpreadsheet.VendorSpreadsheetUrl = landlordSpreadsheet.SpreadsheetUrl;
             agent.AgentSpreadsheet.VendorSpreadsheetId = landlordSpreadsheet.SpreadsheetId;
