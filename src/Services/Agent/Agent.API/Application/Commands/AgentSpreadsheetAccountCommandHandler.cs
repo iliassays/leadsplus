@@ -29,6 +29,7 @@
         IRequestHandler<UpdateAgentMortgageSpreadsheetCommand, bool>,
         IRequestHandler<UpdateAgentSpreadsheetForRentInquiryCommand, bool>,
         IRequestHandler<UpdateAgentLandlordSpreadsheetCommand, bool>,
+        IRequestHandler<UpdateAgentVendorSpreadsheetCommand, bool>,
         IRequestHandler<CreateAgentVendorSpreadsheetCommand, bool>,
         IRequestHandler<CreateAgentMortgageSpreadsheetCommand, bool>,
         IRequestHandler<CreateAgentLandlordSpreadsheetCommand, bool>
