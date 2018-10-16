@@ -54,7 +54,7 @@
                 Values = new List<object>()
                 {
                     @event.InqueryHistory.Id,
-                    @event.InqueryHistory.CreatedDate.ToLocalTime(),
+                    @event.InqueryHistory.CreatedDate.ToLocalTime().ToString("MM/dd/yyyy HH:mm:ss"),
                     $"{@event.InqueryHistory.CustomerInfo.Firstname} {@event.InqueryHistory.CustomerInfo.Lastname}",
                     @event.InqueryHistory.CustomerInfo.Email,
                     @event.InqueryHistory.CustomerInfo.Phone,
