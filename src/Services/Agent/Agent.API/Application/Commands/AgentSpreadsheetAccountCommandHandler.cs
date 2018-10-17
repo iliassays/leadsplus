@@ -44,7 +44,7 @@
 
         private List<string> inquiryAggrigateHeaders = new List<string>()
         {
-            { "Id" }, { "Date"}, { "Enquiry Kind"}, { "Is Qualified"},
+            { "Id" }, { "Date"}, { "Enquiry Kind"}, { "IsQualified"}, { "VendorLeadGenerated" }, { "MortgageLeadGenerated" }, { "LandlordLeadGenerated" },
         };
 
         private List<string> customerHeaders = new List<string>()

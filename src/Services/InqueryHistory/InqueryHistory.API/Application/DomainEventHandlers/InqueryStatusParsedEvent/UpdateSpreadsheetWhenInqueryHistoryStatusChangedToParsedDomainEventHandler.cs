@@ -87,7 +87,11 @@
                 {
                     @event.InqueryHistory.Id,
                     @event.InqueryHistory.CreatedDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
-                    Enum.GetName(typeof(InquiryType), @event.InqueryHistory.InquiryType)
+                    Enum.GetName(typeof(InquiryType), @event.InqueryHistory.InquiryType),
+                    "FALSE",
+                    "FALSE",
+                    "FALSE",
+                    "FALSE"
                 }
             };
 
