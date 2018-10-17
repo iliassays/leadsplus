@@ -105,6 +105,8 @@
                     { "[agentinquiryspreadsheetlink]", @event.InqueryHistory.AgentInquiryInfo?.SpreadsheetUrl },
                     { "[agentmortgagespreadsheetlink]", @event.InqueryHistory.AgentInquiryInfo?.MortgageShareableUrl },
                     { "[agentlandlordspreadsheetlink]", @event.InqueryHistory.AgentInquiryInfo?.LandlordShareableUrl },
+                    { "[agentvendorspreadsheetlink]", @event.InqueryHistory.AgentInquiryInfo?.VendorShareableUrl },
+                    { "[agentaggregatespreadsheetlink]", @event.InqueryHistory.AgentInquiryInfo?.AggregateShareableUrl },
                     { "[organizationemail]", @event.InqueryHistory.OrganizationInfo.OrganizationEmail },
                     { "[organizationdomain]", @event.InqueryHistory.OrganizationInfo.OrganizationDomain },
                     { "[organizationname]", @event.InqueryHistory.OrganizationInfo.OrganizationName }

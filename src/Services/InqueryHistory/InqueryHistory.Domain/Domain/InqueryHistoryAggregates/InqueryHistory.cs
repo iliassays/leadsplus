@@ -10,8 +10,7 @@
     public enum InquiryType
     {
         BuyInquiry = 0,
-        RentInquiry = 1,
-        MortgageInquiry = 2
+        RentInquiry = 1
     }
 
     public enum InqueryStatus

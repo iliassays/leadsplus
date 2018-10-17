@@ -10,7 +10,8 @@
         RentInquiry = 1,
         MortgageLeads = 2,
         LandlordLeads = 3,
-        VendorLeads = 4
+        VendorLeads = 4,
+        Aggregate = 6,
     }
 
     public class AgentInquiry

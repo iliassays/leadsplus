@@ -42,6 +42,11 @@
         private readonly ITypeForm typeForm;
         private readonly IConfiguration configuration;
 
+        private List<string> inquiryAggrigateHeaders = new List<string>()
+        {
+            { "Id" }, { "Date"}, { "Enquiry Kind"}, { "Is Qualified"},
+        };
+
         private List<string> customerHeaders = new List<string>()
         {
             { "Id" }, { "Date"}, { "Customer Name"}, { "Customer Email"}, { "Customer Phone"}, { "Customer Address"}, { "About Customer"},
@@ -119,6 +124,9 @@
                 .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
 
             agent.CreateSpreadsheet(InquiryType.BuyInquiry);
+
+            await CreateAggregateSpreadsheet(agent);
+
             await mediator.DispatchDomainEventsAsync(agent);
 
             return true;
@@ -365,6 +373,29 @@
             //eventBus.Publish(createContactIntegrationEvent);
 
             return spreadsheet;
+        }
+
+        private async Task<bool> CreateAggregateSpreadsheet(Domain.Agent agent)
+        {
+            var spreadsheet = CreateSpreadsheetForTrackingInquiry(agent, inquiryAggrigateHeaders.ToList(), InquiryType.Aggregate);
+
+            agent.AgentSpreadsheet.AggregateSpreadsheetUrl = spreadsheet.SpreadsheetUrl;
+            agent.AgentSpreadsheet.AggregateSpreadsheetShareableUrl = spreadsheet.SpreadsheetUrl;
+            agent.AgentSpreadsheet.AggregateSpreadsheetId = spreadsheet.SpreadsheetId;
+            agent.AgentSpreadsheet.AggregateSpreadsheetName = agent.GetSpreadsheetName(Enum.GetName(typeof(InquiryType), InquiryType.Aggregate));
+
+            var filter = Builders<Agent>.Filter.Eq("Id", agent.Id);
+            var update = Builders<Agent>.Update
+                .Set("AgentSpreadsheet", agent.AgentSpreadsheet)
+                .CurrentDate("UpdatedDate");
+
+            await agentRepository.Collection
+                .UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+
+            agent.CreateSpreadsheet(InquiryType.Aggregate);
+            await mediator.DispatchDomainEventsAsync(agent);
+
+            return true;
         }
     }
 }

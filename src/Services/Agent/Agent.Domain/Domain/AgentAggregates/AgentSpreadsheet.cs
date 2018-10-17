@@ -21,6 +21,11 @@
         public string VendorSpreadsheetName { get; set; }
         public string VendorSpreadsheetShareableUrl { get; set; }
 
+        public string AggregateSpreadsheetUrl { get; set; }
+        public string AggregateSpreadsheetId { get; set; }
+        public string AggregateSpreadsheetName { get; set; }
+        public string AggregateSpreadsheetShareableUrl { get; set; }
+
         public AgentSpreadsheet()
         {
             
@@ -48,6 +53,8 @@
             LandlordSpreadsheetName = spreadsheetName;
         }
 
+       
+
         public void UpdateLandlordSpreadsheet(string spreadsheetId, string spreadsheetName, string spreadsheetUrl, string landlordspreadsheetShareableUrl)
         {
             LandlordSpreadsheetShareableUrl = landlordspreadsheetShareableUrl;
@@ -63,12 +70,27 @@
             LandlordSpreadsheetName = spreadsheetName;
         }
 
-        public void UpdateVendorSpreadsheet(string spreadsheetId, string spreadsheetName, string spreadsheetUrl, string landlordspreadsheetShareableUrl)
+        public void UpdateVendorSpreadsheet(string spreadsheetId, string spreadsheetName, string spreadsheetUrl, string shareableUrl)
         {
-            VendorSpreadsheetShareableUrl = landlordspreadsheetShareableUrl;
+            VendorSpreadsheetShareableUrl = shareableUrl;
             VendorSpreadsheetUrl = spreadsheetUrl;
             VendorSpreadsheetId = spreadsheetId;
             VendorSpreadsheetName = spreadsheetName;
+        }
+
+        public void AddAggregateSpreadsheet(string spreadsheetId, string spreadsheetName, string spreadsheetUrl)
+        {
+            AggregateSpreadsheetUrl = spreadsheetUrl;
+            AggregateSpreadsheetId = spreadsheetId;
+            AggregateSpreadsheetName = spreadsheetName;
+        }
+
+        public void UpdateAggregateSpreadsheet(string spreadsheetId, string spreadsheetName, string spreadsheetUrl, string shareableUrl)
+        {
+            AggregateSpreadsheetShareableUrl = shareableUrl;
+            AggregateSpreadsheetUrl = spreadsheetUrl;
+            AggregateSpreadsheetId = spreadsheetId;
+            AggregateSpreadsheetName = spreadsheetName;
         }
     }
 }

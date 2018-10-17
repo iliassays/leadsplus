@@ -71,33 +71,32 @@
 
             var spreadsheet = mediator.Send(insertRowToSpreadsheetCommand).Result;
 
+            await CreateAggregateSpreadsheetRow(@event);
 
             logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history spreadsheet updated. Inquiry history: {@event.InqueryHistory.Id} - Inquiry from: {@event.InqueryHistory.OrganizationInfo.OrganizationEmail}.");
         }
 
-        //private Dictionary<string, string> GetMergeField(Domain.AgentInfo agent, InqueryHistoryStatusChangedToParsedDomainEvent @event)
-        //{
-        //    var mergedFields = new Dictionary<string, string>()
-        //        {
-        //            { "[agentfirstname]", agent.Firstname },
-        //            { "[agentlastname]", agent.Lastname },
-        //            { "[agentaddress]", agent.Address },
-        //            { "[agentcity]", agent.City },
-        //            { "[agentstate]", agent.State },
-        //            { "[agentzip]", agent.Zip },
-        //            { "[addressbooklink]", "http://contact.adfenixleads.com" },
-        //            { "[organizationemail]", @event.InqueryHistory.OrganizationInfo.OrganizationEmail }
-        //        };
+        private async Task<bool> CreateAggregateSpreadsheetRow(InqueryHistoryStatusChangedToParsedDomainEvent @event)
+        {
+            InsertRowToSpreadsheetCommand insertRowToSpreadsheetCommand = new InsertRowToSpreadsheetCommand
+            {
+                SpreadSheetId = @event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl,
+                WorkSheetName = "Inquiries",
+                ApplicationName = "LeadsPlus",
+                Values = new List<object>()
+                {
+                    @event.InqueryHistory.Id,
+                    @event.InqueryHistory.CreatedDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
+                    Enum.GetName(typeof(InquiryType), @event.InqueryHistory.InquiryType)
+                }
+            };
 
-        //    foreach (var item in @event.InqueryHistory.ExtractedFields)
-        //    {
-        //        if (!mergedFields.ContainsKey(item.Key))
-        //        {
-        //            mergedFields.Add($"[{item.Key}]", item.Value);
-        //        }
-        //    }
+            var spreadsheet = mediator.Send(insertRowToSpreadsheetCommand).Result;
 
-        //    return mergedFields;
-        //}
+
+            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history aggregate spreadsheet updated. Inquiry history: {@event.InqueryHistory.Id} - Inquiry from: {@event.InqueryHistory.OrganizationInfo.OrganizationEmail}.");
+
+            return true;
+        }
     }
 }
