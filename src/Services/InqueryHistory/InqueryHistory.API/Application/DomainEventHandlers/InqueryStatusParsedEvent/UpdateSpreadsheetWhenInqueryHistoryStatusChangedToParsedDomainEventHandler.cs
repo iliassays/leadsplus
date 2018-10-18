@@ -78,12 +78,18 @@
 
         private async Task<bool> CreateAggregateSpreadsheetRow(InqueryHistoryStatusChangedToParsedDomainEvent @event)
         {
-            InsertRowToSpreadsheetCommand insertRowToSpreadsheetCommand = new InsertRowToSpreadsheetCommand
+            logger.CreateLogger(nameof(@event)).LogTrace($"Start: Inquery history aggregate spreadsheet updated. Inquiry history: {@event.InqueryHistory.Id} - spreadsheet: {@event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl}.");
+
+            try
             {
-                SpreadSheetId = @event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl,
-                WorkSheetName = "Aggregate",
-                ApplicationName = "LeadsPlus",
-                Values = new List<object>()
+
+
+                InsertRowToSpreadsheetCommand insertRowToSpreadsheetCommand = new InsertRowToSpreadsheetCommand
+                {
+                    SpreadSheetId = @event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl,
+                    WorkSheetName = "Aggregate",
+                    ApplicationName = "LeadsPlus",
+                    Values = new List<object>()
                 {
                     @event.InqueryHistory.Id,
                     @event.InqueryHistory.CreatedDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
@@ -93,12 +99,16 @@
                     "FALSE",
                     "FALSE"
                 }
-            };
+                };
 
-            var spreadsheet = mediator.Send(insertRowToSpreadsheetCommand).Result;
+                var spreadsheet = mediator.Send(insertRowToSpreadsheetCommand).Result;
+            }
+            catch(Exception ex)
+            {
+                logger.CreateLogger(nameof(@event)).LogTrace(ex.StackTrace);
+            }
 
-
-            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history aggregate spreadsheet updated. Inquiry history: {@event.InqueryHistory.Id} - spreadsheet: {@event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl}.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"End: Inquery history aggregate spreadsheet updated. Inquiry history: {@event.InqueryHistory.Id} - spreadsheet: {@event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl}.");
 
             return true;
         }
