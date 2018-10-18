@@ -81,7 +81,7 @@
             InsertRowToSpreadsheetCommand insertRowToSpreadsheetCommand = new InsertRowToSpreadsheetCommand
             {
                 SpreadSheetId = @event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl,
-                WorkSheetName = "Inquiries",
+                WorkSheetName = "Aggregate",
                 ApplicationName = "LeadsPlus",
                 Values = new List<object>()
                 {
@@ -98,7 +98,7 @@
             var spreadsheet = mediator.Send(insertRowToSpreadsheetCommand).Result;
 
 
-            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history aggregate spreadsheet updated. Inquiry history: {@event.InqueryHistory.Id} - Inquiry from: {@event.InqueryHistory.OrganizationInfo.OrganizationEmail}.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history aggregate spreadsheet updated. Inquiry history: {@event.InqueryHistory.Id} - spreadsheet: {@event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl.");
 
             return true;
         }
