@@ -89,6 +89,7 @@
                     LandlordShareableUrl = @event.AgentInquiryInfo?.LandlordShareableUrl,
                     VendorShareableUrl = @event.AgentInquiryInfo?.VendorShareableUrl,
                     AggregateShareableUrl = @event.AgentInquiryInfo?.AggregateShareableUrl,
+                    AggregateShareableId = @event.AgentInquiryInfo?.AggregateShareableId,
                 },
                 new Domain.AgentAutoresponderTemplateInfo
                 {

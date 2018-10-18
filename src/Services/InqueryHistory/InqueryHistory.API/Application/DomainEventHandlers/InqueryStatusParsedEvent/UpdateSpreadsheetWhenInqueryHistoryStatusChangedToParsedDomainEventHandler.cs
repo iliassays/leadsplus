@@ -86,7 +86,7 @@
 
                 InsertRowToSpreadsheetCommand insertRowToSpreadsheetCommand = new InsertRowToSpreadsheetCommand
                 {
-                    SpreadSheetId = @event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl,
+                    SpreadSheetId = @event.InqueryHistory.AgentInquiryInfo.AggregateShareableId,
                     WorkSheetName = "Aggregate",
                     ApplicationName = "LeadsPlus",
                     Values = new List<object>()

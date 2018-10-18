@@ -69,6 +69,7 @@
         public string LandlordShareableUrl { get; set; }
         public string VendorShareableUrl { get; set; }
         public string AggregateShareableUrl { get; set; }
+        public string AggregateShareableId { get; set; }
 
         public AgentInquiryInfo()
         {

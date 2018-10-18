@@ -112,6 +112,7 @@
             agentInquiryInfo.MortgageShareableUrl = agent.AgentSpreadsheet?.MortgageSpreadsheetShareableUrl;
             agentInquiryInfo.VendorShareableUrl = agent.AgentSpreadsheet?.VendorSpreadsheetShareableUrl;
             agentInquiryInfo.AggregateShareableUrl = agent.AgentSpreadsheet?.AggregateSpreadsheetShareableUrl;
+            agentInquiryInfo.AggregateShareableId = agent.AgentSpreadsheet?.AggregateSpreadsheetId;
 
             return agentInquiryInfo;
         }
