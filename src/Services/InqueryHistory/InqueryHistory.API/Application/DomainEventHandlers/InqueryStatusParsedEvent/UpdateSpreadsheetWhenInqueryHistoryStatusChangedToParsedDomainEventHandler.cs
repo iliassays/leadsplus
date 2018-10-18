@@ -98,7 +98,7 @@
             var spreadsheet = mediator.Send(insertRowToSpreadsheetCommand).Result;
 
 
-            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history aggregate spreadsheet updated. Inquiry history: {@event.InqueryHistory.Id} - spreadsheet: {@event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl.");
+            logger.CreateLogger(nameof(@event)).LogTrace($"Inquery history aggregate spreadsheet updated. Inquiry history: {@event.InqueryHistory.Id} - spreadsheet: {@event.InqueryHistory.AgentInquiryInfo.AggregateShareableUrl}.");
 
             return true;
         }
