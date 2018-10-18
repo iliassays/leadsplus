@@ -97,7 +97,8 @@
                     "FALSE",
                     "FALSE",
                     "FALSE",
-                    "FALSE"
+                    "FALSE",
+                    @event.InqueryHistory.OrganizationInfo.OrganizationDomain
                 }
                 };
 
