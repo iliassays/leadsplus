@@ -24,8 +24,8 @@
         private readonly IIdentityService identityService;
         private readonly IEventBus eventBus;
         private readonly IRepository<InqueryHistory> inqueryHistoryRepository;
-        private readonly Dictionary<string, string> buyInquiryParsingEmailMaping;
-        private readonly Dictionary<string, string> rentInquiryParsingEmailMaping;
+        private readonly Dictionary<string, string> buyInquiryParsingEmailMapping;
+        private readonly Dictionary<string, string> rentInquiryParsingEmailMapping;
 
         public InqueryHistorySendForParsingEventHandler(
             ILoggerFactory logger,
@@ -41,7 +41,7 @@
             this.inqueryHistoryRepository = inqueryHistoryRepository ?? throw new ArgumentNullException(nameof(inqueryHistoryRepository));
 
             //TODO: move it ot database and add dynamically
-            buyInquiryParsingEmailMaping = new Dictionary<string, string>()
+            buyInquiryParsingEmailMapping = new Dictionary<string, string>()
             {
                 {"gmail.com", "adfenixleads0buyinquiry@robot.zapier.com" },
                 {"rightmove.co.uk", "rightmove0co0uk0customerinquery@robot.zapier.com" },
@@ -49,7 +49,7 @@
                 {"realestate.com.au", "realestate0com0au@robot.zapier.com" }
             };
 
-            rentInquiryParsingEmailMaping = new Dictionary<string, string>()
+            rentInquiryParsingEmailMapping = new Dictionary<string, string>()
             {
                 {"gmail.com", "adfenixleads0rentinquiry@robot.zapier.com" },
                 {"rightmove.co.uk", "rightmove0co0uk0customerinquery@robot.zapier.com" },
@@ -62,11 +62,11 @@
         {
             var organizationDomain = @event.InqueryHistory.OrganizationInfo.OrganizationEmail.Split("@")[1];
 
-            var parserEmail = buyInquiryParsingEmailMaping.ContainsKey(organizationDomain) ? buyInquiryParsingEmailMaping[organizationDomain] : "adfenixleads0buyinquiry@robot.zapier.com";
+            var parserEmail = buyInquiryParsingEmailMapping.ContainsKey(organizationDomain) ? buyInquiryParsingEmailMapping[organizationDomain] : "adfenixleads0buyinquiry@robot.zapier.com";
 
             if (@event.InqueryHistory.InquiryType == InquiryType.RentInquiry)
             {
-                parserEmail = rentInquiryParsingEmailMaping.ContainsKey(organizationDomain) ? rentInquiryParsingEmailMaping[organizationDomain] : "adfenixleads0rentinquiry@robot.zapier.com";
+                parserEmail = rentInquiryParsingEmailMapping.ContainsKey(organizationDomain) ? rentInquiryParsingEmailMapping[organizationDomain] : "adfenixleads0rentinquiry@robot.zapier.com";
             }
 
             logger.CreateLogger(nameof(@event)).LogTrace($"Inquery parser email {parserEmail}.");
