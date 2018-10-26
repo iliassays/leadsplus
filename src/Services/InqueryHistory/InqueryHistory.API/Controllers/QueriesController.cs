@@ -45,7 +45,7 @@
                 inquiryStatus = Enum.GetName(typeof(InqueryStatus), c.InqueryStatus),
                 inquiryType = Enum.GetName(typeof(InquiryType), c.InquiryType),
                 createdDate = c.CreatedDate
-            }));
+            }).OrderByDescending(c => c.createdDate));
         }
     }
 }
