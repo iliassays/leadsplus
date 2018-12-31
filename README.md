@@ -12,6 +12,8 @@ It is using Http as the communication protocol between the client apps and the m
 
 It supports asynchronous communication for data updates propagation across multiple services based on Integration Events and an Event Bus - a light message broker, to choose between RabbitMQ or Azure Service Bus.
 
+Centralized Authentication with token service
+
 ## Technology Used
 JavaScript (ES6, ES 5), Angular 6, Material Design, SCSS, SPA
 
